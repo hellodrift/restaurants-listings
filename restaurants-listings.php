@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Listings - Restaurants
+ * Plugin Name: Restaurants - Listings
  * Description: Adds Restaurants Listings functionality to the Listings plugin.
  * Version: 0.0.1
  * Author: OpenTute+
