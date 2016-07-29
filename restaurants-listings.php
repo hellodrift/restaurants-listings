@@ -4,7 +4,7 @@
  * Description: Adds Restaurants Listings functionality to the Listings plugin.
  * Version: 0.0.1
  * Author: OpenTute+
- * Text Domain: listings-restaurants
+ * Text Domain: restaurants-listings
  */
 
 // Define constants
