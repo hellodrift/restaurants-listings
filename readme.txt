@@ -1,9 +1,9 @@
-=== Listings Jobs ===
-Contributors: thelookandfeel, CoenJacobs, scottbasgaard, robsward, garethwelton
-Tags: jobs, jobs listings, job board, listings
+=== Restaurants Listings ===
+Contributors: opentuteplus, kishores
+Tags: restaurants, restaurants listings, restaurant, listings
 Requires at least: 4.5
 Tested up to: 4.5.3
-Stable tag: 0.2.0
+Stable tag: 0.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,8 +35,5 @@ You can find extensive documentation on [how to install plugins](http://codex.wo
 
 == Changelog ==
 
-= 0.2.0 =
-* Public testing release is now available
-
-= 0.1.0 =
+= 0.0.1 =
 * Initial release for internal testing
