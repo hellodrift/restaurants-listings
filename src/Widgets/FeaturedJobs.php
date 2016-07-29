@@ -1,6 +1,6 @@
 <?php
 
-namespace Listings\Jobs\Widgets;
+namespace Listings\Restaurants\Widgets;
 
 use Listings\Widgets\Widget;
 

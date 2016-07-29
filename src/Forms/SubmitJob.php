@@ -1,6 +1,6 @@
 <?php
 
-namespace Listings\Jobs\Forms;
+namespace Listings\Restaurants\Forms;
 
 use Listings\Forms\Form;
 

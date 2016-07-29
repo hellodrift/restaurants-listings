@@ -1,13 +1,13 @@
 {
-  "name": "thelookandfeel/listings-jobs",
+  "name": "opentuteplus/listings-restaurants",
   "type": "wordpress-plugin",
   "minimum-stability": "dev",
   "require": {},
   "prefer-stable": true,
   "authors": [
     {
-      "name": "Coen Jacobs",
-      "email": "coen@thelookandfeel.com"
+      "name": "Kishore Sahoo",
+      "email": "kishore@opentuteplus.com"
     }
   ],
   "autoload": {
@@ -16,7 +16,7 @@
       "helpers/template.php"
     ],
     "psr-4": {
-      "Listings\\Jobs\\": "src/"
+      "Listings\\Restaurants\\": "src/"
     }
   }
 }

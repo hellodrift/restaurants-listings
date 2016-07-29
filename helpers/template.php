@@ -180,7 +180,7 @@ function listings_jobs_the_company_logo( $size = 'thumbnail', $default = null, $
     } elseif ( $default ) {
         echo '<img class="company_logo" src="' . esc_attr( $default ) . '" alt="' . esc_attr( listings_jobs_get_the_company_name( $post ) ) . '" />';
     } else {
-        echo '<img class="company_logo" src="' . esc_attr( apply_filters( 'listings_jobs_default_company_logo', LISTINGS_JOBS_PLUGIN_URL . '/assets/images/company.png' ) ) . '" alt="' . esc_attr( listings_jobs_get_the_company_name( $post ) ) . '" />';
+        echo '<img class="company_logo" src="' . esc_attr( apply_filters( 'listings_jobs_default_company_logo', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/images/company.png' ) ) . '" alt="' . esc_attr( listings_jobs_get_the_company_name( $post ) ) . '" />';
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Listings\Jobs\Admin;
+namespace Listings\Restaurants\Admin;
 
 class Setup {
 

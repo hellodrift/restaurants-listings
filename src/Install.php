@@ -1,6 +1,6 @@
 <?php
 
-namespace Listings\Jobs;
+namespace Listings\Restaurants;
 
 class Install {
 
@@ -33,7 +33,7 @@ class Install {
         }
 
         delete_transient( 'listings_addons_html' );
-        update_option( 'listings_jobs_version', LISTINGS_JOBS_VERSION );
+        update_option( 'listings_jobs_version', LISTINGS_RESTAURANTS_VERSION );
     }
 
     /**

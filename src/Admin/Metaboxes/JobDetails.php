@@ -1,6 +1,6 @@
 <?php
 
-namespace Listings\Jobs\Admin\Metaboxes;
+namespace Listings\Restaurants\Admin\Metaboxes;
 
 use Listings\Admin\Metabox;
 use Listings\Geocode;

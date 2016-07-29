@@ -1,6 +1,6 @@
 {
-  "name": "listings-jobs",
-  "title": "Listings - Jobs",
+  "name": "listings-restaurants",
+  "title": "Listings - Restaurants",
   "version": "1.0.0",
   "homepage": "",
   "main": "Gruntfile.js",

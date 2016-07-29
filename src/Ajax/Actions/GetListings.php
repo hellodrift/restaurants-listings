@@ -1,6 +1,6 @@
 <?php
 
-namespace Listings\Jobs\Ajax\Actions;
+namespace Listings\Restaurants\Ajax\Actions;
 
 use Listings\Ajax\Action;
 

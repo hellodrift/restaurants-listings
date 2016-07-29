@@ -1,9 +1,9 @@
 <?php
 
-namespace Listings\Jobs;
+namespace Listings\Restaurants;
 
-use Listings\Jobs\Forms\EditJob;
-use Listings\Jobs\Forms\SubmitJob;
+use Listings\Restaurants\Forms\EditJob;
+use Listings\Restaurants\Forms\SubmitJob;
 
 class Shortcodes {
 

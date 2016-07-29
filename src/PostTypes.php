@@ -1,6 +1,6 @@
 <?php
 
-namespace Listings\Jobs;
+namespace Listings\Restaurants;
 
 class PostTypes {
 

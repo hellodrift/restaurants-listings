@@ -1,14 +1,14 @@
 <?php
 
-namespace Listings\Jobs;
+namespace Listings\Restaurants;
 
 use Listings\Ajax\Handler;
-use Listings\Jobs\Admin\Admin;
-use Listings\Jobs\Ajax\Actions\GetListings;
-use Listings\Jobs\Forms\EditJob;
-use Listings\Jobs\Forms\SubmitJob;
-use Listings\Jobs\Widgets\FeaturedJobs;
-use Listings\Jobs\Widgets\RecentJobs;
+use Listings\Restaurants\Admin\Admin;
+use Listings\Restaurants\Ajax\Actions\GetListings;
+use Listings\Restaurants\Forms\EditJob;
+use Listings\Restaurants\Forms\SubmitJob;
+use Listings\Restaurants\Widgets\FeaturedJobs;
+use Listings\Restaurants\Widgets\RecentJobs;
 
 class Plugin {
     public function __construct()
@@ -18,7 +18,7 @@ class Plugin {
         }
 
         // Register template path for this plugin
-        listings()->template->register_template_path(LISTINGS_JOBS_PLUGIN_DIR . '/templates/');
+        listings()->template->register_template_path(LISTINGS_RESTAURANTS_PLUGIN_DIR . '/templates/');
         listings()->forms->register_form(new EditJob());
         listings()->forms->register_form(new SubmitJob());
 
@@ -46,7 +46,7 @@ class Plugin {
     }
     
     public function updater() {
-        if ( version_compare( LISTINGS_JOBS_VERSION, get_option( 'listings_jobs_version' ), '>' ) ) {
+        if ( version_compare( LISTINGS_RESTAURANTS_VERSION, get_option( 'listings_jobs_version' ), '>' ) ) {
             Install::install();
             flush_rewrite_rules();
         }
@@ -74,14 +74,14 @@ class Plugin {
             'i18n_load_prev_listings' => __( 'Load previous listings', 'listings' ),
         );
 
-        wp_enqueue_style( 'listings-jobs', LISTINGS_JOBS_PLUGIN_URL . '/assets/css/frontend.css' );
+        wp_enqueue_style( 'listings-jobs', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/css/frontend.css' );
 
-        wp_register_script( 'listings-ajax-filters', LISTINGS_JOBS_PLUGIN_URL . '/assets/js/ajax-filters.min.js', $ajax_filter_deps, LISTINGS_JOBS_VERSION, true );
+        wp_register_script( 'listings-ajax-filters', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/ajax-filters.min.js', $ajax_filter_deps, LISTINGS_RESTAURANTS_VERSION, true );
         wp_localize_script( 'listings-ajax-filters', 'listings_ajax_filters', $ajax_data );
-        wp_enqueue_script( 'listings-job-application', LISTINGS_JOBS_PLUGIN_URL . '/assets/js/job-application.min.js', array( 'jquery' ), LISTINGS_JOBS_VERSION, true );
-        wp_enqueue_script( 'listings-job-submission', LISTINGS_JOBS_PLUGIN_URL . '/assets/js/job-submission.min.js', array( 'jquery' ), LISTINGS_JOBS_VERSION, true );
+        wp_enqueue_script( 'listings-job-application', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-application.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
+        wp_enqueue_script( 'listings-job-submission', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-submission.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
 
-        wp_register_script( 'listings-job-dashboard', LISTINGS_JOBS_PLUGIN_URL . '/assets/js/job-dashboard.min.js', array( 'jquery' ), LISTINGS_JOBS_VERSION, true );
+        wp_register_script( 'listings-job-dashboard', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-dashboard.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
         wp_localize_script( 'listings-job-dashboard', 'listings_job_dashboard', array(
             'i18n_confirm_delete' => __( 'Are you sure you want to delete this listing?', 'listings' )
         ) );

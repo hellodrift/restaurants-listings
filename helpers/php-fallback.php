@@ -1,6 +1,6 @@
 <?php
 
-class Listings_Jobs_PHP_Fallback {
+class Listings_Restaurants_PHP_Fallback {
 
     /**
      * @var string
