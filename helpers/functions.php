@@ -1,13 +1,13 @@
 <?php
 
-if ( ! function_exists( 'listings_jobs_get_listings' ) ) :
+if ( ! function_exists( 'listings_restaurants_get_listings' ) ) :
     /**
      * Queries job listings with certain criteria and returns them
      *
      * @access public
      * @return void
      */
-    function listings_jobs_get_listings( $args = array() ) {
+    function listings_restaurants_get_listings( $args = array() ) {
         global $wpdb, $listings_keyword;
 
         $args = wp_parse_args( $args, array(
@@ -25,7 +25,7 @@ if ( ! function_exists( 'listings_jobs_get_listings' ) ) :
         ) );
 
         $query_args = array(
-            'post_type'              => 'job_listing',
+            'post_type'              => 'restaurant_listing',
             'post_status'            => 'publish',
             'ignore_sticky_posts'    => 1,
             'offset'                 => absint( $args['offset'] ),
@@ -70,7 +70,7 @@ if ( ! function_exists( 'listings_jobs_get_listings' ) ) :
             );
         }
 
-        if ( ! is_null( $args['filled'] ) || 1 === absint( get_option( 'listings_jobs_hide_filled_positions' ) ) ) {
+        if ( ! is_null( $args['filled'] ) || 1 === absint( get_option( 'listings_restaurants_hide_filled_positions' ) ) ) {
             $query_args['meta_query'][] = array(
                 'key'     => '_filled',
                 'value'   => '1',
@@ -80,7 +80,7 @@ if ( ! function_exists( 'listings_jobs_get_listings' ) ) :
 
         if ( ! empty( $args['job_types'] ) ) {
             $query_args['tax_query'][] = array(
-                'taxonomy' => 'job_listing_type',
+                'taxonomy' => 'restaurant_listing_type',
                 'field'    => 'slug',
                 'terms'    => $args['job_types']
             );
@@ -88,9 +88,9 @@ if ( ! function_exists( 'listings_jobs_get_listings' ) ) :
 
         if ( ! empty( $args['search_categories'] ) ) {
             $field    = is_numeric( $args['search_categories'][0] ) ? 'term_id' : 'slug';
-            $operator = 'all' === get_option( 'listings_jobs_category_filter_type', 'all' ) && sizeof( $args['search_categories'] ) > 1 ? 'AND' : 'IN';
+            $operator = 'all' === get_option( 'listings_restaurants_category_filter_type', 'all' ) && sizeof( $args['search_categories'] ) > 1 ? 'AND' : 'IN';
             $query_args['tax_query'][] = array(
-                'taxonomy'         => 'job_listing_category',
+                'taxonomy'         => 'restaurant_listing_category',
                 'field'            => $field,
                 'terms'            => array_values( $args['search_categories'] ),
                 'include_children' => $operator !== 'AND' ,
@@ -107,12 +107,12 @@ if ( ! function_exists( 'listings_jobs_get_listings' ) ) :
 
         $listings_keyword = sanitize_text_field( $args['search_keywords'] );
 
-        if ( ! empty( $listings_keyword ) && strlen( $listings_keyword ) >= apply_filters( 'listings_jobs_get_listings_keyword_length_threshold', 2 ) ) {
+        if ( ! empty( $listings_keyword ) && strlen( $listings_keyword ) >= apply_filters( 'listings_restaurants_get_listings_keyword_length_threshold', 2 ) ) {
             $query_args['_keyword'] = $listings_keyword; // Does nothing but needed for unique hash
             add_filter( 'posts_clauses', 'listings_get_keyword_search' );
         }
 
-        $query_args = apply_filters( 'listings_jobs_get_listings', $query_args, $args );
+        $query_args = apply_filters( 'listings_restaurants_get_listings', $query_args, $args );
 
         if ( empty( $query_args['meta_query'] ) ) {
             unset( $query_args['meta_query'] );
@@ -128,20 +128,20 @@ if ( ! function_exists( 'listings_jobs_get_listings' ) ) :
         }
 
         // Filter args
-        $query_args = apply_filters( 'get_job_listings_query_args', $query_args, $args );
+        $query_args = apply_filters( 'get_restaurant_listings_query_args', $query_args, $args );
 
         // Generate hash
         $to_hash         = json_encode( $query_args ) . apply_filters( 'wpml_current_language', '' );
-        $query_args_hash = 'jm_' . md5( $to_hash ) . \Listings\CacheHelper::get_transient_version( 'get_job_listings' );
+        $query_args_hash = 'jm_' . md5( $to_hash ) . \Listings\CacheHelper::get_transient_version( 'get_restaurant_listings' );
 
-        do_action( 'before_get_job_listings', $query_args, $args );
+        do_action( 'before_get_restaurant_listings', $query_args, $args );
 
         if ( false === ( $result = get_transient( $query_args_hash ) ) ) {
             $result = new WP_Query( $query_args );
             set_transient( $query_args_hash, $result, DAY_IN_SECONDS * 30 );
         }
 
-        do_action( 'after_get_job_listings', $query_args, $args );
+        do_action( 'after_get_restaurant_listings', $query_args, $args );
 
         remove_filter( 'posts_clauses', 'listings_get_keyword_search' );
 
@@ -149,15 +149,15 @@ if ( ! function_exists( 'listings_jobs_get_listings' ) ) :
     }
 endif;
 
-if ( ! function_exists( 'listings_jobs_get_types' ) ) :
+if ( ! function_exists( 'listings_restaurants_get_types' ) ) :
     /**
      * Get job listing types
      *
      * @access public
      * @return array
      */
-    function listings_jobs_get_types( $fields = 'all' ) {
-        return get_terms( "job_listing_type", array(
+    function listings_restaurants_get_types( $fields = 'all' ) {
+        return get_terms( "restaurant_listing_type", array(
             'orderby'    => 'name',
             'order'      => 'ASC',
             'hide_empty' => false,
@@ -166,19 +166,19 @@ if ( ! function_exists( 'listings_jobs_get_types' ) ) :
     }
 endif;
 
-if ( ! function_exists( 'listings_jobs_get_filtered_links' ) ) :
+if ( ! function_exists( 'listings_restaurants_get_filtered_links' ) ) :
     /**
      * Shows links after filtering jobs
      */
-    function listings_jobs_get_filtered_links( $args = array() ) {
+    function listings_restaurants_get_filtered_links( $args = array() ) {
         $job_categories = array();
-        $types          = listings_jobs_get_types();
+        $types          = listings_restaurants_get_types();
 
         // Convert to slugs
         if ( $args['search_categories'] ) {
             foreach ( $args['search_categories'] as $category ) {
                 if ( is_numeric( $category ) ) {
-                    $category_object = get_term_by( 'id', $category, 'job_listing_category' );
+                    $category_object = get_term_by( 'id', $category, 'restaurant_listing_category' );
                     if ( ! is_wp_error( $category_object ) ) {
                         $job_categories[] = $category_object->slug;
                     }
@@ -188,14 +188,14 @@ if ( ! function_exists( 'listings_jobs_get_filtered_links' ) ) :
             }
         }
 
-        $links = apply_filters( 'listings_jobs_filters_showing_links', array(
+        $links = apply_filters( 'listings_restaurants_filters_showing_links', array(
             'reset' => array(
                 'name' => __( 'Reset', 'listings-jobs' ),
                 'url'  => '#'
             ),
             'rss_link' => array(
                 'name' => __( 'RSS', 'listings-jobs' ),
-                'url'  => listings_jobs_get_rss_link( apply_filters( 'listings_jobs_get_listings_custom_filter_rss_args', array(
+                'url'  => listings_restaurants_get_rss_link( apply_filters( 'listings_restaurants_get_listings_custom_filter_rss_args', array(
                     'job_types'       => isset( $args['filter_job_types'] ) ? implode( ',', $args['filter_job_types'] ) : '',
                     'search_location' => $args['search_location'],
                     'job_categories'  => implode( ',', $job_categories ),
@@ -204,7 +204,7 @@ if ( ! function_exists( 'listings_jobs_get_filtered_links' ) ) :
             )
         ), $args );
 
-        if ( sizeof( $args['filter_job_types'] ) === sizeof( $types ) && ! $args['search_keywords'] && ! $args['search_location'] && ! $args['search_categories'] && ! apply_filters( 'listings_jobs_get_listings_custom_filter', false ) ) {
+        if ( sizeof( $args['filter_job_types'] ) === sizeof( $types ) && ! $args['search_keywords'] && ! $args['search_location'] && ! $args['search_categories'] && ! apply_filters( 'listings_restaurants_get_listings_custom_filter', false ) ) {
             unset( $links['reset'] );
         }
 
@@ -218,27 +218,27 @@ if ( ! function_exists( 'listings_jobs_get_filtered_links' ) ) :
     }
 endif;
 
-if ( ! function_exists( 'listings_jobs_get_rss_link' ) ) :
+if ( ! function_exists( 'listings_restaurants_get_rss_link' ) ) :
     /**
      * Get the Job Listing RSS link
      *
      * @return string
      */
-    function listings_jobs_get_rss_link( $args = array() ) {
+    function listings_restaurants_get_rss_link( $args = array() ) {
         $rss_link = add_query_arg( urlencode_deep( array_merge( array( 'feed' => 'job_feed' ), $args ) ), home_url() );
         return $rss_link;
     }
 endif;
 
-if ( ! function_exists( 'listings_jobs_get_listing_post_statuses' ) ) :
+if ( ! function_exists( 'listings_restaurants_get_listing_post_statuses' ) ) :
     /**
      * Get post statuses used for jobs
      *
      * @access public
      * @return array
      */
-    function listings_jobs_get_listing_post_statuses() {
-        return apply_filters( 'job_listing_post_statuses', array(
+    function listings_restaurants_get_listing_post_statuses() {
+        return apply_filters( 'restaurant_listing_post_statuses', array(
             'draft'           => _x( 'Draft', 'post status', 'listings-jobs' ),
             'expired'         => _x( 'Expired', 'post status', 'listings-jobs' ),
             'preview'         => _x( 'Preview', 'post status', 'listings-jobs' ),
@@ -254,8 +254,8 @@ endif;
  *
  * @return void
  */
-function listings_jobs_job_status( $post = null ) {
-    echo listings_jobs_get_job_status( $post );
+function listings_restaurants_job_status( $post = null ) {
+    echo listings_restaurants_get_job_status( $post );
 }
 
 /**
@@ -263,10 +263,10 @@ function listings_jobs_job_status( $post = null ) {
  *
  * @return string
  */
-function listings_jobs_get_job_status( $post = null ) {
+function listings_restaurants_get_job_status( $post = null ) {
     $post     = get_post( $post );
     $status   = $post->post_status;
-    $statuses = listings_jobs_get_listing_post_statuses();
+    $statuses = listings_restaurants_get_listing_post_statuses();
 
     if ( isset( $statuses[ $status ] ) ) {
         $status = $statuses[ $status ];
@@ -274,20 +274,20 @@ function listings_jobs_get_job_status( $post = null ) {
         $status = __( 'Inactive', 'listings-jobs' );
     }
 
-    return apply_filters( 'listings_jobs_job_status', $status, $post );
+    return apply_filters( 'listings_restaurants_job_status', $status, $post );
 }
 
-if ( ! function_exists( 'listings_jobs_get_featured_job_ids' ) ) :
+if ( ! function_exists( 'listings_restaurants_get_featured_job_ids' ) ) :
     /**
      * Gets the ids of featured jobs.
      *
      * @access public
      * @return array
      */
-    function listings_jobs_get_featured_job_ids() {
+    function listings_restaurants_get_featured_job_ids() {
         return get_posts( array(
             'posts_per_page' => -1,
-            'post_type'      => 'job_listing',
+            'post_type'      => 'restaurant_listing',
             'post_status'    => 'publish',
             'meta_key'       => '_featured',
             'meta_value'     => '1',
@@ -301,7 +301,7 @@ endif;
  * @param  int $post_id
  * @return int 0 on fail or the post ID.
  */
-function listings_jobs_duplicate_listing( $post_id ) {
+function listings_restaurants_duplicate_listing( $post_id ) {
     if ( empty( $post_id ) || ! ( $post = get_post( $post_id ) ) ) {
         return 0;
     }
@@ -346,7 +346,7 @@ function listings_jobs_duplicate_listing( $post_id ) {
     if ( ! empty( $post_meta ) ) {
         $post_meta = wp_list_pluck( $post_meta, 'meta_value', 'meta_key' );
         foreach ( $post_meta as $meta_key => $meta_value ) {
-            if ( in_array( $meta_key, apply_filters( 'listings_jobs_duplicate_listing_ignore_keys', array( '_filled', '_featured', '_job_expires', '_job_duration', '_package_id', '_user_package_id' ) ) ) ) {
+            if ( in_array( $meta_key, apply_filters( 'listings_restaurants_duplicate_listing_ignore_keys', array( '_filled', '_featured', '_job_expires', '_job_duration', '_package_id', '_user_package_id' ) ) ) ) {
                 continue;
             }
             update_post_meta( $new_post_id, $meta_key, $meta_value );
@@ -364,13 +364,13 @@ function listings_jobs_duplicate_listing( $post_id ) {
  * @param  int $job_id
  * @return string
  */
-function listings_jobs_calculate_job_expiry( $job_id ) {
+function listings_restaurants_calculate_job_expiry( $job_id ) {
     // Get duration from the product if set...
     $duration = get_post_meta( $job_id, '_job_duration', true );
 
     // ...otherwise use the global option
     if ( ! $duration ) {
-        $duration = absint( get_option( 'listings_jobs_submission_duration' ) );
+        $duration = absint( get_option( 'listings_restaurants_submission_duration' ) );
     }
 
     if ( $duration ) {
@@ -380,19 +380,19 @@ function listings_jobs_calculate_job_expiry( $job_id ) {
     return '';
 }
 
-if ( ! function_exists( 'listings_jobs_get_listing_categories' ) ) :
+if ( ! function_exists( 'listings_restaurants_get_listing_categories' ) ) :
     /**
      * Get job categories
      *
      * @access public
      * @return array
      */
-    function listings_jobs_get_listing_categories() {
-        if ( ! get_option( 'listings_jobs_enable_categories' ) ) {
+    function listings_restaurants_get_listing_categories() {
+        if ( ! get_option( 'listings_restaurants_enable_categories' ) ) {
             return array();
         }
 
-        return get_terms( "job_listing_category", array(
+        return get_terms( "restaurant_listing_category", array(
             'orderby'       => 'name',
             'order'         => 'ASC',
             'hide_empty'    => false,

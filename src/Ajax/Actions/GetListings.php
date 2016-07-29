@@ -8,7 +8,7 @@ class GetListings extends Action
 {
     public function getActionString()
     {
-        return 'get_job_listings';
+        return 'get_restaurant_listings';
     }
 
     public function doAction()
@@ -20,8 +20,8 @@ class GetListings extends Action
         $search_keywords   = sanitize_text_field( stripslashes( $_REQUEST['search_keywords'] ) );
         $search_categories = isset( $_REQUEST['search_categories'] ) ? $_REQUEST['search_categories'] : '';
         $filter_job_types  = isset( $_REQUEST['filter_job_type'] ) ? array_filter( array_map( 'sanitize_title', (array) $_REQUEST['filter_job_type'] ) ) : null;
-        $types             = listings_jobs_get_types();
-        $post_type_label   = $wp_post_types['job_listing']->labels->name;
+        $types             = listings_restaurants_get_types();
+        $post_type_label   = $wp_post_types['restaurant_listing']->labels->name;
         $orderby           = sanitize_text_field( $_REQUEST['orderby'] );
 
         if ( is_array( $search_categories ) ) {
@@ -52,7 +52,7 @@ class GetListings extends Action
 
         ob_start();
 
-        $jobs = listings_jobs_get_listings( apply_filters( 'listings_jobs_get_listings_args', $args ) );
+        $jobs = listings_restaurants_get_listings( apply_filters( 'listings_restaurants_get_listings_args', $args ) );
 
         $result['found_jobs'] = false;
 
@@ -60,7 +60,7 @@ class GetListings extends Action
 
             <?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
 
-                <?php listings_get_template_part( 'content', 'job_listing' ); ?>
+                <?php listings_get_template_part( 'content', 'restaurant_listing' ); ?>
 
             <?php endwhile; ?>
 
@@ -96,7 +96,7 @@ class GetListings extends Action
             $showing_categories = array();
 
             foreach ( $search_categories as $category ) {
-                $category_object = get_term_by( is_numeric( $category ) ? 'id' : 'slug', $category, 'job_listing_category' );
+                $category_object = get_term_by( is_numeric( $category ) ? 'id' : 'slug', $category, 'restaurant_listing_category' );
 
                 if ( ! is_wp_error( $category_object ) ) {
                     $showing_categories[] = $category_object->name;
@@ -120,10 +120,10 @@ class GetListings extends Action
             $result['showing_all'] = true;
         }
 
-        $result['showing'] = apply_filters( 'listings_jobs_get_listings_custom_filter_text', sprintf( __( 'Showing all %s', 'listings-jobs' ), implode( ' ', $result['showing'] ) ) );
+        $result['showing'] = apply_filters( 'listings_restaurants_get_listings_custom_filter_text', sprintf( __( 'Showing all %s', 'listings-jobs' ), implode( ' ', $result['showing'] ) ) );
 
         // Generate RSS link
-        $result['showing_links'] = listings_jobs_get_filtered_links( array(
+        $result['showing_links'] = listings_restaurants_get_filtered_links( array(
             'filter_job_types'  => $filter_job_types,
             'search_location'   => $search_location,
             'search_categories' => $search_categories,
@@ -137,6 +137,6 @@ class GetListings extends Action
 
         $result['max_num_pages'] = $jobs->max_num_pages;
 
-        wp_send_json( apply_filters( 'listings_jobs_get_listings_result', $result, $jobs ) );
+        wp_send_json( apply_filters( 'listings_restaurants_get_listings_result', $result, $jobs ) );
     }
 }

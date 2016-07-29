@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
     // Datepicker
     $('input#_job_expires').datepicker({
         altFormat: 'yy-mm-dd',
-        dateFormat: listings_jobs_admin.date_format,
+        dateFormat: listings_restaurants_admin.date_format,
         minDate: 0
     });
 

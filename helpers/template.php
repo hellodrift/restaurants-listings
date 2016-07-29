@@ -6,7 +6,7 @@
  * @param  object $post
  * @return boolean
  */
-function listings_jobs_is_position_filled( $post = null ) {
+function listings_restaurants_is_position_filled( $post = null ) {
     $post = get_post( $post );
     return $post->_filled ? true : false;
 }
@@ -17,7 +17,7 @@ function listings_jobs_is_position_filled( $post = null ) {
  * @param  object $post
  * @return boolean
  */
-function listings_jobs_is_position_featured( $post = null ) {
+function listings_restaurants_is_position_featured( $post = null ) {
     $post = get_post( $post );
     return $post->_featured ? true : false;
 }
@@ -28,46 +28,46 @@ function listings_jobs_is_position_featured( $post = null ) {
  * @param  object $post
  * @return boolean
  */
-function listings_jobs_candidates_can_apply( $post = null ) {
+function listings_restaurants_candidates_can_apply( $post = null ) {
     $post = get_post( $post );
-    return apply_filters( 'listings_jobs_candidates_can_apply', ( ! listings_jobs_is_position_filled() && ! in_array( $post->post_status, array( 'preview', 'expired' ) ) ), $post );
+    return apply_filters( 'listings_restaurants_candidates_can_apply', ( ! listings_restaurants_is_position_filled() && ! in_array( $post->post_status, array( 'preview', 'expired' ) ) ), $post );
 }
 
 /**
- * listings_jobs_the_job_permalink function.
+ * listings_restaurants_the_job_permalink function.
  *
  * @access public
  * @return void
  */
-function listings_jobs_the_job_permalink( $post = null ) {
-    echo listings_jobs_get_the_job_permalink( $post );
+function listings_restaurants_the_job_permalink( $post = null ) {
+    echo listings_restaurants_get_the_job_permalink( $post );
 }
 
 /**
- * listings_jobs_get_the_job_permalink function.
+ * listings_restaurants_get_the_job_permalink function.
  *
  * @access public
  * @param mixed $post (default: null)
  * @return string
  */
-function listings_jobs_get_the_job_permalink( $post = null ) {
+function listings_restaurants_get_the_job_permalink( $post = null ) {
     $post = get_post( $post );
     $link = get_permalink( $post );
 
-    return apply_filters( 'listings_jobs_the_job_permalink', $link, $post );
+    return apply_filters( 'listings_restaurants_the_job_permalink', $link, $post );
 }
 
 /**
- * listings_jobs_get_application_method function.
+ * listings_restaurants_get_application_method function.
  *
  * @access public
  * @param mixed $post (default: null)
  * @return object
  */
-function listings_jobs_get_application_method( $post = null ) {
+function listings_restaurants_get_application_method( $post = null ) {
     $post = get_post( $post );
 
-    if ( $post && $post->post_type !== 'job_listing' ) {
+    if ( $post && $post->post_type !== 'restaurant_listing' ) {
         return;
     }
 
@@ -81,7 +81,7 @@ function listings_jobs_get_application_method( $post = null ) {
         $method->type      = 'email';
         $method->raw_email = $apply;
         $method->email     = antispambot( $apply );
-        $method->subject   = apply_filters( 'listings_jobs_application_email_subject', sprintf( __( 'Application via "%s" listing on %s', 'listings-jobs' ), $post->post_title, home_url() ), $post );
+        $method->subject   = apply_filters( 'listings_restaurants_application_email_subject', sprintf( __( 'Application via "%s" listing on %s', 'listings-jobs' ), $post->post_title, home_url() ), $post );
     } else {
         if ( strpos( $apply, 'http' ) !== 0 )
             $apply = 'http://' . $apply;
@@ -89,35 +89,35 @@ function listings_jobs_get_application_method( $post = null ) {
         $method->url  = $apply;
     }
 
-    return apply_filters( 'listings_jobs_application_method', $method, $post );
+    return apply_filters( 'listings_restaurants_application_method', $method, $post );
 }
 
 /**
- * listings_jobs_the_job_type function.
+ * listings_restaurants_the_job_type function.
  *
  * @access public
  * @return void
  */
-function listings_jobs_the_job_type($post = null) {
-    if ($job_type = listings_jobs_get_the_job_type($post)) {
+function listings_restaurants_the_job_type($post = null) {
+    if ($job_type = listings_restaurants_get_the_job_type($post)) {
         echo $job_type->name;
     }
 }
 
 /**
- * listings_jobs_get_the_job_type function.
+ * listings_restaurants_get_the_job_type function.
  *
  * @access public
  * @param mixed $post (default: null)
  * @return void
  */
-function listings_jobs_get_the_job_type($post = null) {
+function listings_restaurants_get_the_job_type($post = null) {
     $post = get_post($post);
-    if ($post->post_type !== 'job_listing') {
+    if ($post->post_type !== 'restaurant_listing') {
         return;
     }
 
-    $types = wp_get_post_terms($post->ID, 'job_listing_type');
+    $types = wp_get_post_terms($post->ID, 'restaurant_listing_type');
 
     if ($types) {
         $type = current($types);
@@ -125,26 +125,26 @@ function listings_jobs_get_the_job_type($post = null) {
         $type = false;
     }
 
-    return apply_filters('listings_jobs_the_job_type', $type, $post);
+    return apply_filters('listings_restaurants_the_job_type', $type, $post);
 }
 
 /**
- * listings_jobs_the_job_location function.
+ * listings_restaurants_the_job_location function.
  * @param  boolean $map_link whether or not to link to google maps
  * @return [type]
  */
-function listings_jobs_the_job_location( $map_link = true, $post = null ) {
-    $location = listings_jobs_get_the_job_location( $post );
+function listings_restaurants_the_job_location( $map_link = true, $post = null ) {
+    $location = listings_restaurants_get_the_job_location( $post );
 
     if ( $location ) {
         if ( $map_link ) {
             // If linking to google maps, we don't want anything but text here
-            echo apply_filters( 'listings_jobs_the_job_location_map_link', '<a class="google_map_link" href="' . esc_url( 'http://maps.google.com/maps?q=' . urlencode( strip_tags( $location ) ) . '&zoom=14&size=512x512&maptype=roadmap&sensor=false' ) . '" target="_blank">' . esc_html( strip_tags( $location ) ) . '</a>', $location, $post );
+            echo apply_filters( 'listings_restaurants_the_job_location_map_link', '<a class="google_map_link" href="' . esc_url( 'http://maps.google.com/maps?q=' . urlencode( strip_tags( $location ) ) . '&zoom=14&size=512x512&maptype=roadmap&sensor=false' ) . '" target="_blank">' . esc_html( strip_tags( $location ) ) . '</a>', $location, $post );
         } else {
             echo wp_kses_post( $location );
         }
     } else {
-        echo wp_kses_post( apply_filters( 'listings_jobs_the_job_location_anywhere_text', __( 'Anywhere', 'listings-jobs' ) ) );
+        echo wp_kses_post( apply_filters( 'listings_restaurants_the_job_location_anywhere_text', __( 'Anywhere', 'listings-jobs' ) ) );
     }
 }
 
@@ -155,9 +155,9 @@ function listings_jobs_the_job_location( $map_link = true, $post = null ) {
  * @param mixed $post (default: null)
  * @return void
  */
-function listings_jobs_get_the_job_location( $post = null ) {
+function listings_restaurants_get_the_job_location( $post = null ) {
     $post = get_post( $post );
-    if ( $post->post_type !== 'job_listing' ) {
+    if ( $post->post_type !== 'restaurant_listing' ) {
         return;
     }
 
@@ -172,15 +172,15 @@ function listings_jobs_get_the_job_location( $post = null ) {
  * @param mixed $default (default: null)
  * @return void
  */
-function listings_jobs_the_company_logo( $size = 'thumbnail', $default = null, $post = null ) {
-    $logo = listings_jobs_get_the_company_logo( $post, $size );
+function listings_restaurants_the_company_logo( $size = 'thumbnail', $default = null, $post = null ) {
+    $logo = listings_restaurants_get_the_company_logo( $post, $size );
 
     if ( has_post_thumbnail( $post ) ) {
-        echo '<img class="company_logo" src="' . esc_attr( $logo ) . '" alt="' . esc_attr( listings_jobs_get_the_company_name( $post ) ) . '" />';
+        echo '<img class="company_logo" src="' . esc_attr( $logo ) . '" alt="' . esc_attr( listings_restaurants_get_the_company_name( $post ) ) . '" />';
     } elseif ( $default ) {
-        echo '<img class="company_logo" src="' . esc_attr( $default ) . '" alt="' . esc_attr( listings_jobs_get_the_company_name( $post ) ) . '" />';
+        echo '<img class="company_logo" src="' . esc_attr( $default ) . '" alt="' . esc_attr( listings_restaurants_get_the_company_name( $post ) ) . '" />';
     } else {
-        echo '<img class="company_logo" src="' . esc_attr( apply_filters( 'listings_jobs_default_company_logo', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/images/company.png' ) ) . '" alt="' . esc_attr( listings_jobs_get_the_company_name( $post ) ) . '" />';
+        echo '<img class="company_logo" src="' . esc_attr( apply_filters( 'listings_restaurants_default_company_logo', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/images/company.png' ) ) . '" alt="' . esc_attr( listings_restaurants_get_the_company_name( $post ) ) . '" />';
     }
 }
 
@@ -191,7 +191,7 @@ function listings_jobs_the_company_logo( $size = 'thumbnail', $default = null, $
  * @param mixed $post (default: null)
  * @return string Image SRC
  */
-function listings_jobs_get_the_company_logo( $post = null, $size = 'thumbnail' ) {
+function listings_restaurants_get_the_company_logo( $post = null, $size = 'thumbnail' ) {
     $post = get_post( $post );
 
     if ( has_post_thumbnail( $post->ID ) ) {
@@ -205,8 +205,8 @@ function listings_jobs_get_the_company_logo( $post = null, $size = 'thumbnail' )
 /**
  * Output the company video
  */
-function listings_jobs_the_company_video( $post = null ) {
-    $video    = listings_jobs_get_the_company_video( $post );
+function listings_restaurants_the_company_video( $post = null ) {
+    $video    = listings_restaurants_get_the_company_video( $post );
     $filetype = wp_check_filetype( $video );
 
     // FV Wordpress Flowplayer Support for advanced video formats
@@ -218,7 +218,7 @@ function listings_jobs_the_company_video( $post = null ) {
         $video_embed = wp_oembed_get( $video );
     }
 
-    $video_embed = apply_filters( 'listings_jobs_the_company_video_embed', $video_embed, $post );
+    $video_embed = apply_filters( 'listings_restaurants_the_company_video_embed', $video_embed, $post );
 
     if ( $video_embed ) {
         echo '<div class="company_video">' . $video_embed . '</div>';
@@ -231,12 +231,12 @@ function listings_jobs_the_company_video( $post = null ) {
  * @param mixed $post (default: null)
  * @return string
  */
-function listings_jobs_get_the_company_video( $post = null ) {
+function listings_restaurants_get_the_company_video( $post = null ) {
     $post = get_post( $post );
-    if ( $post->post_type !== 'job_listing' ) {
+    if ( $post->post_type !== 'restaurant_listing' ) {
         return;
     }
-    return apply_filters( 'listings_jobs_the_company_video', $post->_company_video, $post );
+    return apply_filters( 'listings_restaurants_the_company_video', $post->_company_video, $post );
 }
 
 /**
@@ -246,8 +246,8 @@ function listings_jobs_get_the_company_video( $post = null ) {
  * @param mixed $id (default: null)
  * @return void
  */
-function listings_jobs_the_company_name( $before = '', $after = '', $echo = true, $post = null ) {
-    $company_name = listings_jobs_get_the_company_name( $post );
+function listings_restaurants_the_company_name( $before = '', $after = '', $echo = true, $post = null ) {
+    $company_name = listings_restaurants_get_the_company_name( $post );
 
     if ( strlen( $company_name ) == 0 )
         return;
@@ -268,26 +268,26 @@ function listings_jobs_the_company_name( $before = '', $after = '', $echo = true
  * @param int $post (default: null)
  * @return string
  */
-function listings_jobs_get_the_company_name( $post = null ) {
+function listings_restaurants_get_the_company_name( $post = null ) {
     $post = get_post( $post );
-    if ( $post->post_type !== 'job_listing' ) {
+    if ( $post->post_type !== 'restaurant_listing' ) {
         return '';
     }
 
-    return apply_filters( 'listings_jobs_the_company_name', $post->_company_name, $post );
+    return apply_filters( 'listings_restaurants_the_company_name', $post->_company_name, $post );
 }
 
 /**
- * listings_jobs_get_the_company_website function.
+ * listings_restaurants_get_the_company_website function.
  *
  * @access public
  * @param int $post (default: null)
  * @return void
  */
-function listings_jobs_get_the_company_website( $post = null ) {
+function listings_restaurants_get_the_company_website( $post = null ) {
     $post = get_post( $post );
 
-    if ( $post->post_type !== 'job_listing' )
+    if ( $post->post_type !== 'restaurant_listing' )
         return;
 
     $website = $post->_company_website;
@@ -296,7 +296,7 @@ function listings_jobs_get_the_company_website( $post = null ) {
         $website = 'http://' . $website;
     }
 
-    return apply_filters( 'listings_jobs_the_company_website', $website, $post );
+    return apply_filters( 'listings_restaurants_the_company_website', $website, $post );
 }
 
 /**
@@ -306,8 +306,8 @@ function listings_jobs_get_the_company_website( $post = null ) {
  * @param mixed $id (default: null)
  * @return void
  */
-function listings_jobs_the_company_tagline( $before = '', $after = '', $echo = true, $post = null ) {
-    $company_tagline = listings_jobs_get_the_company_tagline( $post );
+function listings_restaurants_the_company_tagline( $before = '', $after = '', $echo = true, $post = null ) {
+    $company_tagline = listings_restaurants_get_the_company_tagline( $post );
 
     if ( strlen( $company_tagline ) == 0 )
         return;
@@ -328,13 +328,13 @@ function listings_jobs_the_company_tagline( $before = '', $after = '', $echo = t
  * @param int $post (default: 0)
  * @return void
  */
-function listings_jobs_get_the_company_tagline( $post = null ) {
+function listings_restaurants_get_the_company_tagline( $post = null ) {
     $post = get_post( $post );
 
-    if ( $post->post_type !== 'job_listing' )
+    if ( $post->post_type !== 'restaurant_listing' )
         return;
 
-    return apply_filters( 'listings_jobs_the_company_tagline', $post->_company_tagline, $post );
+    return apply_filters( 'listings_restaurants_the_company_tagline', $post->_company_tagline, $post );
 }
 
 /**
@@ -344,8 +344,8 @@ function listings_jobs_get_the_company_tagline( $post = null ) {
  * @param mixed $id (default: null)
  * @return void
  */
-function listings_jobs_the_company_twitter( $before = '', $after = '', $echo = true, $post = null ) {
-    $company_twitter = listings_jobs_get_the_company_twitter( $post );
+function listings_restaurants_the_company_twitter( $before = '', $after = '', $echo = true, $post = null ) {
+    $company_twitter = listings_restaurants_get_the_company_twitter( $post );
 
     if ( strlen( $company_twitter ) == 0 )
         return;
@@ -360,15 +360,15 @@ function listings_jobs_the_company_twitter( $before = '', $after = '', $echo = t
 }
 
 /**
- * listings_jobs_get_the_company_twitter function.
+ * listings_restaurants_get_the_company_twitter function.
  *
  * @access public
  * @param int $post (default: 0)
  * @return void
  */
-function listings_jobs_get_the_company_twitter( $post = null ) {
+function listings_restaurants_get_the_company_twitter( $post = null ) {
     $post = get_post( $post );
-    if ( $post->post_type !== 'job_listing' )
+    if ( $post->post_type !== 'restaurant_listing' )
         return;
 
     $company_twitter = $post->_company_twitter;
@@ -379,32 +379,32 @@ function listings_jobs_get_the_company_twitter( $post = null ) {
     if ( strpos( $company_twitter, '@' ) === 0 )
         $company_twitter = substr( $company_twitter, 1 );
 
-    return apply_filters( 'listings_jobs_the_company_twitter', $company_twitter, $post );
+    return apply_filters( 'listings_restaurants_the_company_twitter', $company_twitter, $post );
 }
 
 /**
- * listings_jobs_job_listing_class function.
+ * listings_restaurants_restaurant_listing_class function.
  *
  * @access public
  * @param string $class (default: '')
  * @param mixed $post_id (default: null)
  * @return void
  */
-function listings_jobs_job_listing_class( $class = '', $post_id = null ) {
+function listings_restaurants_restaurant_listing_class( $class = '', $post_id = null ) {
     // Separates classes with a single space, collates classes for post DIV
-    echo 'class="' . join( ' ', listings_jobs_get_job_listing_class( $class, $post_id ) ) . '"';
+    echo 'class="' . join( ' ', listings_restaurants_get_restaurant_listing_class( $class, $post_id ) ) . '"';
 }
 
 /**
- * listings_jobs_get_job_listing_class function.
+ * listings_restaurants_get_restaurant_listing_class function.
  *
  * @access public
  * @return array
  */
-function listings_jobs_get_job_listing_class( $class = '', $post_id = null ) {
+function listings_restaurants_get_restaurant_listing_class( $class = '', $post_id = null ) {
     $post = get_post( $post_id );
 
-    if ( $post->post_type !== 'job_listing' ) {
+    if ( $post->post_type !== 'restaurant_listing' ) {
         return array();
     }
 
@@ -414,16 +414,16 @@ function listings_jobs_get_job_listing_class( $class = '', $post_id = null ) {
         return $classes;
     }
 
-    $classes[] = 'job_listing';
-    if ( $job_type = listings_jobs_get_the_job_type() ) {
+    $classes[] = 'restaurant_listing';
+    if ( $job_type = listings_restaurants_get_the_job_type() ) {
         $classes[] = 'job-type-' . sanitize_title( $job_type->name );
     }
 
-    if ( listings_jobs_is_position_filled( $post ) ) {
+    if ( listings_restaurants_is_position_filled( $post ) ) {
         $classes[] = 'job_position_filled';
     }
 
-    if ( listings_jobs_is_position_featured( $post ) ) {
+    if ( listings_restaurants_is_position_featured( $post ) ) {
         $classes[] = 'job_position_featured';
     }
 
@@ -440,15 +440,15 @@ function listings_jobs_get_job_listing_class( $class = '', $post_id = null ) {
 /**
  * Displays job meta data on the single job page
  */
-function listings_jobs_job_listing_meta_display() {
-    listings_get_template( 'content-single-job_listing-meta.php', array() );
+function listings_restaurants_restaurant_listing_meta_display() {
+    listings_get_template( 'content-single-restaurant_listing-meta.php', array() );
 }
-add_action( 'single_job_listing_start', 'listings_jobs_job_listing_meta_display', 20 );
+add_action( 'single_restaurant_listing_start', 'listings_restaurants_restaurant_listing_meta_display', 20 );
 
 /**
  * Displays job company data on the single job page
  */
-function listings_jobs_job_listing_company_display() {
-    listings_get_template( 'content-single-job_listing-company.php', array() );
+function listings_restaurants_restaurant_listing_company_display() {
+    listings_get_template( 'content-single-restaurant_listing-company.php', array() );
 }
-add_action( 'single_job_listing_start', 'listings_jobs_job_listing_company_display', 30 );
+add_action( 'single_restaurant_listing_start', 'listings_restaurants_restaurant_listing_company_display', 30 );

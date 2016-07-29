@@ -10,8 +10,8 @@ class PostTypes {
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_post_types' ), 0 );
 		add_filter( 'admin_head', array( $this, 'admin_head' ) );
-		add_action( 'listings_jobs_check_for_expired_jobs', array( $this, 'check_for_expired_jobs' ) );
-		add_action( 'listings_jobs_delete_old_previews', array( $this, 'delete_old_previews' ) );
+		add_action( 'listings_restaurants_check_for_expired_jobs', array( $this, 'check_for_expired_jobs' ) );
+		add_action( 'listings_restaurants_delete_old_previews', array( $this, 'delete_old_previews' ) );
 
 		add_action( 'pending_to_publish', array( $this, 'set_expiry' ) );
 		add_action( 'preview_to_publish', array( $this, 'set_expiry' ) );
@@ -30,8 +30,8 @@ class PostTypes {
 			add_filter( 'the_job_description', array( $GLOBALS['wp_embed'], 'autoembed' ), 8 );
 		}
 
-		add_action( 'listings_jobs_application_details_email', array( $this, 'application_details_email' ) );
-		add_action( 'listings_jobs_application_details_url', array( $this, 'application_details_url' ) );
+		add_action( 'listings_restaurants_application_details_email', array( $this, 'application_details_email' ) );
+		add_action( 'listings_restaurants_application_details_url', array( $this, 'application_details_url' ) );
 
 		add_filter( 'wp_insert_post_data', array( $this, 'fix_post_name' ), 10, 2 );
 		add_action( 'add_post_meta', array( $this, 'maybe_add_geolocation_data' ), 10, 3 );
@@ -57,15 +57,15 @@ class PostTypes {
 	 * @return void
 	 */
 	public function register_post_types() {
-		if ( post_type_exists( "job_listing" ) )
+		if ( post_type_exists( "restaurant_listing" ) )
 			return;
 
-		$admin_capability = 'manage_job_listings';
+		$admin_capability = 'manage_restaurant_listings';
 
 		/**
 		 * Taxonomies
 		 */
-		if ( get_option( 'listings_jobs_enable_categories' ) ) {
+		if ( get_option( 'listings_restaurants_enable_categories' ) ) {
 			$singular  = __( 'Job category', 'listings-jobs' );
 			$plural    = __( 'Job categories', 'listings-jobs' );
 
@@ -81,9 +81,9 @@ class PostTypes {
 				$public    = false;
 			}
 
-			register_taxonomy( "job_listing_category",
-				apply_filters( 'register_taxonomy_job_listing_category_object_type', array( 'job_listing' ) ),
-	       	 	apply_filters( 'register_taxonomy_job_listing_category_args', array(
+			register_taxonomy( "restaurant_listing_category",
+				apply_filters( 'register_taxonomy_restaurant_listing_category_object_type', array( 'restaurant_listing' ) ),
+	       	 	apply_filters( 'register_taxonomy_restaurant_listing_category_args', array(
 		            'hierarchical' 			=> true,
 		            'update_count_callback' => '_update_post_term_count',
 		            'label' 				=> $plural,
@@ -128,9 +128,9 @@ class PostTypes {
 			$public    = false;
 		}
 
-		register_taxonomy( "job_listing_type",
-			apply_filters( 'register_taxonomy_job_listing_type_object_type', array( 'job_listing' ) ),
-	        apply_filters( 'register_taxonomy_job_listing_type_args', array(
+		register_taxonomy( "restaurant_listing_type",
+			apply_filters( 'register_taxonomy_restaurant_listing_type_object_type', array( 'restaurant_listing' ) ),
+	        apply_filters( 'register_taxonomy_restaurant_listing_type_args', array(
 	            'hierarchical' 			=> true,
 	            'label' 				=> $plural,
 	            'labels' => array(
@@ -177,8 +177,8 @@ class PostTypes {
 			'pages'      => false
 		);
 
-		register_post_type( "job_listing",
-			apply_filters( "register_post_type_job_listing", array(
+		register_post_type( "restaurant_listing",
+			apply_filters( "register_post_type_restaurant_listing", array(
 				'labels' => array(
 					'name' 					=> $plural,
 					'singular_name' 		=> $singular,
@@ -203,7 +203,7 @@ class PostTypes {
 				'description' => sprintf( __( 'This is where you can create and manage %s.', 'listings-jobs' ), $plural ),
 				'public' 				=> true,
 				'show_ui' 				=> true,
-				'capability_type' 		=> 'job_listing',
+				'capability_type' 		=> 'restaurant_listing',
 				'map_meta_cap'          => true,
 				'publicly_queryable' 	=> true,
 				'exclude_from_search' 	=> false,
@@ -250,7 +250,7 @@ class PostTypes {
 		global $menu;
 
 		$plural     = __( 'Job Listings', 'listings-jobs' );
-		$count_jobs = wp_count_posts( 'job_listing', 'readable' );
+		$count_jobs = wp_count_posts( 'restaurant_listing', 'readable' );
 
 		if ( ! empty( $menu ) && is_array( $menu ) ) {
 			foreach ( $menu as $key => $menu_item ) {
@@ -281,7 +281,7 @@ class PostTypes {
 	public function job_content( $content ) {
 		global $post;
 
-		if ( ! is_singular( 'job_listing' ) || ! in_the_loop() || 'job_listing' !== $post->post_type ) {
+		if ( ! is_singular( 'restaurant_listing' ) || ! in_the_loop() || 'restaurant_listing' !== $post->post_type ) {
 			return $content;
 		}
 
@@ -291,13 +291,13 @@ class PostTypes {
 
 		do_action( 'job_content_start' );
 
-		listings_get_template_part( 'content-single', 'job_listing' );
+		listings_get_template_part( 'content-single', 'restaurant_listing' );
 
 		do_action( 'job_content_end' );
 
 		$this->job_content_filter( true );
 
-		return apply_filters( 'listings_jobs_single_job_content', ob_get_clean(), $post );
+		return apply_filters( 'listings_restaurants_single_job_content', ob_get_clean(), $post );
 	}
 
 	/**
@@ -305,7 +305,7 @@ class PostTypes {
 	 */
 	public function job_feed() {
 		$query_args = array(
-			'post_type'           => 'job_listing',
+			'post_type'           => 'restaurant_listing',
 			'post_status'         => 'publish',
 			'ignore_sticky_posts' => 1,
 			'posts_per_page'      => isset( $_GET['posts_per_page'] ) ? absint( $_GET['posts_per_page'] ) : 10,
@@ -328,7 +328,7 @@ class PostTypes {
 
 		if ( ! empty( $_GET['job_types'] ) ) {
 			$query_args['tax_query'][] = array(
-				'taxonomy' => 'job_listing_type',
+				'taxonomy' => 'restaurant_listing_type',
 				'field'    => 'slug',
 				'terms'    => explode( ',', sanitize_text_field( $_GET['job_types'] ) ) + array( 0 )
 			);
@@ -337,9 +337,9 @@ class PostTypes {
 		if ( ! empty( $_GET['job_categories'] ) ) {
 			$cats     = explode( ',', sanitize_text_field( $_GET['job_categories'] ) ) + array( 0 );
 			$field    = is_numeric( $cats ) ? 'term_id' : 'slug';
-			$operator = 'all' === get_option( 'listings_jobs_category_filter_type', 'all' ) && sizeof( $args['search_categories'] ) > 1 ? 'AND' : 'IN';
+			$operator = 'all' === get_option( 'listings_restaurants_category_filter_type', 'all' ) && sizeof( $args['search_categories'] ) > 1 ? 'AND' : 'IN';
 			$query_args['tax_query'][] = array(
-				'taxonomy'         => 'job_listing_category',
+				'taxonomy'         => 'restaurant_listing_category',
 				'field'            => $field,
 				'terms'            => $cats,
 				'include_children' => $operator !== 'AND' ,
@@ -349,7 +349,7 @@ class PostTypes {
 
 		if ( $listings_keyword = sanitize_text_field( $_GET['search_keywords'] ) ) {
 			$query_args['_keyword'] = $listings_keyword; // Does nothing but needed for unique hash
-			add_filter( 'posts_clauses', 'get_job_listings_keyword_search' );
+			add_filter( 'posts_clauses', 'get_restaurant_listings_keyword_search' );
 		}
 
 		if ( empty( $query_args['meta_query'] ) ) {
@@ -370,7 +370,7 @@ class PostTypes {
 	 * Add a custom namespace to the job feed
 	 */
 	public function job_feed_namespace() {
-		echo 'xmlns:job_listing="' .  site_url() . '"' . "\n";
+		echo 'xmlns:restaurant_listing="' .  site_url() . '"' . "\n";
 	}
 
 	/**
@@ -378,18 +378,18 @@ class PostTypes {
 	 */
 	public function job_feed_item() {
 		$post_id  = get_the_ID();
-		$location = listings_jobs_get_the_job_location( $post_id );
-		$job_type = listings_jobs_get_the_job_type( $post_id );
-		$company  = listings_jobs_get_the_company_name( $post_id );
+		$location = listings_restaurants_get_the_job_location( $post_id );
+		$job_type = listings_restaurants_get_the_job_type( $post_id );
+		$company  = listings_restaurants_get_the_company_name( $post_id );
 
 		if ( $location ) {
-			echo "<job_listing:location><![CDATA[" . esc_html( $location ) . "]]></job_listing:location>\n";
+			echo "<restaurant_listing:location><![CDATA[" . esc_html( $location ) . "]]></restaurant_listing:location>\n";
 		}
 		if ( $job_type ) {
-			echo "<job_listing:job_type><![CDATA[" . esc_html( $job_type->name ) . "]]></job_listing:job_type>\n";
+			echo "<restaurant_listing:job_type><![CDATA[" . esc_html( $job_type->name ) . "]]></restaurant_listing:job_type>\n";
 		}
 		if ( $company ) {
-			echo "<job_listing:company><![CDATA[" . esc_html( $company ) . "]]></job_listing:company>\n";
+			echo "<restaurant_listing:company><![CDATA[" . esc_html( $company ) . "]]></restaurant_listing:company>\n";
 		}
 	}
 
@@ -407,7 +407,7 @@ class PostTypes {
 			AND postmeta.meta_value > 0
 			AND postmeta.meta_value < %s
 			AND posts.post_status = 'publish'
-			AND posts.post_type = 'job_listing'
+			AND posts.post_type = 'restaurant_listing'
 		", date( 'Y-m-d', current_time( 'timestamp' ) ) ) );
 
 		if ( $job_ids ) {
@@ -420,13 +420,13 @@ class PostTypes {
 		}
 
 		// Delete old expired jobs
-		if ( apply_filters( 'listings_jobs_delete_expired_jobs', false ) ) {
+		if ( apply_filters( 'listings_restaurants_delete_expired_jobs', false ) ) {
 			$job_ids = $wpdb->get_col( $wpdb->prepare( "
 				SELECT posts.ID FROM {$wpdb->posts} as posts
-				WHERE posts.post_type = 'job_listing'
+				WHERE posts.post_type = 'restaurant_listing'
 				AND posts.post_modified < %s
 				AND posts.post_status = 'expired'
-			", date( 'Y-m-d', strtotime( '-' . apply_filters( 'listings_jobs_delete_expired_jobs_days', 30 ) . ' days', current_time( 'timestamp' ) ) ) ) );
+			", date( 'Y-m-d', strtotime( '-' . apply_filters( 'listings_restaurants_delete_expired_jobs_days', 30 ) . ' days', current_time( 'timestamp' ) ) ) ) );
 
 			if ( $job_ids ) {
 				foreach ( $job_ids as $job_id ) {
@@ -445,7 +445,7 @@ class PostTypes {
 		// Delete old expired jobs
 		$job_ids = $wpdb->get_col( $wpdb->prepare( "
 			SELECT posts.ID FROM {$wpdb->posts} as posts
-			WHERE posts.post_type = 'job_listing'
+			WHERE posts.post_type = 'restaurant_listing'
 			AND posts.post_modified < %s
 			AND posts.post_status = 'preview'
 		", date( 'Y-m-d', strtotime( '-30 days', current_time( 'timestamp' ) ) ) ) );
@@ -468,7 +468,7 @@ class PostTypes {
 	 * Set expirey date when job status changes
 	 */
 	public function set_expiry( $post ) {
-		if ( $post->post_type !== 'job_listing' ) {
+		if ( $post->post_type !== 'restaurant_listing' ) {
 			return;
 		}
 
@@ -489,7 +489,7 @@ class PostTypes {
 
 		// No manual setting? Lets generate a date
 		} else {
-			$expires = listings_jobs_calculate_job_expiry( $post->ID );
+			$expires = listings_restaurants_calculate_job_expiry( $post->ID );
 			update_post_meta( $post->ID, '_job_expires', $expires );
 
 			// In case we are saving a post, ensure post data is updated so the field is not overridden
@@ -519,7 +519,7 @@ class PostTypes {
 	 * @return array
 	 */
 	public function fix_post_name( $data, $postarr ) {
-		 if ( 'job_listing' === $data['post_type'] && 'pending' === $data['post_status'] && ! current_user_can( 'publish_posts' ) ) {
+		 if ( 'restaurant_listing' === $data['post_type'] && 'pending' === $data['post_status'] && ! current_user_can( 'publish_posts' ) ) {
 				$data['post_name'] = $postarr['post_name'];
 		 }
 		 return $data;
@@ -531,17 +531,17 @@ class PostTypes {
 	 * @param  array $post
 	 */
 	public function maybe_add_geolocation_data( $object_id, $meta_key, $meta_value ) {
-		if ( '_job_location' !== $meta_key || 'job_listing' !== get_post_type( $object_id ) ) {
+		if ( '_job_location' !== $meta_key || 'restaurant_listing' !== get_post_type( $object_id ) ) {
 			return;
 		}
-		do_action( 'listings_jobs_job_location_edited', $object_id, $meta_value );
+		do_action( 'listings_restaurants_job_location_edited', $object_id, $meta_value );
 	}
 
 	/**
 	 * Triggered when updating meta on a job listing
 	 */
 	public function update_post_meta( $meta_id, $object_id, $meta_key, $meta_value ) {
-		if ( 'job_listing' === get_post_type( $object_id ) ) {
+		if ( 'restaurant_listing' === get_post_type( $object_id ) ) {
 			switch ( $meta_key ) {
 				case '_job_location' :
 					$this->maybe_update_geolocation_data( $meta_id, $object_id, $meta_key, $meta_value );
@@ -557,7 +557,7 @@ class PostTypes {
 	 * Generate location data if a post is updated
 	 */
 	public function maybe_update_geolocation_data( $meta_id, $object_id, $meta_key, $meta_value ) {
-		do_action( 'listings_jobs_job_location_edited', $object_id, $meta_value );
+		do_action( 'listings_restaurants_job_location_edited', $object_id, $meta_value );
 	}
 
 	/**
@@ -589,7 +589,7 @@ class PostTypes {
 	 * @param  \WP_Post $post
 	 */
 	public function maybe_add_default_meta_data( $post_id, $post = '' ) {
-		if ( empty( $post ) || 'job_listing' === $post->post_type ) {
+		if ( empty( $post ) || 'restaurant_listing' === $post->post_type ) {
 			add_post_meta( $post_id, '_filled', 0, true );
 			add_post_meta( $post_id, '_featured', 0, true );
 		}
@@ -600,7 +600,7 @@ class PostTypes {
 	 * @param  int $post_id
 	 */
 	public function pmxi_saved_post( $post_id ) {
-		if ( 'job_listing' === get_post_type( $post_id ) ) {
+		if ( 'restaurant_listing' === get_post_type( $post_id ) ) {
 			$this->maybe_add_default_meta_data( $post_id );
 			if ( ! Geocode::has_location_data( $post_id ) && ( $location = get_post_meta( $post_id, '_job_location', true ) ) ) {
 				Geocode::generate_location_data( $post_id, $location );
@@ -616,8 +616,8 @@ class PostTypes {
 	 * @return string
 	 */
 	public function rp4wp_template( $located, $template_name, $args ) {
-		if ( 'related-post-default.php' === $template_name && 'job_listing' === $args['related_post']->post_type ) {
-			return LISTINGS_PLUGIN_DIR . '/templates/content-job_listing.php';
+		if ( 'related-post-default.php' === $template_name && 'restaurant_listing' === $args['related_post']->post_type ) {
+			return LISTINGS_PLUGIN_DIR . '/templates/content-restaurant_listing.php';
 		}
 		return $located;
 	}
@@ -630,7 +630,7 @@ class PostTypes {
 	 * @return array
 	 */
 	public function rp4wp_related_meta_fields( $meta_fields, $post_id, $post ) {
-		if ( 'job_listing' === $post->post_type ) {
+		if ( 'restaurant_listing' === $post->post_type ) {
 			$meta_fields[] = '_company_name';
 			$meta_fields[] = '_job_location';
 		}
@@ -645,7 +645,7 @@ class PostTypes {
 	 * @return int
 	 */
 	public function rp4wp_related_meta_fields_weight( $weight, $post, $meta_field ) {
-		if ( 'job_listing' === $post->post_type ) {
+		if ( 'restaurant_listing' === $post->post_type ) {
 			$weight = 100;
 		}
 		return $weight;

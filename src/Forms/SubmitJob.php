@@ -78,7 +78,7 @@ class SubmitJob extends Form {
 					$this->job_id = 0;
 					$this->step   = 0;
 				}
-			} elseif ( ! in_array( $job_status, apply_filters( 'listings_jobs_valid_submit_job_statuses', array( 'preview' ) ) ) ) {
+			} elseif ( ! in_array( $job_status, apply_filters( 'listings_restaurants_valid_submit_job_statuses', array( 'preview' ) ) ) ) {
 				$this->job_id = 0;
 				$this->step   = 0;
 			}
@@ -101,7 +101,7 @@ class SubmitJob extends Form {
 			return;
 		}
 
-		$allowed_application_method = get_option( 'listings_jobs_allowed_application_method', '' );
+		$allowed_application_method = get_option( 'listings_restaurants_allowed_application_method', '' );
 		switch ( $allowed_application_method ) {
 			case 'email' :
 				$application_method_label       = __( 'Application email', 'listings-jobs' );
@@ -141,7 +141,7 @@ class SubmitJob extends Form {
 					'placeholder' => '',
 					'priority'    => 3,
 					'default'     => 'full-time',
-					'taxonomy'    => 'job_listing_type'
+					'taxonomy'    => 'restaurant_listing_type'
 				),
 				'job_category' => array(
 					'label'       => __( 'Job category', 'listings-jobs' ),
@@ -150,7 +150,7 @@ class SubmitJob extends Form {
 					'placeholder' => '',
 					'priority'    => 4,
 					'default'     => '',
-					'taxonomy'    => 'job_listing_category'
+					'taxonomy'    => 'restaurant_listing_category'
 				),
 				'job_description' => array(
 					'label'       => __( 'Description', 'listings-jobs' ),
@@ -222,7 +222,7 @@ class SubmitJob extends Form {
 			)
 		) );
 
-		if ( ! get_option( 'listings_jobs_enable_categories' ) || wp_count_terms( 'job_listing_category' ) == 0 ) {
+		if ( ! get_option( 'listings_restaurants_enable_categories' ) || wp_count_terms( 'restaurant_listing_category' ) == 0 ) {
 			unset( $this->fields['job']['job_category'] );
 		}
 	}
@@ -272,7 +272,7 @@ class SubmitJob extends Form {
 
 		// Application method
 		if ( isset( $values['job']['application'] ) && ! empty( $values['job']['application'] ) ) {
-			$allowed_application_method = get_option( 'listings_jobs_allowed_application_method', '' );
+			$allowed_application_method = get_option( 'listings_restaurants_allowed_application_method', '' );
 			$values['job']['application'] = str_replace( ' ', '+', $values['job']['application'] );
 			switch ( $allowed_application_method ) {
 				case 'email' :
@@ -311,7 +311,7 @@ class SubmitJob extends Form {
 	 */
 	private function job_types() {
 		$options = array();
-		$terms   = listings_jobs_get_types();
+		$terms   = listings_restaurants_get_types();
 		foreach ( $terms as $term ) {
 			$options[ $term->slug ] = $term->name;
 		}
@@ -337,10 +337,10 @@ class SubmitJob extends Form {
 							$this->fields[ $group_key ][ $key ]['value'] = $job->post_content;
 						break;
 						case 'job_type' :
-							$this->fields[ $group_key ][ $key ]['value'] = current( wp_get_object_terms( $job->ID, 'job_listing_type', array( 'fields' => 'ids' ) ) );
+							$this->fields[ $group_key ][ $key ]['value'] = current( wp_get_object_terms( $job->ID, 'restaurant_listing_type', array( 'fields' => 'ids' ) ) );
 						break;
 						case 'job_category' :
-							$this->fields[ $group_key ][ $key ]['value'] = wp_get_object_terms( $job->ID, 'job_listing_category', array( 'fields' => 'ids' ) );
+							$this->fields[ $group_key ][ $key ]['value'] = wp_get_object_terms( $job->ID, 'restaurant_listing_category', array( 'fields' => 'ids' ) );
 						break;
 						case 'company_logo' :
 							$this->fields[ $group_key ][ $key ]['value'] = has_post_thumbnail( $job->ID ) ? get_post_thumbnail_id( $job->ID ) : get_post_meta( $job->ID, '_' . $key, true );
@@ -362,7 +362,7 @@ class SubmitJob extends Form {
 				}
 			}
 			if ( ! empty( $this->fields['job']['application'] ) ) {
-				$allowed_application_method = get_option( 'listings_jobs_allowed_application_method', '' );
+				$allowed_application_method = get_option( 'listings_restaurants_allowed_application_method', '' );
 				if ( $allowed_application_method !== 'url' ) {
 					$current_user = wp_get_current_user();
 					$this->fields['job']['application']['value'] = $current_user->user_email;
@@ -421,7 +421,7 @@ class SubmitJob extends Form {
 						$create_account = listings_create_account( array(
 							'username' => empty( $_POST['create_account_username'] ) ? '' : $_POST['create_account_username'],
 							'email'    => $_POST['create_account_email'],
-							'role'     => get_option( 'listings_jobs_registration_role' )
+							'role'     => get_option( 'listings_restaurants_registration_role' )
 						) );
 					}
 				}
@@ -461,7 +461,7 @@ class SubmitJob extends Form {
 		$job_data = array(
 			'post_title'     => $post_title,
 			'post_content'   => $post_content,
-			'post_type'      => 'job_listing',
+			'post_type'      => 'restaurant_listing',
 			'comment_status' => 'closed'
 		);
 
@@ -598,7 +598,7 @@ class SubmitJob extends Form {
 		$maybe_attach = array_filter( $maybe_attach );
 
 		// Handle attachments
-		if ( sizeof( $maybe_attach ) && apply_filters( 'listings_jobs_attach_uploaded_files', true ) ) {
+		if ( sizeof( $maybe_attach ) && apply_filters( 'listings_restaurants_attach_uploaded_files', true ) ) {
 			// Get attachments
 			$attachments     = get_posts( 'post_parent=' . $this->job_id . '&post_type=attachment&fields=ids&post_mime_type=image&numberposts=-1' );
 			$attachment_urls = array();
@@ -624,7 +624,7 @@ class SubmitJob extends Form {
 			update_user_meta( get_current_user_id(), '_company_video', isset( $values['company']['company_video'] ) ? $values['company']['company_video'] : '' );
 		}
 
-		do_action( 'listings_jobs_update_job_data', $this->job_id, $values );
+		do_action( 'listings_restaurants_update_job_data', $this->job_id, $values );
 	}
 
 	/**
@@ -672,7 +672,7 @@ class SubmitJob extends Form {
 				// Update job listing
 				$update_job                  = array();
 				$update_job['ID']            = $job->ID;
-				$update_job['post_status']   = apply_filters( 'submit_job_post_status', get_option( 'listings_jobs_submission_requires_approval' ) ? 'pending' : 'publish', $job );
+				$update_job['post_status']   = apply_filters( 'submit_job_post_status', get_option( 'listings_restaurants_submission_requires_approval' ) ? 'pending' : 'publish', $job );
 				$update_job['post_date']     = current_time( 'mysql' );
 				$update_job['post_date_gmt'] = current_time( 'mysql', 1 );
 				$update_job['post_author']   = get_current_user_id();
@@ -688,7 +688,7 @@ class SubmitJob extends Form {
 	 * Done Step
 	 */
 	public function done() {
-		do_action( 'listings_jobs_job_submitted', $this->job_id );
+		do_action( 'listings_restaurants_job_submitted', $this->job_id );
 		listings_get_template( 'job-submitted.php', array( 'job' => get_post( $this->job_id ) ) );
 	}
 }

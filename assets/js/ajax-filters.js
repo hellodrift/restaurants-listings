@@ -2,18 +2,18 @@ jQuery( document ).ready( function ( $ ) {
 
 	var xhr = [];
 
-	$( '.job_listings' ).on( 'update_results', function ( event, page, append, loading_previous ) {
+	$( '.restaurant_listings' ).on( 'update_results', function ( event, page, append, loading_previous ) {
 		var data         = '';
 		var target       = $( this );
 		var form         = target.find( '.job_filters' );
 		var showing      = target.find( '.showing_jobs' );
-		var results      = target.find( '.job_listings' );
+		var results      = target.find( '.restaurant_listings' );
 		var per_page     = target.data( 'per_page' );
 		var orderby      = target.data( 'orderby' );
 		var order        = target.data( 'order' );
 		var featured     = target.data( 'featured' );
 		var filled       = target.data( 'filled' );
-		var index        = $( 'div.job_listings' ).index(this);
+		var index        = $( 'div.restaurant_listings' ).index(this);
 
 		if ( index < 0 ) {
 			return;
@@ -25,7 +25,7 @@ jQuery( document ).ready( function ( $ ) {
 
 		if ( ! append ) {
 			$( results ).addClass( 'loading' );
-			$( 'li.job_listing, li.no_job_listings_found', results ).css( 'visibility', 'hidden' );
+			$( 'li.restaurant_listing, li.no_restaurant_listings_found', results ).css( 'visibility', 'hidden' );
 
 			// Not appending. If page > 1, we should show a load previous button so the user can get to earlier-page listings if needed
 			if ( page > 1 && true != target.data( 'show_pagination' ) ) {
@@ -106,7 +106,7 @@ jQuery( document ).ready( function ( $ ) {
 
 		xhr[index] = $.ajax( {
 			type: 'POST',
-			url: listings_ajax_filters.ajax_url.toString().replace( "%%endpoint%%", "get_job_listings" ),
+			url: listings_ajax_filters.ajax_url.toString().replace( "%%endpoint%%", "get_restaurant_listings" ),
 			data: data,
 			success: function ( result ) {
 				if ( result ) {
@@ -146,7 +146,7 @@ jQuery( document ).ready( function ( $ ) {
 								$( '.load_more_jobs', target ).show();
 							}
 							$( '.load_more_jobs', target ).removeClass( 'loading' );
-							$( 'li.job_listing', results ).css( 'visibility', 'visible' );
+							$( 'li.restaurant_listing', results ).css( 'visibility', 'visible' );
 						}
 
 						$( results ).removeClass( 'loading' );
@@ -176,7 +176,7 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 	$( '#search_keywords, #search_location, .job_types :input, #search_categories, .listings-jobs-filter' ).change( function() {
-		var target   = $( this ).closest( 'div.job_listings' );
+		var target   = $( this ).closest( 'div.restaurant_listings' );
 		target.triggerHandler( 'update_results', [ 1, false ] );
 		listings_store_state( target, 1 );
 	} )
@@ -188,7 +188,7 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 	$( '.job_filters' ).on( 'click', '.reset', function () {
-		var target = $( this ).closest( 'div.job_listings' );
+		var target = $( this ).closest( 'div.restaurant_listings' );
 		var form = $( this ).closest( 'form' );
 
 		form.find( ':input[name="search_keywords"], :input[name="search_location"], .listings-jobs-filter' ).not(':input[type="hidden"]').val( '' ).trigger( 'chosen:updated' );
@@ -203,7 +203,7 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 	$( document.body ).on( 'click', '.load_more_jobs', function() {
-		var target           = $( this ).closest( 'div.job_listings' );
+		var target           = $( this ).closest( 'div.restaurant_listings' );
 		var page             = parseInt( $( this ).data( 'page' ) || 1 );
 		var loading_previous = false;
 
@@ -227,8 +227,8 @@ jQuery( document ).ready( function ( $ ) {
 		return false;
 	} );
 
-	$( 'div.job_listings' ).on( 'click', '.listings-pagination a', function() {
-		var target = $( this ).closest( 'div.job_listings' );
+	$( 'div.restaurant_listings' ).on( 'click', '.listings-pagination a', function() {
+		var target = $( this ).closest( 'div.restaurant_listings' );
 		var page   = $( this ).data( 'page' );
 
 		listings_store_state( target, page );
@@ -261,7 +261,7 @@ jQuery( document ).ready( function ( $ ) {
 		if ( $supports_html5_history ) {
 			var form  = target.find( '.job_filters' );
 			var data  = $( form ).serialize();
-			var index = $( 'div.job_listings' ).index( target );
+			var index = $( 'div.restaurant_listings' ).index( target );
 			window.history.replaceState( { id: 'listings_state', page: page, data: data, index: index }, '', location + '#s=1' );
 		}
 	}
@@ -269,10 +269,10 @@ jQuery( document ).ready( function ( $ ) {
 	// Inital job and form population
 	$(window).on( "load", function( event ) {
 		$( '.job_filters' ).each( function() {
-			var target      = $( this ).closest( 'div.job_listings' );
+			var target      = $( this ).closest( 'div.restaurant_listings' );
 			var form        = target.find( '.job_filters' );
 			var inital_page = 1;
-			var index       = $( 'div.job_listings' ).index( target );
+			var index       = $( 'div.restaurant_listings' ).index( target );
 
 	   		if ( window.history.state && window.location.hash ) {
 	   			var state = window.history.state;

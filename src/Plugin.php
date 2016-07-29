@@ -46,7 +46,7 @@ class Plugin {
     }
     
     public function updater() {
-        if ( version_compare( LISTINGS_RESTAURANTS_VERSION, get_option( 'listings_jobs_version' ), '>' ) ) {
+        if ( version_compare( LISTINGS_RESTAURANTS_VERSION, get_option( 'listings_restaurants_version' ), '>' ) ) {
             Install::install();
             flush_rewrite_rules();
         }

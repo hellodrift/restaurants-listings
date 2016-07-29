@@ -16,16 +16,16 @@ class JobDetails extends Metabox
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ), 1, 2 );
-		add_action( 'listings_jobs_save_job_listing', array( $this, 'save_job_listing_data' ), 20, 2 );
+		add_action( 'listings_restaurants_save_restaurant_listing', array( $this, 'save_restaurant_listing_data' ), 20, 2 );
 	}
 
 	/**
-	 * job_listing_fields function.
+	 * restaurant_listing_fields function.
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function job_listing_fields() {
+	public function restaurant_listing_fields() {
 		global $post;
 
 		$current_user = wp_get_current_user();
@@ -77,7 +77,7 @@ class JobDetails extends Metabox
 				'description' => __( 'Filled listings will no longer accept applications.', 'listings-jobs' ),
 			)
 		);
-		if ( $current_user->has_cap( 'manage_job_listings' ) ) {
+		if ( $current_user->has_cap( 'manage_restaurant_listings' ) ) {
 			$fields['_featured'] = array(
 				'label'       => __( 'Featured Listing', 'listings-jobs' ),
 				'type'        => 'checkbox',
@@ -89,10 +89,10 @@ class JobDetails extends Metabox
 				'priority'    => 11,
 				'classes'     => array( 'listings-jobs-datepicker' ),
 				'placeholder' => _x( 'yyyy-mm-dd', 'Date format placeholder', 'listings-jobs' ),
-				'value'       => metadata_exists( 'post', $post->ID, '_job_expires' ) ? get_post_meta( $post->ID, '_job_expires', true ) : listings_jobs_calculate_job_expiry( $post->ID ),
+				'value'       => metadata_exists( 'post', $post->ID, '_job_expires' ) ? get_post_meta( $post->ID, '_job_expires', true ) : listings_restaurants_calculate_job_expiry( $post->ID ),
 			);
 		}
-		if ( $current_user->has_cap( 'edit_others_job_listings' ) ) {
+		if ( $current_user->has_cap( 'edit_others_restaurant_listings' ) ) {
 			$fields['_job_author'] = array(
 				'label'    => __( 'Posted by', 'listings-jobs' ),
 				'type'     => 'author',
@@ -100,7 +100,7 @@ class JobDetails extends Metabox
 			);
 		}
 
-		$fields = apply_filters( 'listings_jobs_job_listing_data_fields', $fields );
+		$fields = apply_filters( 'listings_restaurants_restaurant_listing_data_fields', $fields );
 
 		uasort( $fields, array( $this, 'sort_by_priority' ) );
 
@@ -126,28 +126,28 @@ class JobDetails extends Metabox
 	public function add_meta_boxes() {
 		global $wp_post_types;
 
-		add_meta_box( 'job_listing_data', sprintf( __( '%s Data', 'listings-jobs' ), $wp_post_types['job_listing']->labels->singular_name ), array( $this, 'job_listing_data' ), 'job_listing', 'normal', 'high' );
+		add_meta_box( 'restaurant_listing_data', sprintf( __( '%s Data', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name ), array( $this, 'restaurant_listing_data' ), 'restaurant_listing', 'normal', 'high' );
 	}
 
 	/**
-	 * job_listing_data function.
+	 * restaurant_listing_data function.
 	 *
 	 * @access public
 	 * @param mixed $post
 	 * @return void
 	 */
-	public function job_listing_data( $post ) {
+	public function restaurant_listing_data( $post ) {
 		global $post, $thepostid;
 
 		$thepostid = $post->ID;
 
-		echo '<div class="listings_jobs_meta_data">';
+		echo '<div class="listings_restaurants_meta_data">';
 
-		wp_nonce_field( 'save_meta_data', 'listings_jobs_nonce' );
+		wp_nonce_field( 'save_meta_data', 'listings_restaurants_nonce' );
 
-		do_action( 'listings_jobs_job_listing_data_start', $thepostid );
+		do_action( 'listings_restaurants_restaurant_listing_data_start', $thepostid );
 
-		foreach ( $this->job_listing_fields() as $key => $field ) {
+		foreach ( $this->restaurant_listing_fields() as $key => $field ) {
 			$type = ! empty( $field['type'] ) ? $field['type'] : 'text';
 
 			if ( has_action( 'listings_input_' . $type ) ) {
@@ -157,7 +157,7 @@ class JobDetails extends Metabox
 			}
 		}
 
-		do_action( 'listings_jobs_job_listing_data_end', $thepostid );
+		do_action( 'listings_restaurants_restaurant_listing_data_end', $thepostid );
 
 		echo '</div>';
 	}
@@ -175,22 +175,22 @@ class JobDetails extends Metabox
 		if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
 		if ( is_int( wp_is_post_revision( $post ) ) ) return;
 		if ( is_int( wp_is_post_autosave( $post ) ) ) return;
-		if ( empty($_POST['listings_jobs_nonce']) || ! wp_verify_nonce( $_POST['listings_jobs_nonce'], 'save_meta_data' ) ) return;
+		if ( empty($_POST['listings_restaurants_nonce']) || ! wp_verify_nonce( $_POST['listings_restaurants_nonce'], 'save_meta_data' ) ) return;
 		if ( ! current_user_can( 'edit_post', $post_id ) ) return;
-		if ( $post->post_type != 'job_listing' ) return;
+		if ( $post->post_type != 'restaurant_listing' ) return;
 
-		do_action( 'listings_job_save_job_listing', $post_id, $post );
+		do_action( 'listings_job_save_restaurant_listing', $post_id, $post );
 	}
 
 	/**
-	 * save_job_listing_data function.
+	 * save_restaurant_listing_data function.
 	 *
 	 * @access public
 	 * @param mixed $post_id
 	 * @param mixed $post
 	 * @return void
 	 */
-	public function save_job_listing_data( $post_id, $post ) {
+	public function save_restaurant_listing_data( $post_id, $post ) {
 		global $wpdb;
 
 		// These need to exist
@@ -198,7 +198,7 @@ class JobDetails extends Metabox
 		add_post_meta( $post_id, '_featured', 0, true );
 
 		// Save fields
-		foreach ( $this->job_listing_fields() as $key => $field ) {
+		foreach ( $this->restaurant_listing_fields() as $key => $field ) {
 			// Expirey date
 			if ( '_job_expires' === $key ) {
 				if ( ! empty( $_POST[ $key ] ) ) {
@@ -212,7 +212,7 @@ class JobDetails extends Metabox
 			elseif ( '_job_location' === $key ) {
 				if ( update_post_meta( $post_id, $key, sanitize_text_field( $_POST[ $key ] ) ) ) {
 					// Location data will be updated by hooked in methods
-				} elseif ( apply_filters( 'listings_jobs_geolocation_enabled', true ) && ! Geocode::has_location_data( $post_id ) ) {
+				} elseif ( apply_filters( 'listings_restaurants_geolocation_enabled', true ) && ! Geocode::has_location_data( $post_id ) ) {
 					Geocode::generate_location_data( $post_id, sanitize_text_field( $_POST[ $key ] ) );
 				}
 			}

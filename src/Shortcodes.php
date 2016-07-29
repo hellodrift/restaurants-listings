@@ -14,10 +14,10 @@ class Shortcodes {
 	 */
 	public function __construct() {
 		add_action( 'wp', array( $this, 'shortcode_action_handler' ) );
-		add_action( 'listings_jobs_job_dashboard_content_edit', array( $this, 'edit_job' ) );
-		add_action( 'listings_jobs_job_filters_end', array( $this, 'job_filter_job_types' ), 20 );
-		add_action( 'listings_jobs_job_filters_end', array( $this, 'job_filter_results' ), 30 );
-		add_action( 'listings_jobs_output_jobs_no_results', array( $this, 'output_no_results' ) );
+		add_action( 'listings_restaurants_job_dashboard_content_edit', array( $this, 'edit_job' ) );
+		add_action( 'listings_restaurants_job_filters_end', array( $this, 'job_filter_job_types' ), 20 );
+		add_action( 'listings_restaurants_job_filters_end', array( $this, 'job_filter_results' ), 30 );
+		add_action( 'listings_restaurants_output_jobs_no_results', array( $this, 'output_no_results' ) );
 		add_shortcode( 'submit_job_form', array( $this, 'submit_job_form' ) );
 		add_shortcode( 'job_dashboard', array( $this, 'job_dashboard' ) );
 		add_shortcode( 'jobs', array( $this, 'output_jobs' ) );
@@ -51,7 +51,7 @@ class Shortcodes {
 	 * Handles actions on job dashboard
 	 */
 	public function job_dashboard_handler() {
-		if ( ! empty( $_REQUEST['action'] ) && ! empty( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'listings_jobs_my_job_actions' ) ) {
+		if ( ! empty( $_REQUEST['action'] ) && ! empty( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'listings_restaurants_my_job_actions' ) ) {
 
 			$action = sanitize_title( $_REQUEST['action'] );
 			$job_id = absint( $_REQUEST['job_id'] );
@@ -102,7 +102,7 @@ class Shortcodes {
 							throw new \Exception( __( 'Missing submission page.', 'listings-jobs' ) );
 						}
 
-						$new_job_id = listings_jobs_duplicate_listing( $job_id );
+						$new_job_id = listings_restaurants_duplicate_listing( $job_id );
 
 						if ( $new_job_id ) {
 							wp_redirect( add_query_arg( array( 'job_id' => absint( $new_job_id ) ), listings_get_permalink( 'submit_job_form' ) ) );
@@ -121,11 +121,11 @@ class Shortcodes {
 
 						break;
 					default :
-						do_action( 'listings_jobs_job_dashboard_do_action_' . $action );
+						do_action( 'listings_restaurants_job_dashboard_do_action_' . $action );
 						break;
 				}
 
-				do_action( 'listings_jobs_my_job_do_action', $action, $job_id );
+				do_action( 'listings_restaurants_my_job_do_action', $action, $job_id );
 
 			} catch ( \Exception $e ) {
 				$this->job_dashboard_message = '<div class="listings-error">' . $e->getMessage() . '</div>';
@@ -156,16 +156,16 @@ class Shortcodes {
 			$action = sanitize_title( $_REQUEST['action'] );
 
 			// Show alternative content if a plugin wants to
-			if ( has_action( 'listings_jobs_job_dashboard_content_' . $action ) ) {
-				do_action( 'listings_jobs_job_dashboard_content_' . $action, $atts );
+			if ( has_action( 'listings_restaurants_job_dashboard_content_' . $action ) ) {
+				do_action( 'listings_restaurants_job_dashboard_content_' . $action, $atts );
 
 				return ob_get_clean();
 			}
 		}
 
 		// ....If not show the job dashboard
-		$args     = apply_filters( 'listings_jobs_get_dashboard_jobs_args', array(
-			'post_type'           => 'job_listing',
+		$args     = apply_filters( 'listings_restaurants_get_dashboard_jobs_args', array(
+			'post_type'           => 'restaurant_listing',
 			'post_status'         => array( 'publish', 'expired', 'pending' ),
 			'ignore_sticky_posts' => 1,
 			'posts_per_page'      => $posts_per_page,
@@ -179,7 +179,7 @@ class Shortcodes {
 
 		echo $this->job_dashboard_message;
 
-		$job_dashboard_columns = apply_filters( 'listings_jobs_job_dashboard_columns', array(
+		$job_dashboard_columns = apply_filters( 'listings_restaurants_job_dashboard_columns', array(
 			'job_title' => __( 'Title', 'listings-jobs' ),
 			'filled'    => __( 'Filled?', 'listings-jobs' ),
 			'date'      => __( 'Date Posted', 'listings-jobs' ),
@@ -209,15 +209,15 @@ class Shortcodes {
 	public function output_jobs( $atts ) {
 		ob_start();
 
-		extract( $atts = shortcode_atts( apply_filters( 'listings_jobs_output_jobs_defaults', array(
-			'per_page'                  => get_option( 'listings_jobs_per_page' ),
+		extract( $atts = shortcode_atts( apply_filters( 'listings_restaurants_output_jobs_defaults', array(
+			'per_page'                  => get_option( 'listings_restaurants_per_page' ),
 			'orderby'                   => 'featured',
 			'order'                     => 'DESC',
 
 			// Filters + cats
 			'show_filters'              => true,
 			'show_categories'           => true,
-			'show_category_multiselect' => get_option( 'listings_jobs_enable_default_category_multiselect', false ),
+			'show_category_multiselect' => get_option( 'listings_restaurants_enable_default_category_multiselect', false ),
 			'show_pagination'           => false,
 			'show_more'                 => true,
 
@@ -231,10 +231,10 @@ class Shortcodes {
 			'location'                  => '',
 			'keywords'                  => '',
 			'selected_category'         => '',
-			'selected_job_types'        => implode( ',', array_values( listings_jobs_get_types( 'id=>slug' ) ) ),
+			'selected_job_types'        => implode( ',', array_values( listings_restaurants_get_types( 'id=>slug' ) ) ),
 		) ), $atts ) );
 
-		if ( ! get_option( 'listings_jobs_enable_categories' ) ) {
+		if ( ! get_option( 'listings_restaurants_enable_categories' ) ) {
 			$show_categories = false;
 		}
 
@@ -282,7 +282,7 @@ class Shortcodes {
 
 		} else {
 
-			$jobs = listings_jobs_get_listings( apply_filters( 'listings_jobs_output_jobs_args', array(
+			$jobs = listings_restaurants_get_listings( apply_filters( 'listings_restaurants_output_jobs_args', array(
 				'search_location'   => $location,
 				'search_keywords'   => $keywords,
 				'search_categories' => $categories,
@@ -299,7 +299,7 @@ class Shortcodes {
 				<?php listings_get_template( 'job-listings-start.php' ); ?>
 
 				<?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
-					<?php listings_get_template_part( 'content', 'job_listing' ); ?>
+					<?php listings_get_template_part( 'content', 'restaurant_listing' ); ?>
 				<?php endwhile; ?>
 
 				<?php listings_get_template( 'job-listings-end.php' ); ?>
@@ -317,7 +317,7 @@ class Shortcodes {
 				<?php endif; ?>
 
 			<?php else :
-				do_action( 'listings_jobs_output_jobs_no_results' );
+				do_action( 'listings_restaurants_output_jobs_no_results' );
 			endif;
 
 			wp_reset_postdata();
@@ -344,9 +344,9 @@ class Shortcodes {
 			$data_attributes_string .= 'data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
 		}
 
-		$job_listings_output = apply_filters( 'listings_jobs_job_listings_output', ob_get_clean() );
+		$restaurant_listings_output = apply_filters( 'listings_restaurants_restaurant_listings_output', ob_get_clean() );
 
-		return '<div class="job_listings" ' . $data_attributes_string . '>' . $job_listings_output . '</div>';
+		return '<div class="restaurant_listings" ' . $data_attributes_string . '>' . $restaurant_listings_output . '</div>';
 	}
 
 	/**
@@ -403,7 +403,7 @@ class Shortcodes {
 		ob_start();
 
 		$args = array(
-			'post_type'   => 'job_listing',
+			'post_type'   => 'restaurant_listing',
 			'post_status' => 'publish',
 			'p'           => $id
 		);
@@ -416,7 +416,7 @@ class Shortcodes {
 
 				<h1><?php the_title(); ?></h1>
 
-				<?php listings_get_template_part( 'content-single', 'job_listing' ); ?>
+				<?php listings_get_template_part( 'content-single', 'restaurant_listing' ); ?>
 
 			<?php endwhile; ?>
 
@@ -424,7 +424,7 @@ class Shortcodes {
 
 		wp_reset_postdata();
 
-		return '<div class="job_shortcode single_job_listing">' . ob_get_clean() . '</div>';
+		return '<div class="job_shortcode single_restaurant_listing">' . ob_get_clean() . '</div>';
 	}
 
 	/**
@@ -446,7 +446,7 @@ class Shortcodes {
 		ob_start();
 
 		$args = array(
-			'post_type'   => 'job_listing',
+			'post_type'   => 'restaurant_listing',
 			'post_status' => 'publish'
 		);
 
@@ -472,7 +472,7 @@ class Shortcodes {
 
 				<div class="job_summary_shortcode align<?php echo $align ?>" style="width: <?php echo $width ? $width : 'auto'; ?>">
 
-					<?php listings_get_template_part( 'content-summary', 'job_listing' ); ?>
+					<?php listings_get_template_part( 'content-summary', 'restaurant_listing' ); ?>
 
 				</div>
 
@@ -496,7 +496,7 @@ class Shortcodes {
 		ob_start();
 
 		$args = array(
-			'post_type'   => 'job_listing',
+			'post_type'   => 'restaurant_listing',
 			'post_status' => 'publish'
 		);
 
@@ -512,18 +512,18 @@ class Shortcodes {
 
 			<?php while ( $jobs->have_posts() ) :
 				$jobs->the_post();
-				$apply = listings_jobs_get_application_method();
+				$apply = listings_restaurants_get_application_method();
 				?>
 
-				<?php do_action( 'listings_jobs_before_job_apply_' . absint( $id ) ); ?>
+				<?php do_action( 'listings_restaurants_before_job_apply_' . absint( $id ) ); ?>
 
-				<?php if ( apply_filters( 'listings_jobs_show_job_apply_' . absint( $id ), true ) ) : ?>
+				<?php if ( apply_filters( 'listings_restaurants_show_job_apply_' . absint( $id ), true ) ) : ?>
 					<div class="listings-jobs-application-wrapper">
-						<?php do_action( 'listings_jobs_application_details_' . $apply->type, $apply ); ?>
+						<?php do_action( 'listings_restaurants_application_details_' . $apply->type, $apply ); ?>
 					</div>
 				<?php endif; ?>
 
-				<?php do_action( 'listings_jobs_after_job_apply_' . absint( $id ) ); ?>
+				<?php do_action( 'listings_restaurants_after_job_apply_' . absint( $id ) ); ?>
 
 			<?php endwhile; ?>
 

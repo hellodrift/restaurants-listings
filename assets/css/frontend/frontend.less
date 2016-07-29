@@ -86,14 +86,14 @@
 		padding: 1em 0;
 	}
 }
-div.job_listings {
+div.restaurant_listings {
 	margin-bottom: 1em;
-	ul.job_listings {
+	ul.restaurant_listings {
 		margin: 0;
 	}
 }
-.rp4wp-related-job_listing > ul,
-ul.job_listings {
+.rp4wp-related-restaurant_listing > ul,
+ul.restaurant_listings {
 	padding: 0;
 	margin: 0;
 	border-top: 1px solid #eee;
@@ -103,7 +103,7 @@ ul.job_listings {
 		border-bottom: 1px solid #eee;
 		background: url(../images/ajax-loader.gif) no-repeat center 32px;
 	}
-	li.job_listing, li.no_job_listings_found {
+	li.restaurant_listing, li.no_restaurant_listings_found {
 		list-style: none outside;
 		padding: 0;
 		margin: 0;
@@ -114,7 +114,7 @@ ul.job_listings {
 				opacity: 0.25;
 			}
 		}
-		&.no_job_listings_found {
+		&.no_restaurant_listings_found {
 			padding: 1em;
 			border-bottom: 1px solid #eee;
 		}
@@ -203,8 +203,8 @@ ul.job_listings {
 	}
 }
 .widget {
-	ul.job_listings {
-		li.job_listing {
+	ul.restaurant_listings {
+		li.restaurant_listing {
 			a {
 				padding: 1em 0;
 			}
@@ -238,7 +238,7 @@ ul.job_listings {
 		}
 	}
 }
-.listings_jobs, .job_listing, .job-types {
+.listings_restaurants, .restaurant_listing, .job-types {
 	.job-type {
 		color: @part-time;
 	}
@@ -258,7 +258,7 @@ ul.job_listings {
 		color: @internship;
 	}
 }
-.single_job_listing {
+.single_restaurant_listing {
 	.company {
 		position: relative;
 		border: 1px solid #eee;
@@ -388,7 +388,7 @@ ul.job_listings {
 	position: relative;
 	box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
-.single_job_listing, .listings-jobs-application-wrapper {
+.single_restaurant_listing, .listings-jobs-application-wrapper {
 	.application {
 		padding: 0;
 		margin: 0 0 1em;
@@ -530,7 +530,7 @@ ul.job_listings {
 		}
 	}
 }
-div.job_listings {
+div.restaurant_listings {
 	.listings-pagination {
 		text-align: center;
 		display: block;
@@ -541,7 +541,7 @@ div.job_listings {
 	.load_previous {
 		border-top: 1px solid #eee;
 	}
-	.load_more_jobs + ul.job_listings {
+	.load_more_jobs + ul.restaurant_listings {
 		border-top: 0;
 	}
 	.load_more_jobs {
@@ -562,15 +562,15 @@ div.job_listings {
 		}
 	}
 }
-.listings_jobs_job_listing_preview {
+.listings_restaurants_restaurant_listing_preview {
 	padding: 0 1em 1em;
 	border: 5px solid #eee;
 }
-.single-job_listing .entry-header .attachment-post-thumbnail,
-.single-job_listing .job_listing.has-post-thumbnail .post-thumbnail {
+.single-restaurant_listing .entry-header .attachment-post-thumbnail,
+.single-restaurant_listing .restaurant_listing.has-post-thumbnail .post-thumbnail {
 	display: none;
 }
-.job_listing_preview_title, .entry-content .job_listing_preview_title {
+.restaurant_listing_preview_title, .entry-content .restaurant_listing_preview_title {
 	padding: .5em 1em;
 	vertical-align: middle;
 	position: relative;
@@ -775,8 +775,8 @@ nav.listings-jobs-pagination, #content nav.listings-jobs-pagination {
  * Mobile styles
  */
 @media only screen and (max-width: 767px) {
-	ul.job_listings {
-		li.job_listing, li.no_job_listings_found {
+	ul.restaurant_listings {
+		li.restaurant_listing, li.no_restaurant_listings_found {
 			a {
 				padding: 1em;
 				img.company_logo {
@@ -816,8 +816,8 @@ nav.listings-jobs-pagination, #content nav.listings-jobs-pagination {
 
 // Default theme fixes
 .twenty-eleven {
-	ul.job_listings {
-		li.job_listing, li.no_job_listings_found {
+	ul.restaurant_listings {
+		li.restaurant_listing, li.no_restaurant_listings_found {
 			padding: 0 !important;
 		}
 	}
@@ -837,12 +837,12 @@ nav.listings-jobs-pagination, #content nav.listings-jobs-pagination {
 			float: left;
 		}
 	}
-	.listings_jobs_preview_title, .entry-content .listings_jobs_preview_title {
+	.listings_restaurants_preview_title, .entry-content .listings_restaurants_preview_title {
 		.button {
 			float: left;
 		}
 	}
-	.single_job_listing {
+	.single_restaurant_listing {
 		.meta {
 			li {
 				float: right;

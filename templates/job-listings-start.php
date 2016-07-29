@@ -1,1 +1,1 @@
-<ul class="job_listings">
+<ul class="restaurant_listings">

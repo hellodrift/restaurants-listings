@@ -12,14 +12,14 @@ class FeaturedJobs extends Widget {
     public function __construct() {
         global $wp_post_types;
 
-        $this->widget_cssclass    = 'listings_jobs widget_featured_jobs';
+        $this->widget_cssclass    = 'listings_restaurants widget_featured_jobs';
         $this->widget_description = __( 'Display a list of featured listings on your site.', 'listings-jobs' );
         $this->widget_id          = 'widget_featured_jobs';
-        $this->widget_name        = sprintf( __( 'Featured %s', 'listings-jobs' ), $wp_post_types['job_listing']->labels->name );
+        $this->widget_name        = sprintf( __( 'Featured %s', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->name );
         $this->settings           = array(
             'title' => array(
                 'type'  => 'text',
-                'std'   => sprintf( __( 'Featured %s', 'listings-jobs' ), $wp_post_types['job_listing']->labels->name ),
+                'std'   => sprintf( __( 'Featured %s', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->name ),
                 'label' => __( 'Title', 'listings-jobs' )
             ),
             'number' => array(
@@ -54,7 +54,7 @@ class FeaturedJobs extends Widget {
 
         $title  = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
         $number = absint( $instance['number'] );
-        $jobs   = listings_jobs_get_listings( array(
+        $jobs   = listings_restaurants_get_listings( array(
             'posts_per_page' => $number,
             'orderby'        => 'date',
             'order'          => 'DESC',
@@ -67,11 +67,11 @@ class FeaturedJobs extends Widget {
 
             <?php if ( $title ) echo $before_title . $title . $after_title; ?>
 
-            <ul class="job_listings">
+            <ul class="restaurant_listings">
 
                 <?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
 
-                    <?php listings_get_template_part( 'content-widget', 'job_listing' ); ?>
+                    <?php listings_get_template_part( 'content-widget', 'restaurant_listing' ); ?>
 
                 <?php endwhile; ?>
 

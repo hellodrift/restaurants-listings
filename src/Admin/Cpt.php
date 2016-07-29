@@ -14,9 +14,9 @@ class Cpt {
 	 */
 	public function __construct() {
 		add_filter( 'enter_title_here', array( $this, 'enter_title_here' ), 1, 2 );
-		add_filter( 'manage_edit-job_listing_columns', array( $this, 'columns' ) );
-		add_action( 'manage_job_listing_posts_custom_column', array( $this, 'custom_columns' ), 2 );
-		add_filter( 'manage_edit-job_listing_sortable_columns', array( $this, 'sortable_columns' ) );
+		add_filter( 'manage_edit-restaurant_listing_columns', array( $this, 'columns' ) );
+		add_action( 'manage_restaurant_listing_posts_custom_column', array( $this, 'custom_columns' ), 2 );
+		add_filter( 'manage_edit-restaurant_listing_sortable_columns', array( $this, 'sortable_columns' ) );
 		add_filter( 'request', array( $this, 'sort_columns' ) );
 		add_action( 'parse_query', array( $this, 'search_meta' ) );
 		add_filter( 'get_search_query', array( $this, 'search_meta_label' ) );
@@ -27,7 +27,7 @@ class Cpt {
 		add_action( 'admin_notices', array( $this, 'approved_notice' ) );
 		add_action( 'admin_notices', array( $this, 'expired_notice' ) );
 
-		if ( get_option( 'listings_jobs_enable_categories' ) ) {
+		if ( get_option( 'listings_restaurants_enable_categories' ) ) {
 			add_action( "restrict_manage_posts", array( $this, "jobs_by_category" ) );
 		}
 
@@ -42,15 +42,15 @@ class Cpt {
 	public function add_bulk_actions() {
 		global $post_type, $wp_post_types;;
 
-		if ( $post_type == 'job_listing' ) {
+		if ( $post_type == 'restaurant_listing' ) {
 			?>
 			<script type="text/javascript">
 		      jQuery(document).ready(function() {
-		        jQuery('<option>').val('approve_jobs').text('<?php printf( __( 'Approve %s', 'listings-jobs' ), $wp_post_types['job_listing']->labels->name ); ?>').appendTo("select[name='action']");
-		        jQuery('<option>').val('approve_jobs').text('<?php printf( __( 'Approve %s', 'listings-jobs' ), $wp_post_types['job_listing']->labels->name ); ?>').appendTo("select[name='action2']");
+		        jQuery('<option>').val('approve_jobs').text('<?php printf( __( 'Approve %s', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action']");
+		        jQuery('<option>').val('approve_jobs').text('<?php printf( __( 'Approve %s', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action2']");
 
-		        jQuery('<option>').val('expire_jobs').text('<?php printf( __( 'Expire %s', 'listings-jobs' ), $wp_post_types['job_listing']->labels->name ); ?>').appendTo("select[name='action']");
-		        jQuery('<option>').val('expire_jobs').text('<?php printf( __( 'Expire %s', 'listings-jobs' ), $wp_post_types['job_listing']->labels->name ); ?>').appendTo("select[name='action2']");
+		        jQuery('<option>').val('expire_jobs').text('<?php printf( __( 'Expire %s', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action']");
+		        jQuery('<option>').val('expire_jobs').text('<?php printf( __( 'Expire %s', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action2']");
 		      });
 		    </script>
 		    <?php
@@ -82,7 +82,7 @@ class Cpt {
 						}
 					}
 
-				wp_redirect( add_query_arg( 'approved_jobs', $approved_jobs, remove_query_arg( array( 'approved_jobs', 'expired_jobs' ), admin_url( 'edit.php?post_type=job_listing' ) ) ) );
+				wp_redirect( add_query_arg( 'approved_jobs', $approved_jobs, remove_query_arg( array( 'approved_jobs', 'expired_jobs' ), admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
 				exit;
 			break;
 			case 'expire_jobs' :
@@ -97,11 +97,11 @@ class Cpt {
 							'ID'          => $post_id,
 							'post_status' => 'expired'
 						);
-						if ( current_user_can( 'manage_job_listings' ) && wp_update_post( $job_data ) )
+						if ( current_user_can( 'manage_restaurant_listings' ) && wp_update_post( $job_data ) )
 							$expired_jobs[] = $post_id;
 					}
 
-				wp_redirect( add_query_arg( 'expired_jobs', $expired_jobs, remove_query_arg( array( 'approved_jobs', 'expired_jobs' ), admin_url( 'edit.php?post_type=job_listing' ) ) ) );
+				wp_redirect( add_query_arg( 'expired_jobs', $expired_jobs, remove_query_arg( array( 'approved_jobs', 'expired_jobs' ), admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
 				exit;
 			break;
 		}
@@ -120,7 +120,7 @@ class Cpt {
 				'post_status' => 'publish'
 			);
 			wp_update_post( $job_data );
-			wp_redirect( remove_query_arg( 'approve_job', add_query_arg( 'approved_jobs', $post_id, admin_url( 'edit.php?post_type=job_listing' ) ) ) );
+			wp_redirect( remove_query_arg( 'approve_job', add_query_arg( 'approved_jobs', $post_id, admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
 			exit;
 		}
 	}
@@ -131,7 +131,7 @@ class Cpt {
 	public function approved_notice() {
 		 global $post_type, $pagenow;
 
-		if ( $pagenow == 'edit.php' && $post_type == 'job_listing' && ! empty( $_REQUEST['approved_jobs'] ) ) {
+		if ( $pagenow == 'edit.php' && $post_type == 'restaurant_listing' && ! empty( $_REQUEST['approved_jobs'] ) ) {
 			$approved_jobs = $_REQUEST['approved_jobs'];
 			if ( is_array( $approved_jobs ) ) {
 				$approved_jobs = array_map( 'absint', $approved_jobs );
@@ -151,7 +151,7 @@ class Cpt {
 	public function expired_notice() {
 		 global $post_type, $pagenow;
 
-		if ( $pagenow == 'edit.php' && $post_type == 'job_listing' && ! empty( $_REQUEST['expired_jobs'] ) ) {
+		if ( $pagenow == 'edit.php' && $post_type == 'restaurant_listing' && ! empty( $_REQUEST['expired_jobs'] ) ) {
 			$expired_jobs = $_REQUEST['expired_jobs'];
 			if ( is_array( $expired_jobs ) ) {
 				$expired_jobs = array_map( 'absint', $expired_jobs );
@@ -171,7 +171,7 @@ class Cpt {
 	public function jobs_by_category() {
 		global $typenow, $wp_query;
 
-	    if ( $typenow != 'job_listing' || ! taxonomy_exists( 'job_listing_category' ) ) {
+	    if ( $typenow != 'restaurant_listing' || ! taxonomy_exists( 'restaurant_listing_category' ) ) {
 	    	return;
 	    }
 
@@ -180,17 +180,17 @@ class Cpt {
 		$r['hierarchical'] = 1;
 		$r['hide_empty']   = 0;
 		$r['show_count']   = 1;
-		$r['selected']     = ( isset( $wp_query->query['job_listing_category'] ) ) ? $wp_query->query['job_listing_category'] : '';
+		$r['selected']     = ( isset( $wp_query->query['restaurant_listing_category'] ) ) ? $wp_query->query['restaurant_listing_category'] : '';
 		$r['menu_order']   = false;
-		$terms             = get_terms( 'job_listing_category', $r );
+		$terms             = get_terms( 'restaurant_listing_category', $r );
 		$walker            = new CategoryWalker();
 
 		if ( ! $terms ) {
 			return;
 		}
 
-		$output  = "<select name='job_listing_category' id='dropdown_job_listing_category'>";
-		$output .= '<option value="" ' . selected( isset( $_GET['job_listing_category'] ) ? $_GET['job_listing_category'] : '', '', false ) . '>' . __( 'Select category', 'listings-jobs' ) . '</option>';
+		$output  = "<select name='restaurant_listing_category' id='dropdown_restaurant_listing_category'>";
+		$output .= '<option value="" ' . selected( isset( $_GET['restaurant_listing_category'] ) ? $_GET['restaurant_listing_category'] : '', '', false ) . '>' . __( 'Select category', 'listings-jobs' ) . '</option>';
 		$output .= $walker->walk( $terms, 0, $r );
 		$output .= "</select>";
 
@@ -204,7 +204,7 @@ class Cpt {
 	 * @return void
 	 */
 	public function enter_title_here( $text, $post ) {
-		if ( $post->post_type == 'job_listing' )
+		if ( $post->post_type == 'restaurant_listing' )
 			return __( 'Position', 'listings-jobs' );
 		return $text;
 	}
@@ -219,19 +219,19 @@ class Cpt {
 	public function post_updated_messages( $messages ) {
 		global $post, $post_ID, $wp_post_types;
 
-		$messages['job_listing'] = array(
+		$messages['restaurant_listing'] = array(
 			0 => '',
-			1 => sprintf( __( '%s updated. <a href="%s">View</a>', 'listings-jobs' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( get_permalink( $post_ID ) ) ),
+			1 => sprintf( __( '%s updated. <a href="%s">View</a>', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name, esc_url( get_permalink( $post_ID ) ) ),
 			2 => __( 'Custom field updated.', 'listings-jobs' ),
 			3 => __( 'Custom field deleted.', 'listings-jobs' ),
-			4 => sprintf( __( '%s updated.', 'listings-jobs' ), $wp_post_types['job_listing']->labels->singular_name ),
-			5 => isset( $_GET['revision'] ) ? sprintf( __( '%s restored to revision from %s', 'listings-jobs' ), $wp_post_types['job_listing']->labels->singular_name, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6 => sprintf( __( '%s published. <a href="%s">View</a>', 'listings-jobs' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( get_permalink( $post_ID ) ) ),
-			7 => sprintf( __( '%s saved.', 'listings-jobs' ), $wp_post_types['job_listing']->labels->singular_name ),
-			8 => sprintf( __( '%s submitted. <a target="_blank" href="%s">Preview</a>', 'listings-jobs' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
-			9 => sprintf( __( '%s scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview</a>', 'listings-jobs' ), $wp_post_types['job_listing']->labels->singular_name,
+			4 => sprintf( __( '%s updated.', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name ),
+			5 => isset( $_GET['revision'] ) ? sprintf( __( '%s restored to revision from %s', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6 => sprintf( __( '%s published. <a href="%s">View</a>', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name, esc_url( get_permalink( $post_ID ) ) ),
+			7 => sprintf( __( '%s saved.', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name ),
+			8 => sprintf( __( '%s submitted. <a target="_blank" href="%s">Preview</a>', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name, esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+			9 => sprintf( __( '%s scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview</a>', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name,
 			  date_i18n( __( 'M j, Y @ G:i', 'listings-jobs' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ) ),
-			10 => sprintf( __( '%s draft updated. <a target="_blank" href="%s">Preview</a>', 'listings-jobs' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
+			10 => sprintf( __( '%s draft updated. <a target="_blank" href="%s">Preview</a>', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
 		);
 
 		return $messages;
@@ -250,19 +250,19 @@ class Cpt {
 
 		unset( $columns['title'], $columns['date'], $columns['author'] );
 
-		$columns["job_listing_type"]     = __( "Type", 'listings-jobs' );
+		$columns["restaurant_listing_type"]     = __( "Type", 'listings-jobs' );
 		$columns["job_position"]         = __( "Position", 'listings-jobs' );
 		$columns["job_location"]         = __( "Location", 'listings-jobs' );
 		$columns['job_status']           = '<span class="tips" data-tip="' . __( "Status", 'listings-jobs' ) . '">' . __( "Status", 'listings-jobs' ) . '</span>';
 		$columns["job_posted"]           = __( "Posted", 'listings-jobs' );
 		$columns["job_expires"]          = __( "Expires", 'listings-jobs' );
-		$columns["job_listing_category"] = __( "Categories", 'listings-jobs' );
+		$columns["restaurant_listing_category"] = __( "Categories", 'listings-jobs' );
 		$columns['featured_job']         = '<span class="tips" data-tip="' . __( "Featured?", 'listings-jobs' ) . '">' . __( "Featured?", 'listings-jobs' ) . '</span>';
 		$columns['filled']               = '<span class="tips" data-tip="' . __( "Filled?", 'listings-jobs' ) . '">' . __( "Filled?", 'listings-jobs' ) . '</span>';
 		$columns['job_actions']          = __( "Actions", 'listings-jobs' );
 
-		if ( ! get_option( 'listings_jobs_enable_categories' ) ) {
-			unset( $columns["job_listing_category"] );
+		if ( ! get_option( 'listings_restaurants_enable_categories' ) ) {
+			unset( $columns["restaurant_listing_category"] );
 		}
 
 		return $columns;
@@ -279,8 +279,8 @@ class Cpt {
 		global $post;
 
 		switch ( $column ) {
-			case "job_listing_type" :
-				$type = listings_jobs_get_the_job_type( $post );
+			case "restaurant_listing_type" :
+				$type = listings_restaurants_get_the_job_type( $post );
 				if ( $type )
 					echo '<span class="job-type ' . $type->slug . '">' . $type->name . '</span>';
 			break;
@@ -290,28 +290,28 @@ class Cpt {
 
 				echo '<div class="company">';
 
-				if ( listings_jobs_get_the_company_website() ) {
-					listings_jobs_the_company_name( '<span class="tips" data-tip="' . esc_attr( listings_jobs_get_the_company_tagline() ) . '"><a href="' . esc_url( listings_jobs_get_the_company_website() ) . '">', '</a></span>' );
+				if ( listings_restaurants_get_the_company_website() ) {
+					listings_restaurants_the_company_name( '<span class="tips" data-tip="' . esc_attr( listings_restaurants_get_the_company_tagline() ) . '"><a href="' . esc_url( listings_restaurants_get_the_company_website() ) . '">', '</a></span>' );
 				} else {
-					listings_jobs_the_company_name( '<span class="tips" data-tip="' . esc_attr( listings_jobs_get_the_company_tagline() ) . '">', '</span>' );
+					listings_restaurants_the_company_name( '<span class="tips" data-tip="' . esc_attr( listings_restaurants_get_the_company_tagline() ) . '">', '</span>' );
 				}
 
 				echo '</div>';
 
-				listings_jobs_the_company_logo();
+				listings_restaurants_the_company_logo();
 				echo '</div>';
 			break;
 			case "job_location" :
-				listings_jobs_the_job_location( $post );
+				listings_restaurants_the_job_location( $post );
 			break;
-			case "job_listing_category" :
+			case "restaurant_listing_category" :
 				if ( ! $terms = get_the_term_list( $post->ID, $column, '', ', ', '' ) ) echo '<span class="na">&ndash;</span>'; else echo $terms;
 			break;
 			case "filled" :
-				if ( listings_jobs_is_position_filled( $post ) ) echo '&#10004;'; else echo '&ndash;';
+				if ( listings_restaurants_is_position_filled( $post ) ) echo '&#10004;'; else echo '&ndash;';
 			break;
 			case "featured_job" :
-				if ( listings_jobs_is_position_featured( $post ) ) echo '&#10004;'; else echo '&ndash;';
+				if ( listings_restaurants_is_position_featured( $post ) ) echo '&#10004;'; else echo '&ndash;';
 			break;
 			case "job_posted" :
 				echo '<strong>' . date_i18n( __( 'M j, Y', 'listings-jobs' ), strtotime( $post->post_date ) ) . '</strong><span>';
@@ -324,7 +324,7 @@ class Cpt {
 					echo '&ndash;';
 			break;
 			case "job_status" :
-				echo '<span data-tip="' . esc_attr( listings_jobs_get_job_status( $post ) ) . '" class="tips status-' . esc_attr( $post->post_status ) . '">' . listings_jobs_get_job_status( $post ) . '</span>';
+				echo '<span data-tip="' . esc_attr( listings_restaurants_get_job_status( $post ) ) . '" class="tips status-' . esc_attr( $post->post_status ) . '">' . listings_restaurants_get_job_status( $post ) . '</span>';
 			break;
 			case "job_actions" :
 				echo '<div class="actions">';
@@ -361,7 +361,7 @@ class Cpt {
 					}
 				}
 
-				$admin_actions = apply_filters( 'listings_jobs_admin_actions', $admin_actions, $post );
+				$admin_actions = apply_filters( 'listings_restaurants_admin_actions', $admin_actions, $post );
 
 				foreach ( $admin_actions as $action ) {
 					if ( is_array( $action ) ) {
@@ -426,7 +426,7 @@ class Cpt {
 		/** @var $wpdb \wpdb */
 		global $pagenow, $wpdb;
 
-		if ( 'edit.php' !== $pagenow || empty( $wp->query_vars['s'] ) || 'job_listing' !== $wp->query_vars['post_type'] ) {
+		if ( 'edit.php' !== $pagenow || empty( $wp->query_vars['s'] ) || 'restaurant_listing' !== $wp->query_vars['post_type'] ) {
 			return;
 		}
 
@@ -439,7 +439,7 @@ class Cpt {
 					WHERE p1.meta_value LIKE '%%%s%%'
 					OR posts.post_title LIKE '%%%s%%'
 					OR posts.post_content LIKE '%%%s%%'
-					AND posts.post_type = 'job_listing'
+					AND posts.post_type = 'restaurant_listing'
 					",
 					esc_sql( $wp->query_vars['s'] ),
 					esc_sql( $wp->query_vars['s'] ),
@@ -451,7 +451,7 @@ class Cpt {
 
 		// Adjust the query vars
 		unset( $wp->query_vars['s'] );
-		$wp->query_vars['job_listing_search'] = true;
+		$wp->query_vars['restaurant_listing_search'] = true;
 		$wp->query_vars['post__in'] = $post_ids;
 	}
 
@@ -463,7 +463,7 @@ class Cpt {
 	public function search_meta_label( $query ) {
 		global $pagenow, $typenow;
 
-		if ( 'edit.php' !== $pagenow || $typenow !== 'job_listing' || ! get_query_var( 'job_listing_search' ) ) {
+		if ( 'edit.php' !== $pagenow || $typenow !== 'restaurant_listing' || ! get_query_var( 'restaurant_listing_search' ) ) {
 			return $query;
 		}
 
@@ -479,13 +479,13 @@ class Cpt {
 		global $post, $post_type;
 
 		// Abort if we're on the wrong post type, but only if we got a restriction
-		if ( 'job_listing' !== $post_type ) {
+		if ( 'restaurant_listing' !== $post_type ) {
 			return;
 		}
 
 		// Get all non-builtin post status and add them as <option>
 		$options = $display = '';
-		foreach ( listings_jobs_get_listing_post_statuses() as $status => $name ) {
+		foreach ( listings_restaurants_get_listing_post_statuses() as $status => $name ) {
 			$selected = selected( $post->post_status, $status, false );
 
 			// If we one of our custom post status is selected, remember it
