@@ -373,7 +373,7 @@ class SubmitJob extends Form {
 
 		wp_enqueue_script( 'listings-jobs-job-submission' );
 
-		listings_get_template( 'job-submit.php', array(
+		listings_get_template( 'restaurant-submit.php', array(
 			'form'               => $this->form_name,
 			'job_id'             => $this->get_job_id(),
 			'action'             => $this->get_action(),
