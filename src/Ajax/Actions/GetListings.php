@@ -66,7 +66,7 @@ class GetListings extends Action
 
         <?php else : ?>
 
-            <?php listings_get_template_part( 'content', 'no-jobs-found' ); ?>
+            <?php listings_get_template_part( 'content', 'no-restaurants-found' ); ?>
 
         <?php endif;
 

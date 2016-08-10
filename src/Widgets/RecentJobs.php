@@ -92,7 +92,7 @@ class RecentJobs extends Widget {
 
         <?php else : ?>
 
-            <?php listings_get_template_part( 'content-widget', 'no-jobs-found' ); ?>
+            <?php listings_get_template_part( 'content-widget', 'no-restaurants-found' ); ?>
 
         <?php endif;
 
