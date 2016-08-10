@@ -640,7 +640,7 @@ class SubmitJob extends Form {
 
 			setup_postdata( $post );
 
-			listings_get_template( 'job-preview.php', array(
+			listings_get_template( 'restaurant-preview.php', array(
 				'form' => $this
 			) );
 
@@ -689,6 +689,6 @@ class SubmitJob extends Form {
 	 */
 	public function done() {
 		do_action( 'listings_restaurants_job_submitted', $this->job_id );
-		listings_get_template( 'job-submitted.php', array( 'job' => get_post( $this->job_id ) ) );
+		listings_get_template( 'restaurant-submitted.php', array( 'job' => get_post( $this->job_id ) ) );
 	}
 }
