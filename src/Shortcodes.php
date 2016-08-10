@@ -353,7 +353,7 @@ class Shortcodes {
 	 * Output some content when no results were found
 	 */
 	public function output_no_results() {
-		listings_get_template( 'content-no-jobs-found.php' );
+		listings_get_template( 'content-no-restaurants-found.php' );
 	}
 
 	/**
