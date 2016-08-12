@@ -7,8 +7,6 @@ use Listings\Restaurants\Admin\Admin;
 use Listings\Restaurants\Ajax\Actions\GetListings;
 use Listings\Restaurants\Forms\EditJob;
 use Listings\Restaurants\Forms\SubmitJob;
-use Listings\Restaurants\Widgets\FeaturedJobs;
-use Listings\Restaurants\Widgets\RecentJobs;
 
 class Plugin {
     public function __construct()
@@ -61,8 +59,8 @@ class Plugin {
      * Widgets init
      */
     public function widgets_init() {
-        register_widget( RecentJobs::class );
-        register_widget( FeaturedJobs::class );
+        register_widget( 'Listings\Restaurants\Widgets\RecentJobs' );
+        register_widget( 'Listings\Restaurants\Widgets\FeaturedJobs' );
     }
 
     public function enqueue_scripts() {
