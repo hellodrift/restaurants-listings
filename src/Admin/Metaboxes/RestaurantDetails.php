@@ -31,7 +31,7 @@ class RestaurantDetails extends Metabox
 		$current_user = wp_get_current_user();
 
 		$fields = array(
-			'_job_location' => array(
+			'_restaurant_location' => array(
 				'label' => __( 'Location', 'listings-jobs' ),
 				'placeholder' => __( 'e.g. "London"', 'listings-jobs' ),
 				'description' => __( 'Leave this blank if the location is not important.', 'listings-jobs' ),
@@ -84,16 +84,16 @@ class RestaurantDetails extends Metabox
 				'description' => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'listings-jobs' ),
 				'priority'    => 10
 			);
-			$fields['_job_expires'] = array(
+			$fields['_restaurant_expires'] = array(
 				'label'       => __( 'Listing Expiry Date', 'listings-jobs' ),
 				'priority'    => 11,
 				'classes'     => array( 'listings-jobs-datepicker' ),
 				'placeholder' => _x( 'yyyy-mm-dd', 'Date format placeholder', 'listings-jobs' ),
-				'value'       => metadata_exists( 'post', $post->ID, '_job_expires' ) ? get_post_meta( $post->ID, '_job_expires', true ) : listings_restaurants_calculate_job_expiry( $post->ID ),
+				'value'       => metadata_exists( 'post', $post->ID, '_restaurant_expires' ) ? get_post_meta( $post->ID, '_restaurant_expires', true ) : listings_restaurants_calculate_restaurant_expiry( $post->ID ),
 			);
 		}
 		if ( $current_user->has_cap( 'edit_others_restaurant_listings' ) ) {
-			$fields['_job_author'] = array(
+			$fields['_restaurant_author'] = array(
 				'label'    => __( 'Posted by', 'listings-jobs' ),
 				'type'     => 'author',
 				'priority' => 12
@@ -200,7 +200,7 @@ class RestaurantDetails extends Metabox
 		// Save fields
 		foreach ( $this->restaurant_listing_fields() as $key => $field ) {
 			// Expirey date
-			if ( '_job_expires' === $key ) {
+			if ( '_restaurant_expires' === $key ) {
 				if ( ! empty( $_POST[ $key ] ) ) {
 					update_post_meta( $post_id, $key, date( 'Y-m-d', strtotime( sanitize_text_field( $_POST[ $key ] ) ) ) );
 				} else {
@@ -209,7 +209,7 @@ class RestaurantDetails extends Metabox
 			}
 
 			// Locations
-			elseif ( '_job_location' === $key ) {
+			elseif ( '_restaurant_location' === $key ) {
 				if ( update_post_meta( $post_id, $key, sanitize_text_field( $_POST[ $key ] ) ) ) {
 					// Location data will be updated by hooked in methods
 				} elseif ( apply_filters( 'listings_restaurants_geolocation_enabled', true ) && ! Geocode::has_location_data( $post_id ) ) {
@@ -217,7 +217,7 @@ class RestaurantDetails extends Metabox
 				}
 			}
 
-			elseif ( '_job_author' === $key ) {
+			elseif ( '_restaurant_author' === $key ) {
 				$wpdb->update( $wpdb->posts, array( 'post_author' => $_POST[ $key ] > 0 ? absint( $_POST[ $key ] ) : 0 ), array( 'ID' => $post_id ) );
 			}
 

@@ -15,7 +15,7 @@
 			do_action( 'single_restaurant_listing_start' );
 		?>
 
-		<div class="job_description" itemprop="description">
+		<div class="restaurant_description" itemprop="description">
 			<?php echo apply_filters( 'the_restaurant_description', get_the_content() ); ?>
 		</div>
 

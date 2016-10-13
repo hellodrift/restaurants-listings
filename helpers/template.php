@@ -99,8 +99,8 @@ function listings_restaurants_get_application_method( $post = null ) {
  * @return void
  */
 function listings_restaurants_the_restaurant_type($post = null) {
-    if ($job_type = listings_restaurants_get_the_restaurant_type($post)) {
-        echo $job_type->name;
+    if ($restaurant_type = listings_restaurants_get_the_restaurant_type($post)) {
+        echo $restaurant_type->name;
     }
 }
 
@@ -161,7 +161,7 @@ function listings_restaurants_get_the_restaurant_location( $post = null ) {
         return;
     }
 
-    return apply_filters( 'the_restaurant_location', $post->_job_location, $post );
+    return apply_filters( 'the_restaurant_location', $post->_restaurant_location, $post );
 }
 
 /**
@@ -415,16 +415,16 @@ function listings_restaurants_get_restaurant_listing_class( $class = '', $post_i
     }
 
     $classes[] = 'restaurant_listing';
-    if ( $job_type = listings_restaurants_get_the_restaurant_type() ) {
-        $classes[] = 'job-type-' . sanitize_title( $job_type->name );
+    if ( $restaurant_type = listings_restaurants_get_the_restaurant_type() ) {
+        $classes[] = 'job-type-' . sanitize_title( $restaurant_type->name );
     }
 
     if ( listings_restaurants_is_position_filled( $post ) ) {
-        $classes[] = 'job_position_filled';
+        $classes[] = 'restaurant_position_filled';
     }
 
     if ( listings_restaurants_is_position_featured( $post ) ) {
-        $classes[] = 'job_position_featured';
+        $classes[] = 'restaurant_position_featured';
     }
 
     if ( ! empty( $class ) ) {

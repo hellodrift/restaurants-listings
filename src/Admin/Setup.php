@@ -99,8 +99,8 @@ class Setup {
 			$create_pages    = isset( $_POST['listings-jobs-create-page'] ) ? $_POST['listings-jobs-create-page'] : array();
 			$page_titles     = $_POST['listings-jobs-page-title'];
 			$pages_to_create = array(
-				'submit_job_form' => '[submit_job_form]',
-				'job_dashboard'   => '[job_dashboard]',
+				'submit_restaurant_form' => '[submit_restaurant_form]',
+				'restaurant_dashboard'   => '[restaurant_dashboard]',
 				'jobs'            => '[jobs]'
 			);
 
@@ -153,24 +153,24 @@ class Setup {
 						</thead>
 						<tbody>
 							<tr>
-								<td><input type="checkbox" checked="checked" name="listings-jobs-create-page[submit_job_form]" /></td>
-								<td><input type="text" value="<?php echo esc_attr( _x( 'Post a Job', 'Default page title (wizard)', 'listings-jobs' ) ); ?>" name="listings-jobs-page-title[submit_job_form]" /></td>
+								<td><input type="checkbox" checked="checked" name="listings-jobs-create-page[submit_restaurant_form]" /></td>
+								<td><input type="text" value="<?php echo esc_attr( _x( 'Post a Job', 'Default page title (wizard)', 'listings-jobs' ) ); ?>" name="listings-jobs-page-title[submit_restaurant_form]" /></td>
 								<td>
 									<p><?php _e( 'This page allows employers to post jobs to your website from the front-end.', 'listings-jobs' ); ?></p>
 
 									<p><?php _e( 'If you do not want to accept submissions from users in this way (for example you just want to post jobs from the admin dashboard) you can skip creating this page.', 'listings-jobs' ); ?></p>
 								</td>
-								<td><code>[submit_job_form]</code></td>
+								<td><code>[submit_restaurant_form]</code></td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" checked="checked" name="listings-jobs-create-page[job_dashboard]" /></td>
-								<td><input type="text" value="<?php echo esc_attr( _x( 'Job Dashboard', 'Default page title (wizard)', 'listings-jobs' ) ); ?>" name="listings-jobs-page-title[job_dashboard]" /></td>
+								<td><input type="checkbox" checked="checked" name="listings-jobs-create-page[restaurant_dashboard]" /></td>
+								<td><input type="text" value="<?php echo esc_attr( _x( 'Job Dashboard', 'Default page title (wizard)', 'listings-jobs' ) ); ?>" name="listings-jobs-page-title[restaurant_dashboard]" /></td>
 								<td>
 									<p><?php _e( 'This page allows employers to manage and edit their own jobs from the front-end.', 'listings-jobs' ); ?></p>
 
 									<p><?php _e( 'If you plan on managing all listings from the admin dashboard you can skip creating this page.', 'listings-jobs' ); ?></p>
 								</td>
-								<td><code>[job_dashboard]</code></td>
+								<td><code>[restaurant_dashboard]</code></td>
 							</tr>
 							<tr>
 								<td><input type="checkbox" checked="checked" name="listings-jobs-create-page[jobs]" /></td>
@@ -201,7 +201,7 @@ class Setup {
 					<li><a href="<?php echo admin_url( 'admin.php?page=listings-settings' ); ?>"><?php _e( 'Tweak the plugin settings', 'listings-jobs' ); ?></a></li>
 					<li><a href="<?php echo admin_url( 'post-new.php?post_type=listing' ); ?>"><?php _e( 'Add a job via the back-end', 'listings-jobs' ); ?></a></li>
 
-					<?php if ( $permalink = listings_get_permalink( 'submit_job_form' ) ) : ?>
+					<?php if ( $permalink = listings_get_permalink( 'submit_restaurant_form' ) ) : ?>
 						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'Add a job via the front-end', 'listings-jobs' ); ?></a></li>
 					<?php else : ?>
 						<li><a href="https://wpjobmanager.com/document/the-job-submission-form/"><?php _e( 'Find out more about the front-end job submission form', 'listings-jobs' ); ?></a></li>
@@ -213,7 +213,7 @@ class Setup {
 						<li><a href="https://wpjobmanager.com/document/shortcode-reference/#section-1"><?php _e( 'Add the [jobs] shortcode to a page to list jobs', 'listings-jobs' ); ?></a></li>
 					<?php endif; ?>
 
-					<?php if ( $permalink = listings_get_permalink( 'job_dashboard' ) ) : ?>
+					<?php if ( $permalink = listings_get_permalink( 'restaurant_dashboard' ) ) : ?>
 						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'View the job dashboard', 'listings-jobs' ); ?></a></li>
 					<?php else : ?>
 						<li><a href="https://wpjobmanager.com/document/the-job-dashboard/"><?php _e( 'Find out more about the front-end job dashboard', 'listings-jobs' ); ?></a></li>

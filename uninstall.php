@@ -6,8 +6,8 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 wp_clear_scheduled_hook( 'listings_restaurants_check_for_expired_jobs' );
 
-wp_trash_post( get_option( 'listings_restaurants_submit_job_form_page_id' ) );
-wp_trash_post( get_option( 'listings_restaurants_job_dashboard_page_id' ) );
+wp_trash_post( get_option( 'listings_restaurants_submit_restaurant_form_page_id' ) );
+wp_trash_post( get_option( 'listings_restaurants_restaurant_dashboard_page_id' ) );
 wp_trash_post( get_option( 'listings_restaurants_jobs_page_id' ) );
 
 $options = array(
@@ -26,8 +26,8 @@ $options = array(
     'listings_restaurants_installed_terms',
     'listings_restaurants_submit_page_slug',
     'listings_restaurants_dashboard_page_slug',
-    'listings_restaurants_submit_job_form_page_id',
-    'listings_restaurants_job_dashboard_page_id',
+    'listings_restaurants_submit_restaurant_form_page_id',
+    'listings_restaurants_restaurant_dashboard_page_id',
     'listings_restaurants_jobs_page_id',
 );
 

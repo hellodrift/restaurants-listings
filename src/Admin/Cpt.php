@@ -73,11 +73,11 @@ class Cpt {
 
 				if ( ! empty( $post_ids ) )
 					foreach( $post_ids as $post_id ) {
-						$job_data = array(
+						$restaurant_data = array(
 							'ID'          => $post_id,
 							'post_status' => 'publish'
 						);
-						if ( in_array( get_post_status( $post_id ), array( 'pending', 'pending_payment' ) ) && current_user_can( 'publish_post', $post_id ) && wp_update_post( $job_data ) ) {
+						if ( in_array( get_post_status( $post_id ), array( 'pending', 'pending_payment' ) ) && current_user_can( 'publish_post', $post_id ) && wp_update_post( $restaurant_data ) ) {
 							$approved_jobs[] = $post_id;
 						}
 					}
@@ -93,11 +93,11 @@ class Cpt {
 
 				if ( ! empty( $post_ids ) )
 					foreach( $post_ids as $post_id ) {
-						$job_data = array(
+						$restaurant_data = array(
 							'ID'          => $post_id,
 							'post_status' => 'expired'
 						);
-						if ( current_user_can( 'manage_restaurant_listings' ) && wp_update_post( $job_data ) )
+						if ( current_user_can( 'manage_restaurant_listings' ) && wp_update_post( $restaurant_data ) )
 							$expired_jobs[] = $post_id;
 					}
 
@@ -115,11 +115,11 @@ class Cpt {
 	public function approve_job() {
 		if ( ! empty( $_GET['approve_job'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'approve_job' ) && current_user_can( 'publish_post', $_GET['approve_job'] ) ) {
 			$post_id = absint( $_GET['approve_job'] );
-			$job_data = array(
+			$restaurant_data = array(
 				'ID'          => $post_id,
 				'post_status' => 'publish'
 			);
-			wp_update_post( $job_data );
+			wp_update_post( $restaurant_data );
 			wp_redirect( remove_query_arg( 'approve_job', add_query_arg( 'approved_jobs', $post_id, admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
 			exit;
 		}
@@ -136,8 +136,8 @@ class Cpt {
 			if ( is_array( $approved_jobs ) ) {
 				$approved_jobs = array_map( 'absint', $approved_jobs );
 				$titles        = array();
-				foreach ( $approved_jobs as $job_id )
-					$titles[] = get_the_title( $job_id );
+				foreach ( $approved_jobs as $restaurant_id )
+					$titles[] = get_the_title( $restaurant_id );
 				echo '<div class="updated"><p>' . sprintf( __( '%s approved', 'listings-jobs' ), '&quot;' . implode( '&quot;, &quot;', $titles ) . '&quot;' ) . '</p></div>';
 			} else {
 				echo '<div class="updated"><p>' . sprintf( __( '%s approved', 'listings-jobs' ), '&quot;' . get_the_title( $approved_jobs ) . '&quot;' ) . '</p></div>';
@@ -156,8 +156,8 @@ class Cpt {
 			if ( is_array( $expired_jobs ) ) {
 				$expired_jobs = array_map( 'absint', $expired_jobs );
 				$titles        = array();
-				foreach ( $expired_jobs as $job_id )
-					$titles[] = get_the_title( $job_id );
+				foreach ( $expired_jobs as $restaurant_id )
+					$titles[] = get_the_title( $restaurant_id );
 				echo '<div class="updated"><p>' . sprintf( __( '%s expired', 'listings-jobs' ), '&quot;' . implode( '&quot;, &quot;', $titles ) . '&quot;' ) . '</p></div>';
 			} else {
 				echo '<div class="updated"><p>' . sprintf( __( '%s expired', 'listings-jobs' ), '&quot;' . get_the_title( $expired_jobs ) . '&quot;' ) . '</p></div>';
@@ -251,15 +251,15 @@ class Cpt {
 		unset( $columns['title'], $columns['date'], $columns['author'] );
 
 		$columns["restaurant_listing_type"]     = __( "Type", 'listings-jobs' );
-		$columns["job_position"]         = __( "Position", 'listings-jobs' );
-		$columns["job_location"]         = __( "Location", 'listings-jobs' );
-		$columns['job_status']           = '<span class="tips" data-tip="' . __( "Status", 'listings-jobs' ) . '">' . __( "Status", 'listings-jobs' ) . '</span>';
-		$columns["job_posted"]           = __( "Posted", 'listings-jobs' );
-		$columns["job_expires"]          = __( "Expires", 'listings-jobs' );
+		$columns["restaurant_position"]         = __( "Position", 'listings-jobs' );
+		$columns["restaurant_location"]         = __( "Location", 'listings-jobs' );
+		$columns['restaurant_status']           = '<span class="tips" data-tip="' . __( "Status", 'listings-jobs' ) . '">' . __( "Status", 'listings-jobs' ) . '</span>';
+		$columns["restaurant_posted"]           = __( "Posted", 'listings-jobs' );
+		$columns["restaurant_expires"]          = __( "Expires", 'listings-jobs' );
 		$columns["restaurant_listing_category"] = __( "Categories", 'listings-jobs' );
 		$columns['featured_job']         = '<span class="tips" data-tip="' . __( "Featured?", 'listings-jobs' ) . '">' . __( "Featured?", 'listings-jobs' ) . '</span>';
 		$columns['filled']               = '<span class="tips" data-tip="' . __( "Filled?", 'listings-jobs' ) . '">' . __( "Filled?", 'listings-jobs' ) . '</span>';
-		$columns['job_actions']          = __( "Actions", 'listings-jobs' );
+		$columns['restaurant_actions']          = __( "Actions", 'listings-jobs' );
 
 		if ( ! get_option( 'listings_restaurants_enable_categories' ) ) {
 			unset( $columns["restaurant_listing_category"] );
@@ -284,9 +284,9 @@ class Cpt {
 				if ( $type )
 					echo '<span class="job-type ' . $type->slug . '">' . $type->name . '</span>';
 			break;
-			case "job_position" :
-				echo '<div class="job_position">';
-				echo '<a href="' . admin_url('post.php?post=' . $post->ID . '&action=edit') . '" class="tips job_title" data-tip="' . sprintf( __( 'ID: %d', 'listings-jobs' ), $post->ID ) . '">' . $post->post_title . '</a>';
+			case "restaurant_position" :
+				echo '<div class="restaurant_position">';
+				echo '<a href="' . admin_url('post.php?post=' . $post->ID . '&action=edit') . '" class="tips restaurant_title" data-tip="' . sprintf( __( 'ID: %d', 'listings-jobs' ), $post->ID ) . '">' . $post->post_title . '</a>';
 
 				echo '<div class="company">';
 
@@ -301,7 +301,7 @@ class Cpt {
 				listings_restaurants_the_company_logo();
 				echo '</div>';
 			break;
-			case "job_location" :
+			case "restaurant_location" :
 				listings_restaurants_the_restaurant_location( $post );
 			break;
 			case "restaurant_listing_category" :
@@ -313,20 +313,20 @@ class Cpt {
 			case "featured_job" :
 				if ( listings_restaurants_is_position_featured( $post ) ) echo '&#10004;'; else echo '&ndash;';
 			break;
-			case "job_posted" :
+			case "restaurant_posted" :
 				echo '<strong>' . date_i18n( __( 'M j, Y', 'listings-jobs' ), strtotime( $post->post_date ) ) . '</strong><span>';
 				echo ( empty( $post->post_author ) ? __( 'by a guest', 'listings-jobs' ) : sprintf( __( 'by %s', 'listings-jobs' ), '<a href="' . esc_url( add_query_arg( 'author', $post->post_author ) ) . '">' . get_the_author() . '</a>' ) ) . '</span>';
 			break;
-			case "job_expires" :
-				if ( $post->_job_expires )
-					echo '<strong>' . date_i18n( __( 'M j, Y', 'listings-jobs' ), strtotime( $post->_job_expires ) ) . '</strong>';
+			case "restaurant_expires" :
+				if ( $post->_restaurant_expires )
+					echo '<strong>' . date_i18n( __( 'M j, Y', 'listings-jobs' ), strtotime( $post->_restaurant_expires ) ) . '</strong>';
 				else
 					echo '&ndash;';
 			break;
-			case "job_status" :
-				echo '<span data-tip="' . esc_attr( listings_restaurants_get_job_status( $post ) ) . '" class="tips status-' . esc_attr( $post->post_status ) . '">' . listings_restaurants_get_job_status( $post ) . '</span>';
+			case "restaurant_status" :
+				echo '<span data-tip="' . esc_attr( listings_restaurants_get_restaurant_status( $post ) ) . '" class="tips status-' . esc_attr( $post->post_status ) . '">' . listings_restaurants_get_restaurant_status( $post ) . '</span>';
 			break;
-			case "job_actions" :
+			case "restaurant_actions" :
 				echo '<div class="actions">';
 				$admin_actions = apply_filters( 'post_row_actions', array(), $post );
 
@@ -386,10 +386,10 @@ class Cpt {
 	 */
 	public function sortable_columns( $columns ) {
 		$custom = array(
-			'job_posted'   => 'date',
-			'job_position' => 'title',
-			'job_location' => 'job_location',
-			'job_expires'  => 'job_expires'
+			'restaurant_posted'   => 'date',
+			'restaurant_position' => 'title',
+			'restaurant_location' => 'restaurant_location',
+			'restaurant_expires'  => 'restaurant_expires'
 		);
 		return wp_parse_args( $custom, $columns );
 	}
@@ -403,14 +403,14 @@ class Cpt {
 	 */
 	public function sort_columns( $vars ) {
 		if ( isset( $vars['orderby'] ) ) {
-			if ( 'job_expires' === $vars['orderby'] ) {
+			if ( 'restaurant_expires' === $vars['orderby'] ) {
 				$vars = array_merge( $vars, array(
-					'meta_key' 	=> '_job_expires',
+					'meta_key' 	=> '_restaurant_expires',
 					'orderby' 	=> 'meta_value'
 				) );
-			} elseif ( 'job_location' === $vars['orderby'] ) {
+			} elseif ( 'restaurant_location' === $vars['orderby'] ) {
 				$vars = array_merge( $vars, array(
-					'meta_key' 	=> '_job_location',
+					'meta_key' 	=> '_restaurant_location',
 					'orderby' 	=> 'meta_value'
 				) );
 			}

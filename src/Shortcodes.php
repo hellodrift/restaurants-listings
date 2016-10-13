@@ -7,23 +7,23 @@ use Listings\Restaurants\Forms\SubmitRestaurant;
 
 class Shortcodes {
 
-	private $job_dashboard_message = '';
+	private $restaurant_dashboard_message = '';
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		add_action( 'wp', array( $this, 'shortcode_action_handler' ) );
-		add_action( 'listings_restaurants_job_dashboard_content_edit', array( $this, 'edit_job' ) );
-		add_action( 'listings_restaurants_job_filters_end', array( $this, 'job_filter_job_types' ), 20 );
-		add_action( 'listings_restaurants_job_filters_end', array( $this, 'job_filter_results' ), 30 );
+		add_action( 'listings_restaurants_restaurant_dashboard_content_edit', array( $this, 'edit_job' ) );
+		add_action( 'listings_restaurants_restaurant_filters_end', array( $this, 'restaurant_filter_restaurant_types' ), 20 );
+		add_action( 'listings_restaurants_restaurant_filters_end', array( $this, 'restaurant_filter_results' ), 30 );
 		add_action( 'listings_restaurants_output_jobs_no_results', array( $this, 'output_no_results' ) );
-		add_shortcode( 'submit_job_form', array( $this, 'submit_job_form' ) );
-		add_shortcode( 'job_dashboard', array( $this, 'job_dashboard' ) );
+		add_shortcode( 'submit_restaurant_form', array( $this, 'submit_restaurant_form' ) );
+		add_shortcode( 'restaurant_dashboard', array( $this, 'restaurant_dashboard' ) );
 		add_shortcode( 'jobs', array( $this, 'output_jobs' ) );
 		add_shortcode( 'job', array( $this, 'output_job' ) );
-		add_shortcode( 'job_summary', array( $this, 'output_job_summary' ) );
-		add_shortcode( 'job_apply', array( $this, 'output_job_apply' ) );
+		add_shortcode( 'restaurant_summary', array( $this, 'output_restaurant_summary' ) );
+		add_shortcode( 'restaurant_apply', array( $this, 'output_restaurant_apply' ) );
 	}
 
 	/**
@@ -32,15 +32,15 @@ class Shortcodes {
 	public function shortcode_action_handler() {
 		global $post;
 
-		if ( is_page() && strstr( $post->post_content, '[job_dashboard' ) ) {
-			$this->job_dashboard_handler();
+		if ( is_page() && strstr( $post->post_content, '[restaurant_dashboard' ) ) {
+			$this->restaurant_dashboard_handler();
 		}
 	}
 
 	/**
 	 * Show the job submission form
 	 */
-	public function submit_job_form( $atts = array() ) {
+	public function submit_restaurant_form( $atts = array() ) {
 		$form = SubmitRestaurant::instance();
 		ob_start();
 		$form->output($atts);
@@ -50,18 +50,18 @@ class Shortcodes {
 	/**
 	 * Handles actions on job dashboard
 	 */
-	public function job_dashboard_handler() {
-		if ( ! empty( $_REQUEST['action'] ) && ! empty( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'listings_restaurants_my_job_actions' ) ) {
+	public function restaurant_dashboard_handler() {
+		if ( ! empty( $_REQUEST['action'] ) && ! empty( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'listings_restaurants_my_restaurant_actions' ) ) {
 
 			$action = sanitize_title( $_REQUEST['action'] );
-			$job_id = absint( $_REQUEST['job_id'] );
+			$restaurant_id = absint( $_REQUEST['restaurant_id'] );
 
 			try {
 				// Get Job
-				$job    = get_post( $job_id );
+				$job    = get_post( $restaurant_id );
 
 				// Check ownership
-				if ( ! listings_user_can_edit_listing( $job_id ) ) {
+				if ( ! listings_user_can_edit_listing( $restaurant_id ) ) {
 					throw new \Exception( __( 'Invalid ID', 'listings-jobs' ) );
 				}
 
@@ -72,10 +72,10 @@ class Shortcodes {
 							throw new \Exception( __( 'This position has already been filled', 'listings-jobs' ) );
 
 						// Update
-						update_post_meta( $job_id, '_filled', 1 );
+						update_post_meta( $restaurant_id, '_filled', 1 );
 
 						// Message
-						$this->job_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been filled', 'listings-jobs' ), $job->post_title ) . '</div>';
+						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been filled', 'listings-jobs' ), $job->post_title ) . '</div>';
 						break;
 					case 'mark_not_filled' :
 						// Check status
@@ -84,51 +84,51 @@ class Shortcodes {
 						}
 
 						// Update
-						update_post_meta( $job_id, '_filled', 0 );
+						update_post_meta( $restaurant_id, '_filled', 0 );
 
 						// Message
-						$this->job_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been marked as not filled', 'listings-jobs' ), $job->post_title ) . '</div>';
+						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been marked as not filled', 'listings-jobs' ), $job->post_title ) . '</div>';
 						break;
 					case 'delete' :
 						// Trash it
-						wp_trash_post( $job_id );
+						wp_trash_post( $restaurant_id );
 
 						// Message
-						$this->job_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been deleted', 'listings-jobs' ), $job->post_title ) . '</div>';
+						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been deleted', 'listings-jobs' ), $job->post_title ) . '</div>';
 
 						break;
 					case 'duplicate' :
-						if ( ! listings_get_permalink( 'submit_job_form' ) ) {
+						if ( ! listings_get_permalink( 'submit_restaurant_form' ) ) {
 							throw new \Exception( __( 'Missing submission page.', 'listings-jobs' ) );
 						}
 
-						$new_job_id = listings_restaurants_duplicate_listing( $job_id );
+						$new_restaurant_id = listings_restaurants_duplicate_listing( $restaurant_id );
 
-						if ( $new_job_id ) {
-							wp_redirect( add_query_arg( array( 'job_id' => absint( $new_job_id ) ), listings_get_permalink( 'submit_job_form' ) ) );
+						if ( $new_restaurant_id ) {
+							wp_redirect( add_query_arg( array( 'restaurant_id' => absint( $new_restaurant_id ) ), listings_get_permalink( 'submit_restaurant_form' ) ) );
 							exit;
 						}
 
 						break;
 					case 'relist' :
-						if ( ! listings_get_permalink( 'submit_job_form' ) ) {
+						if ( ! listings_get_permalink( 'submit_restaurant_form' ) ) {
 							throw new \Exception( __( 'Missing submission page.', 'listings-jobs' ) );
 						}
 
 						// redirect to post page
-						wp_redirect( add_query_arg( array( 'job_id' => absint( $job_id ) ), listings_get_permalink( 'submit_job_form' ) ) );
+						wp_redirect( add_query_arg( array( 'restaurant_id' => absint( $restaurant_id ) ), listings_get_permalink( 'submit_restaurant_form' ) ) );
 						exit;
 
 						break;
 					default :
-						do_action( 'listings_restaurants_job_dashboard_do_action_' . $action );
+						do_action( 'listings_restaurants_restaurant_dashboard_do_action_' . $action );
 						break;
 				}
 
-				do_action( 'listings_restaurants_my_job_do_action', $action, $job_id );
+				do_action( 'listings_restaurants_my_restaurant_do_action', $action, $restaurant_id );
 
 			} catch ( \Exception $e ) {
-				$this->job_dashboard_message = '<div class="listings-error">' . $e->getMessage() . '</div>';
+				$this->restaurant_dashboard_message = '<div class="listings-error">' . $e->getMessage() . '</div>';
 			}
 		}
 	}
@@ -136,7 +136,7 @@ class Shortcodes {
 	/**
 	 * Shortcode which lists the logged in user's jobs
 	 */
-	public function job_dashboard( $atts ) {
+	public function restaurant_dashboard( $atts ) {
 		if ( ! is_user_logged_in() ) {
 			ob_start();
 			listings_get_template( 'restaurant-dashboard-login.php' );
@@ -156,8 +156,8 @@ class Shortcodes {
 			$action = sanitize_title( $_REQUEST['action'] );
 
 			// Show alternative content if a plugin wants to
-			if ( has_action( 'listings_restaurants_job_dashboard_content_' . $action ) ) {
-				do_action( 'listings_restaurants_job_dashboard_content_' . $action, $atts );
+			if ( has_action( 'listings_restaurants_restaurant_dashboard_content_' . $action ) ) {
+				do_action( 'listings_restaurants_restaurant_dashboard_content_' . $action, $atts );
 
 				return ob_get_clean();
 			}
@@ -177,16 +177,16 @@ class Shortcodes {
 
 		$jobs = new \WP_Query;
 
-		echo $this->job_dashboard_message;
+		echo $this->restaurant_dashboard_message;
 
-		$job_dashboard_columns = apply_filters( 'listings_restaurants_job_dashboard_columns', array(
-			'job_title' => __( 'Title', 'listings-jobs' ),
+		$restaurant_dashboard_columns = apply_filters( 'listings_restaurants_restaurant_dashboard_columns', array(
+			'restaurant_title' => __( 'Title', 'listings-jobs' ),
 			'filled'    => __( 'Filled?', 'listings-jobs' ),
 			'date'      => __( 'Date Posted', 'listings-jobs' ),
 			'expires'   => __( 'Listing Expires', 'listings-jobs' )
 		) );
 
-		listings_get_template( 'restaurant-dashboard.php', array( 'jobs' => $jobs->query( $args ), 'max_num_pages' => $jobs->max_num_pages, 'job_dashboard_columns' => $job_dashboard_columns ) );
+		listings_get_template( 'restaurant-dashboard.php', array( 'jobs' => $jobs->query( $args ), 'max_num_pages' => $jobs->max_num_pages, 'restaurant_dashboard_columns' => $restaurant_dashboard_columns ) );
 
 		return ob_get_clean();
 	}
@@ -223,7 +223,7 @@ class Shortcodes {
 
 			// Limit what jobs are shown based on category and type
 			'categories'                => '',
-			'job_types'                 => '',
+			'restaurant_types'                 => '',
 			'featured'                  => null, // True to show only featured, false to hide featured, leave null to show both.
 			'filled'                    => null, // True to show only filled, false to hide filled, leave null to show both/use the settings.
 
@@ -231,7 +231,7 @@ class Shortcodes {
 			'location'                  => '',
 			'keywords'                  => '',
 			'selected_category'         => '',
-			'selected_job_types'        => implode( ',', array_values( listings_restaurants_get_types( 'id=>slug' ) ) ),
+			'selected_restaurant_types'        => implode( ',', array_values( listings_restaurants_get_types( 'id=>slug' ) ) ),
 		) ), $atts ) );
 
 		if ( ! get_option( 'listings_restaurants_enable_categories' ) ) {
@@ -255,8 +255,8 @@ class Shortcodes {
 
 		// Array handling
 		$categories         = is_array( $categories ) ? $categories : array_filter( array_map( 'trim', explode( ',', $categories ) ) );
-		$job_types          = is_array( $job_types ) ? $job_types : array_filter( array_map( 'trim', explode( ',', $job_types ) ) );
-		$selected_job_types = is_array( $selected_job_types ) ? $selected_job_types : array_filter( array_map( 'trim', explode( ',', $selected_job_types ) ) );
+		$restaurant_types          = is_array( $restaurant_types ) ? $restaurant_types : array_filter( array_map( 'trim', explode( ',', $restaurant_types ) ) );
+		$selected_restaurant_types = is_array( $selected_restaurant_types ) ? $selected_restaurant_types : array_filter( array_map( 'trim', explode( ',', $selected_restaurant_types ) ) );
 
 		// Get keywords and location from querystring if set
 		if ( ! empty( $_GET['search_keywords'] ) ) {
@@ -271,7 +271,7 @@ class Shortcodes {
 
 		if ( $show_filters ) {
 
-			listings_get_template( 'restaurant-filters.php', array( 'per_page' => $per_page, 'orderby' => $orderby, 'order' => $order, 'show_categories' => $show_categories, 'categories' => $categories, 'selected_category' => $selected_category, 'job_types' => $job_types, 'atts' => $atts, 'location' => $location, 'keywords' => $keywords, 'selected_job_types' => $selected_job_types, 'show_category_multiselect' => $show_category_multiselect ) );
+			listings_get_template( 'restaurant-filters.php', array( 'per_page' => $per_page, 'orderby' => $orderby, 'order' => $order, 'show_categories' => $show_categories, 'categories' => $categories, 'selected_category' => $selected_category, 'restaurant_types' => $restaurant_types, 'atts' => $atts, 'location' => $location, 'keywords' => $keywords, 'selected_restaurant_types' => $selected_restaurant_types, 'show_category_multiselect' => $show_category_multiselect ) );
 
 			listings_get_template( 'restaurant_listing-start.php' );
 			listings_get_template( 'restaurant_listing-end.php' );
@@ -286,7 +286,7 @@ class Shortcodes {
 				'search_location'   => $location,
 				'search_keywords'   => $keywords,
 				'search_categories' => $categories,
-				'job_types'         => $job_types,
+				'restaurant_types'         => $restaurant_types,
 				'orderby'           => $orderby,
 				'order'             => $order,
 				'posts_per_page'    => $per_page,
@@ -369,19 +369,19 @@ class Shortcodes {
 	 * Show restaurant types
 	 * @param  array $atts
 	 */
-	public function job_filter_job_types( $atts ) {
+	public function restaurant_filter_restaurant_types( $atts ) {
 		extract( $atts );
 
-		$job_types          = array_filter( array_map( 'trim', explode( ',', $job_types ) ) );
-		$selected_job_types = array_filter( array_map( 'trim', explode( ',', $selected_job_types ) ) );
+		$restaurant_types          = array_filter( array_map( 'trim', explode( ',', $restaurant_types ) ) );
+		$selected_restaurant_types = array_filter( array_map( 'trim', explode( ',', $selected_restaurant_types ) ) );
 
-		listings_get_template( 'restaurant-filter-restaurant-types.php', array( 'job_types' => $job_types, 'atts' => $atts, 'selected_job_types' => $selected_job_types ) );
+		listings_get_template( 'restaurant-filter-restaurant-types.php', array( 'restaurant_types' => $restaurant_types, 'atts' => $atts, 'selected_restaurant_types' => $selected_restaurant_types ) );
 	}
 
 	/**
 	 * Show results div
 	 */
-	public function job_filter_results() {
+	public function restaurant_filter_results() {
 		echo '<div class="showing_jobs"></div>';
 	}
 
@@ -424,7 +424,7 @@ class Shortcodes {
 
 		wp_reset_postdata();
 
-		return '<div class="job_shortcode single_restaurant_listing">' . ob_get_clean() . '</div>';
+		return '<div class="restaurant_shortcode single_restaurant_listing">' . ob_get_clean() . '</div>';
 	}
 
 	/**
@@ -434,7 +434,7 @@ class Shortcodes {
 	 * @param array $args
 	 * @return string
 	 */
-	public function output_job_summary( $atts ) {
+	public function output_restaurant_summary( $atts ) {
 		extract( shortcode_atts( array(
 			'id'       => '',
 			'width'    => '250px',
@@ -470,7 +470,7 @@ class Shortcodes {
 
 			<?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
 
-				<div class="job_summary_shortcode align<?php echo $align ?>" style="width: <?php echo $width ? $width : 'auto'; ?>">
+				<div class="restaurant_summary_shortcode align<?php echo $align ?>" style="width: <?php echo $width ? $width : 'auto'; ?>">
 
 					<?php listings_get_template_part( 'content-summary', 'restaurant_listing' ); ?>
 
@@ -488,7 +488,7 @@ class Shortcodes {
 	/**
 	 * Show the application area
 	 */
-	public function output_job_apply( $atts ) {
+	public function output_restaurant_apply( $atts ) {
 		extract( shortcode_atts( array(
 			'id'       => ''
 		), $atts ) );
@@ -515,15 +515,15 @@ class Shortcodes {
 				$apply = listings_restaurants_get_application_method();
 				?>
 
-				<?php do_action( 'listings_restaurants_before_job_apply_' . absint( $id ) ); ?>
+				<?php do_action( 'listings_restaurants_before_restaurant_apply_' . absint( $id ) ); ?>
 
-				<?php if ( apply_filters( 'listings_restaurants_show_job_apply_' . absint( $id ), true ) ) : ?>
+				<?php if ( apply_filters( 'listings_restaurants_show_restaurant_apply_' . absint( $id ), true ) ) : ?>
 					<div class="listings-jobs-application-wrapper">
 						<?php do_action( 'listings_restaurants_application_details_' . $apply->type, $apply ); ?>
 					</div>
 				<?php endif; ?>
 
-				<?php do_action( 'listings_restaurants_after_job_apply_' . absint( $id ) ); ?>
+				<?php do_action( 'listings_restaurants_after_restaurant_apply_' . absint( $id ) ); ?>
 
 			<?php endwhile; ?>
 

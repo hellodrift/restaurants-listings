@@ -7,7 +7,7 @@ use Listings\Forms\Form;
 class SubmitRestaurant extends Form {
 
 	public    $form_name = 'submit-job';
-	protected $job_id;
+	protected $restaurant_id;
 	protected $preview_job;
 
 	/** @var SubmitRestaurant The single instance of the class */
@@ -29,7 +29,7 @@ class SubmitRestaurant extends Form {
 	public function __construct() {
 		add_action( 'wp', array( $this, 'process' ) );
 
-		$this->steps  = (array) apply_filters( 'submit_job_steps', array(
+		$this->steps  = (array) apply_filters( 'submit_restaurant_steps', array(
 			'submit' => array(
 				'name'     => __( 'Submit Details', 'listings-jobs' ),
 				'view'     => array( $this, 'submit' ),
@@ -58,28 +58,28 @@ class SubmitRestaurant extends Form {
 			$this->step = is_numeric( $_GET['step'] ) ? max( absint( $_GET['step'] ), 0 ) : array_search( $_GET['step'], array_keys( $this->steps ) );
 		}
 
-		$this->job_id = ! empty( $_REQUEST['job_id'] ) ? absint( $_REQUEST[ 'job_id' ] ) : 0;
+		$this->restaurant_id = ! empty( $_REQUEST['restaurant_id'] ) ? absint( $_REQUEST[ 'restaurant_id' ] ) : 0;
 
 		// Allow resuming from cookie.
-		if ( ! $this->job_id && ! empty( $_COOKIE['listings-jobs-submitting-job-id'] ) && ! empty( $_COOKIE['listings-jobs-submitting-job-key'] ) ) {
-			$job_id     = absint( $_COOKIE['listings-jobs-submitting-job-id'] );
-			$job_status = get_post_status( $job_id );
+		if ( ! $this->restaurant_id && ! empty( $_COOKIE['listings-jobs-submitting-job-id'] ) && ! empty( $_COOKIE['listings-jobs-submitting-job-key'] ) ) {
+			$restaurant_id     = absint( $_COOKIE['listings-jobs-submitting-job-id'] );
+			$restaurant_status = get_post_status( $restaurant_id );
 
-			if ( 'preview' === $job_status && get_post_meta( $job_id, '_submitting_key', true ) === $_COOKIE['listings-jobs-submitting-job-key'] ) {
-				$this->job_id = $job_id;
+			if ( 'preview' === $restaurant_status && get_post_meta( $restaurant_id, '_submitting_key', true ) === $_COOKIE['listings-jobs-submitting-job-key'] ) {
+				$this->restaurant_id = $restaurant_id;
 			}
 		}
 
 		// Load job details
-		if ( $this->job_id ) {
-			$job_status = get_post_status( $this->job_id );
-			if ( 'expired' === $job_status ) {
-				if ( ! listings_user_can_edit_listing( $this->job_id ) ) {
-					$this->job_id = 0;
+		if ( $this->restaurant_id ) {
+			$restaurant_status = get_post_status( $this->restaurant_id );
+			if ( 'expired' === $restaurant_status ) {
+				if ( ! listings_user_can_edit_listing( $this->restaurant_id ) ) {
+					$this->restaurant_id = 0;
 					$this->step   = 0;
 				}
-			} elseif ( ! in_array( $job_status, apply_filters( 'listings_restaurants_valid_submit_job_statuses', array( 'preview' ) ) ) ) {
-				$this->job_id = 0;
+			} elseif ( ! in_array( $restaurant_status, apply_filters( 'listings_restaurants_valid_submit_restaurant_statuses', array( 'preview' ) ) ) ) {
+				$this->restaurant_id = 0;
 				$this->step   = 0;
 			}
 		}
@@ -89,8 +89,8 @@ class SubmitRestaurant extends Form {
 	 * Get the submitted job ID
 	 * @return int
 	 */
-	public function get_job_id() {
-		return absint( $this->job_id );
+	public function get_restaurant_id() {
+		return absint( $this->restaurant_id );
 	}
 
 	/**
@@ -117,16 +117,16 @@ class SubmitRestaurant extends Form {
 			break;
 		}
 
-		$this->fields = apply_filters( 'submit_job_form_fields', array(
+		$this->fields = apply_filters( 'submit_restaurant_form_fields', array(
 			'job' => array(
-				'job_title' => array(
+				'restaurant_title' => array(
 					'label'       => __( 'Job Title', 'listings-jobs' ),
 					'type'        => 'text',
 					'required'    => true,
 					'placeholder' => '',
 					'priority'    => 1
 				),
-				'job_location' => array(
+				'restaurant_location' => array(
 					'label'       => __( 'Location', 'listings-jobs' ),
 					'description' => __( 'Leave this blank if the location is not important', 'listings-jobs' ),
 					'type'        => 'text',
@@ -134,7 +134,7 @@ class SubmitRestaurant extends Form {
 					'placeholder' => __( 'e.g. "London"', 'listings-jobs' ),
 					'priority'    => 2
 				),
-				'job_type' => array(
+				'restaurant_type' => array(
 					'label'       => __( 'Job type', 'listings-jobs' ),
 					'type'        => 'term-select',
 					'required'    => true,
@@ -143,7 +143,7 @@ class SubmitRestaurant extends Form {
 					'default'     => 'full-time',
 					'taxonomy'    => 'restaurant_listing_type'
 				),
-				'job_category' => array(
+				'restaurant_category' => array(
 					'label'       => __( 'Job category', 'listings-jobs' ),
 					'type'        => 'term-multiselect',
 					'required'    => true,
@@ -152,7 +152,7 @@ class SubmitRestaurant extends Form {
 					'default'     => '',
 					'taxonomy'    => 'restaurant_listing_category'
 				),
-				'job_description' => array(
+				'restaurant_description' => array(
 					'label'       => __( 'Description', 'listings-jobs' ),
 					'type'        => 'wp-editor',
 					'required'    => true,
@@ -223,7 +223,7 @@ class SubmitRestaurant extends Form {
 		) );
 
 		if ( ! get_option( 'listings_restaurants_enable_categories' ) || wp_count_terms( 'restaurant_listing_category' ) == 0 ) {
-			unset( $this->fields['job']['job_category'] );
+			unset( $this->fields['job']['restaurant_category'] );
 		}
 	}
 
@@ -303,13 +303,13 @@ class SubmitRestaurant extends Form {
 			}
 		}
 
-		return apply_filters( 'submit_job_form_validate_fields', true, $this->fields, $values );
+		return apply_filters( 'submit_restaurant_form_validate_fields', true, $this->fields, $values );
 	}
 
 	/**
-	 * job_types function.
+	 * restaurant_types function.
 	 */
-	private function job_types() {
+	private function restaurant_types() {
 		$options = array();
 		$terms   = listings_restaurants_get_types();
 		foreach ( $terms as $term ) {
@@ -325,21 +325,21 @@ class SubmitRestaurant extends Form {
 		$this->init_fields();
 
 		// Load data if neccessary
-		if ( $this->job_id ) {
-			$job = get_post( $this->job_id );
+		if ( $this->restaurant_id ) {
+			$job = get_post( $this->restaurant_id );
 			foreach ( $this->fields as $group_key => $group_fields ) {
 				foreach ( $group_fields as $key => $field ) {
 					switch ( $key ) {
-						case 'job_title' :
+						case 'restaurant_title' :
 							$this->fields[ $group_key ][ $key ]['value'] = $job->post_title;
 						break;
-						case 'job_description' :
+						case 'restaurant_description' :
 							$this->fields[ $group_key ][ $key ]['value'] = $job->post_content;
 						break;
-						case 'job_type' :
+						case 'restaurant_type' :
 							$this->fields[ $group_key ][ $key ]['value'] = current( wp_get_object_terms( $job->ID, 'restaurant_listing_type', array( 'fields' => 'ids' ) ) );
 						break;
-						case 'job_category' :
+						case 'restaurant_category' :
 							$this->fields[ $group_key ][ $key ]['value'] = wp_get_object_terms( $job->ID, 'restaurant_listing_category', array( 'fields' => 'ids' ) );
 						break;
 						case 'company_logo' :
@@ -352,7 +352,7 @@ class SubmitRestaurant extends Form {
 				}
 			}
 
-			$this->fields = apply_filters( 'submit_job_form_fields_get_job_data', $this->fields, $job );
+			$this->fields = apply_filters( 'submit_restaurant_form_fields_get_restaurant_data', $this->fields, $job );
 
 		// Get user meta
 		} elseif ( is_user_logged_in() && empty( $_POST['submit_job'] ) ) {
@@ -368,19 +368,19 @@ class SubmitRestaurant extends Form {
 					$this->fields['job']['application']['value'] = $current_user->user_email;
 				}
 			}
-			$this->fields = apply_filters( 'submit_job_form_fields_get_user_data', $this->fields, get_current_user_id() );
+			$this->fields = apply_filters( 'submit_restaurant_form_fields_get_user_data', $this->fields, get_current_user_id() );
 		}
 
 		wp_enqueue_script( 'listings-jobs-job-submission' );
 
 		listings_get_template( 'restaurant-submit.php', array(
 			'form'               => $this->form_name,
-			'job_id'             => $this->get_job_id(),
+			'restaurant_id'             => $this->get_restaurant_id(),
 			'action'             => $this->get_action(),
-			'job_fields'         => $this->get_fields( 'job' ),
+			'restaurant_fields'         => $this->get_fields( 'job' ),
 			'company_fields'     => $this->get_fields( 'company' ),
 			'step'               => $this->get_step(),
-			'submit_button_text' => apply_filters( 'submit_job_form_submit_button_text', __( 'Preview', 'listings-jobs' ) )
+			'submit_button_text' => apply_filters( 'submit_restaurant_form_submit_button_text', __( 'Preview', 'listings-jobs' ) )
 		) );
 	}
 
@@ -436,8 +436,8 @@ class SubmitRestaurant extends Form {
 			}
 
 			// Update the job
-			$this->save_job( $values['job']['job_title'], $values['job']['job_description'], $this->job_id ? '' : 'preview', $values );
-			$this->update_job_data( $values );
+			$this->save_job( $values['job']['restaurant_title'], $values['job']['restaurant_description'], $this->restaurant_id ? '' : 'preview', $values );
+			$this->update_restaurant_data( $values );
 
 			// Successful, show next step
 			$this->step ++;
@@ -458,7 +458,7 @@ class SubmitRestaurant extends Form {
 	 * @param  bool $update_slug
 	 */
 	protected function save_job( $post_title, $post_content, $status = 'preview', $values = array(), $update_slug = true ) {
-		$job_data = array(
+		$restaurant_data = array(
 			'post_title'     => $post_title,
 			'post_content'   => $post_content,
 			'post_type'      => 'restaurant_listing',
@@ -466,46 +466,46 @@ class SubmitRestaurant extends Form {
 		);
 
 		if ( $update_slug ) {
-			$job_slug   = array();
+			$restaurant_slug   = array();
 
 			// Prepend with company name
-			if ( apply_filters( 'submit_job_form_prefix_post_name_with_company', true ) && ! empty( $values['company']['company_name'] ) ) {
-				$job_slug[] = $values['company']['company_name'];
+			if ( apply_filters( 'submit_restaurant_form_prefix_post_name_with_company', true ) && ! empty( $values['company']['company_name'] ) ) {
+				$restaurant_slug[] = $values['company']['company_name'];
 			}
 
 			// Prepend location
-			if ( apply_filters( 'submit_job_form_prefix_post_name_with_location', true ) && ! empty( $values['job']['job_location'] ) ) {
-				$job_slug[] = $values['job']['job_location'];
+			if ( apply_filters( 'submit_restaurant_form_prefix_post_name_with_location', true ) && ! empty( $values['job']['restaurant_location'] ) ) {
+				$restaurant_slug[] = $values['job']['restaurant_location'];
 			}
 
 			// Prepend with job type
-			if ( apply_filters( 'submit_job_form_prefix_post_name_with_job_type', true ) && ! empty( $values['job']['job_type'] ) ) {
-				$job_slug[] = $values['job']['job_type'];
+			if ( apply_filters( 'submit_restaurant_form_prefix_post_name_with_restaurant_type', true ) && ! empty( $values['job']['restaurant_type'] ) ) {
+				$restaurant_slug[] = $values['job']['restaurant_type'];
 			}
 
-			$job_slug[]            = $post_title;
-			$job_data['post_name'] = sanitize_title( implode( '-', $job_slug ) );
+			$restaurant_slug[]            = $post_title;
+			$restaurant_data['post_name'] = sanitize_title( implode( '-', $restaurant_slug ) );
 		}
 
 		if ( $status ) {
-			$job_data['post_status'] = $status;
+			$restaurant_data['post_status'] = $status;
 		}
 
-		$job_data = apply_filters( 'submit_job_form_save_job_data', $job_data, $post_title, $post_content, $status, $values );
+		$restaurant_data = apply_filters( 'submit_restaurant_form_save_restaurant_data', $restaurant_data, $post_title, $post_content, $status, $values );
 
-		if ( $this->job_id ) {
-			$job_data['ID'] = $this->job_id;
-			wp_update_post( $job_data );
+		if ( $this->restaurant_id ) {
+			$restaurant_data['ID'] = $this->restaurant_id;
+			wp_update_post( $restaurant_data );
 		} else {
-			$this->job_id = wp_insert_post( $job_data );
+			$this->restaurant_id = wp_insert_post( $restaurant_data );
 
 			if ( ! headers_sent() ) {
 				$submitting_key = uniqid();
 
-				setcookie( 'listings-jobs-submitting-job-id', $this->job_id, false, COOKIEPATH, COOKIE_DOMAIN, false );
+				setcookie( 'listings-jobs-submitting-job-id', $this->restaurant_id, false, COOKIEPATH, COOKIE_DOMAIN, false );
 				setcookie( 'listings-jobssubmitting-job-key', $submitting_key, false, COOKIEPATH, COOKIE_DOMAIN, false );
 
-				update_post_meta( $this->job_id, '_submitting_key', $submitting_key );
+				update_post_meta( $this->restaurant_id, '_submitting_key', $submitting_key );
 			}
 		}
 	}
@@ -527,10 +527,10 @@ class SubmitRestaurant extends Form {
 		}
 
 		$attachment     = array(
-			'post_title'   => get_the_title( $this->job_id ),
+			'post_title'   => get_the_title( $this->restaurant_id ),
 			'post_content' => '',
 			'post_status'  => 'inherit',
-			'post_parent'  => $this->job_id,
+			'post_parent'  => $this->restaurant_id,
 			'guid'         => $attachment_url
 		);
 
@@ -538,7 +538,7 @@ class SubmitRestaurant extends Form {
 			$attachment['post_mime_type'] = $info['type'];
 		}
 
-		$attachment_id = wp_insert_attachment( $attachment, $attachment_url, $this->job_id );
+		$attachment_id = wp_insert_attachment( $attachment, $attachment_url, $this->restaurant_id );
 
 		if ( ! is_wp_error( $attachment_id ) ) {
 			wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $attachment_url ) );
@@ -553,10 +553,10 @@ class SubmitRestaurant extends Form {
 	 *
 	 * @param  array $values
 	 */
-	protected function update_job_data( $values ) {
+	protected function update_restaurant_data( $values ) {
 		// Set defaults
-		add_post_meta( $this->job_id, '_filled', 0, true );
-		add_post_meta( $this->job_id, '_featured', 0, true );
+		add_post_meta( $this->restaurant_id, '_filled', 0, true );
+		add_post_meta( $this->restaurant_id, '_featured', 0, true );
 
 		$maybe_attach = array();
 
@@ -566,20 +566,20 @@ class SubmitRestaurant extends Form {
 				// Save taxonomies
 				if ( ! empty( $field['taxonomy'] ) ) {
 					if ( is_array( $values[ $group_key ][ $key ] ) ) {
-						wp_set_object_terms( $this->job_id, $values[ $group_key ][ $key ], $field['taxonomy'], false );
+						wp_set_object_terms( $this->restaurant_id, $values[ $group_key ][ $key ], $field['taxonomy'], false );
 					} else {
-						wp_set_object_terms( $this->job_id, array( $values[ $group_key ][ $key ] ), $field['taxonomy'], false );
+						wp_set_object_terms( $this->restaurant_id, array( $values[ $group_key ][ $key ] ), $field['taxonomy'], false );
 					}
 
 				// Company logo is a featured image
 				} elseif ( 'company_logo' === $key ) {
 					$attachment_id = is_numeric( $values[ $group_key ][ $key ] ) ? absint( $values[ $group_key ][ $key ] ) : $this->create_attachment( $values[ $group_key ][ $key ] );
-					set_post_thumbnail( $this->job_id, $attachment_id );
+					set_post_thumbnail( $this->restaurant_id, $attachment_id );
 					update_user_meta( get_current_user_id(), '_company_logo', $attachment_id );
 
 				// Save meta data
 				} else {
-					update_post_meta( $this->job_id, '_' . $key, $values[ $group_key ][ $key ] );
+					update_post_meta( $this->restaurant_id, '_' . $key, $values[ $group_key ][ $key ] );
 
 					// Handle attachments
 					if ( 'file' === $field['type'] ) {
@@ -600,7 +600,7 @@ class SubmitRestaurant extends Form {
 		// Handle attachments
 		if ( sizeof( $maybe_attach ) && apply_filters( 'listings_restaurants_attach_uploaded_files', true ) ) {
 			// Get attachments
-			$attachments     = get_posts( 'post_parent=' . $this->job_id . '&post_type=attachment&fields=ids&post_mime_type=image&numberposts=-1' );
+			$attachments     = get_posts( 'post_parent=' . $this->restaurant_id . '&post_type=attachment&fields=ids&post_mime_type=image&numberposts=-1' );
 			$attachment_urls = array();
 
 			// Loop attachments already attached to the job
@@ -624,18 +624,18 @@ class SubmitRestaurant extends Form {
 			update_user_meta( get_current_user_id(), '_company_video', isset( $values['company']['company_video'] ) ? $values['company']['company_video'] : '' );
 		}
 
-		do_action( 'listings_restaurants_update_job_data', $this->job_id, $values );
+		do_action( 'listings_restaurants_update_restaurant_data', $this->restaurant_id, $values );
 	}
 
 	/**
 	 * Preview Step
 	 */
 	public function preview() {
-		global $post, $job_preview;
+		global $post, $restaurant_preview;
 
-		if ( $this->job_id ) {
-			$job_preview       = true;
-			$post              = get_post( $this->job_id );
+		if ( $this->restaurant_id ) {
+			$restaurant_preview       = true;
+			$post              = get_post( $this->restaurant_id );
 			$post->post_status = 'preview';
 
 			setup_postdata( $post );
@@ -663,16 +663,16 @@ class SubmitRestaurant extends Form {
 
 		// Continue = change job status then show next screen
 		if ( ! empty( $_POST['continue'] ) ) {
-			$job = get_post( $this->job_id );
+			$job = get_post( $this->restaurant_id );
 
 			if ( in_array( $job->post_status, array( 'preview', 'expired' ) ) ) {
 				// Reset expiry
-				delete_post_meta( $job->ID, '_job_expires' );
+				delete_post_meta( $job->ID, '_restaurant_expires' );
 
 				// Update job listing
 				$update_job                  = array();
 				$update_job['ID']            = $job->ID;
-				$update_job['post_status']   = apply_filters( 'submit_job_post_status', get_option( 'listings_restaurants_submission_requires_approval' ) ? 'pending' : 'publish', $job );
+				$update_job['post_status']   = apply_filters( 'submit_restaurant_post_status', get_option( 'listings_restaurants_submission_requires_approval' ) ? 'pending' : 'publish', $job );
 				$update_job['post_date']     = current_time( 'mysql' );
 				$update_job['post_date_gmt'] = current_time( 'mysql', 1 );
 				$update_job['post_author']   = get_current_user_id();
@@ -688,7 +688,7 @@ class SubmitRestaurant extends Form {
 	 * Done Step
 	 */
 	public function done() {
-		do_action( 'listings_restaurants_job_submitted', $this->job_id );
-		listings_get_template( 'restaurant-submitted.php', array( 'job' => get_post( $this->job_id ) ) );
+		do_action( 'listings_restaurants_restaurant_submitted', $this->restaurant_id );
+		listings_get_template( 'restaurant-submitted.php', array( 'job' => get_post( $this->restaurant_id ) ) );
 	}
 }

@@ -80,7 +80,7 @@ class Plugin {
         wp_enqueue_script( 'listings-job-submission', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-submission.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
 
         wp_register_script( 'listings-job-dashboard', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-dashboard.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
-        wp_localize_script( 'listings-job-dashboard', 'listings_job_dashboard', array(
+        wp_localize_script( 'listings-job-dashboard', 'listings_restaurant_dashboard', array(
             'i18n_confirm_delete' => __( 'Are you sure you want to delete this listing?', 'listings' )
         ) );
         wp_enqueue_script( 'listings-job-dashboard');

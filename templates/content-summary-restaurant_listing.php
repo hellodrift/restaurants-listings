@@ -7,7 +7,7 @@
 		<img src="<?php echo esc_attr( $logo ); ?>" alt="<?php listings_restaurants_the_company_name(); ?>" title="<?php listings_restaurants_the_company_name(); ?> - <?php listings_restaurants_the_company_tagline(); ?>" />
 	<?php endif; ?>
 
-	<div class="job_summary_content">
+	<div class="restaurant_summary_content">
 
 		<h1><?php the_title(); ?></h1>
 

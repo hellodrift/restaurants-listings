@@ -5,7 +5,7 @@ jQuery( document ).ready( function ( $ ) {
 	$( '.restaurant_listings' ).on( 'update_results', function ( event, page, append, loading_previous ) {
 		var data         = '';
 		var target       = $( this );
-		var form         = target.find( '.job_filters' );
+		var form         = target.find( '.restaurant_filters' );
 		var showing      = target.find( '.showing_jobs' );
 		var results      = target.find( '.restaurant_listings' );
 		var per_page     = target.data( 'per_page' );
@@ -39,10 +39,10 @@ jQuery( document ).ready( function ( $ ) {
 
 		if ( true == target.data( 'show_filters' ) ) {
 
-			var filter_job_type = [];
+			var filter_restaurant_type = [];
 
-			$( ':input[name="filter_job_type[]"]:checked, :input[name="filter_job_type[]"][type="hidden"], :input[name="filter_job_type"]', form ).each( function () {
-				filter_job_type.push( $( this ).val() );
+			$( ':input[name="filter_restaurant_type[]"]:checked, :input[name="filter_restaurant_type[]"][type="hidden"], :input[name="filter_restaurant_type"]', form ).each( function () {
+				filter_restaurant_type.push( $( this ).val() );
 			} );
 
 			var categories = form.find( ':input[name^="search_categories"]' ).map( function () {
@@ -67,7 +67,7 @@ jQuery( document ).ready( function ( $ ) {
 				search_keywords: keywords,
 				search_location: location,
 				search_categories: categories,
-				filter_job_type: filter_job_type,
+				filter_restaurant_type: filter_restaurant_type,
 				per_page: per_page,
 				orderby: orderby,
 				order: order,
@@ -175,7 +175,7 @@ jQuery( document ).ready( function ( $ ) {
 		} );
 	} );
 
-	$( '#search_keywords, #search_location, .job_types :input, #search_categories, .listings-jobs-filter' ).change( function() {
+	$( '#search_keywords, #search_location, .restaurant_types :input, #search_categories, .listings-jobs-filter' ).change( function() {
 		var target   = $( this ).closest( 'div.restaurant_listings' );
 		target.triggerHandler( 'update_results', [ 1, false ] );
 		listings_store_state( target, 1 );
@@ -187,13 +187,13 @@ jQuery( document ).ready( function ( $ ) {
 		}
 	} );
 
-	$( '.job_filters' ).on( 'click', '.reset', function () {
+	$( '.restaurant_filters' ).on( 'click', '.reset', function () {
 		var target = $( this ).closest( 'div.restaurant_listings' );
 		var form = $( this ).closest( 'form' );
 
 		form.find( ':input[name="search_keywords"], :input[name="search_location"], .listings-jobs-filter' ).not(':input[type="hidden"]').val( '' ).trigger( 'chosen:updated' );
 		form.find( ':input[name^="search_categories"]' ).not(':input[type="hidden"]').val( 0 ).trigger( 'chosen:updated' );
-		$( ':input[name="filter_job_type[]"]', form ).not(':input[type="hidden"]').attr( 'checked', 'checked' );
+		$( ':input[name="filter_restaurant_type[]"]', form ).not(':input[type="hidden"]').attr( 'checked', 'checked' );
 
 		target.triggerHandler( 'reset' );
 		target.triggerHandler( 'update_results', [ 1, false ] );
@@ -259,7 +259,7 @@ jQuery( document ).ready( function ( $ ) {
 
 	function listings_store_state( target, page ) {
 		if ( $supports_html5_history ) {
-			var form  = target.find( '.job_filters' );
+			var form  = target.find( '.restaurant_filters' );
 			var data  = $( form ).serialize();
 			var index = $( 'div.restaurant_listings' ).index( target );
 			window.history.replaceState( { id: 'listings_state', page: page, data: data, index: index }, '', location + '#s=1' );
@@ -268,9 +268,9 @@ jQuery( document ).ready( function ( $ ) {
 
 	// Inital job and form population
 	$(window).on( "load", function( event ) {
-		$( '.job_filters' ).each( function() {
+		$( '.restaurant_filters' ).each( function() {
 			var target      = $( this ).closest( 'div.restaurant_listings' );
-			var form        = target.find( '.job_filters' );
+			var form        = target.find( '.restaurant_filters' );
 			var inital_page = 1;
 			var index       = $( 'div.restaurant_listings' ).index( target );
 

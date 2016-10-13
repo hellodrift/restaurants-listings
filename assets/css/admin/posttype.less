@@ -3,12 +3,12 @@
 @import "../mixins/colours";
 
 .widefat {
-  td.column-featured_job, td.column-filled, td.column-job_status {
+  td.column-featured_job, td.column-filled, td.column-restaurant_status {
     width: 46px;
     text-align: left;
     padding-left: 11px;
   }
-  th.column-featured_job, th.column-filled, th.column-job_status {
+  th.column-featured_job, th.column-filled, th.column-restaurant_status {
     width: 1em;
     span {
       display: block;
@@ -30,20 +30,20 @@
       }
     }
   }
-  th.column-job_status {
+  th.column-restaurant_status {
     span {
       &:before {
         content: '\e828';
       }
     }
   }
-  .column-job_posted {
+  .column-restaurant_posted {
     strong {
       display: block;
       margin-bottom: .2em;
     }
   }
-  td.column-job_status {
+  td.column-restaurant_status {
     span {
       position: relative;
       font-size: 1em;
@@ -110,17 +110,17 @@
       background-color: @internship;
     }
   }
-  th.column-job_position {
+  th.column-restaurant_position {
     width: 20%;
   }
-  td.column-job_position {
+  td.column-restaurant_position {
     width: 20%;
     height: 34px;
-    .job_position {
+    .restaurant_position {
       position: relative;
       padding-right: 50px !important;
     }
-    a.job_title {
+    a.restaurant_title {
       font-weight: bold;
     }
     img {
@@ -140,10 +140,10 @@
       color: #bbbbbb;
     }
   }
-  .column-job_location {
+  .column-restaurant_location {
     width: 10%;
   }
-  .column-job_actions {
+  .column-restaurant_actions {
     text-align: right;
     width: 128px;
     strong {
@@ -189,7 +189,7 @@
 
 .rtl {
   .widefat {
-    .column-job_actions {
+    .column-restaurant_actions {
       a.button-icon {
         &:before {
           float: right;

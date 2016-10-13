@@ -83,7 +83,7 @@ class Settings {
                     ),
                 ),
             ),
-            'job_submission' => array(
+            'restaurant_submission' => array(
                 __( 'Job Submission', 'listings-jobs' ),
                 array(
                     array(
@@ -163,17 +163,17 @@ class Settings {
         ) );
 
         $settings['listings_pages'][1][] = array(
-            'name' => 'listings_restaurants_submit_job_form_page_id',
+            'name' => 'listings_restaurants_submit_restaurant_form_page_id',
             'std' => '',
             'label' => __('Submit Job Form Page', 'listings-jobs'),
-            'desc' => __('Select the page where you have placed the [submit_job_form] shortcode. This lets the plugin know where the form is located.', 'listings-jobs'),
+            'desc' => __('Select the page where you have placed the [submit_restaurant_form] shortcode. This lets the plugin know where the form is located.', 'listings-jobs'),
             'type' => 'page'
         );
         $settings['listings_pages'][1][] = array(
-            'name' => 'listings_restaurants_job_dashboard_page_id',
+            'name' => 'listings_restaurants_restaurant_dashboard_page_id',
             'std' => '',
             'label' => __('Job Dashboard Page', 'listings-jobs'),
-            'desc' => __('Select the page where you have placed the [job_dashboard] shortcode. This lets the plugin know where the dashboard is located.', 'listings-jobs'),
+            'desc' => __('Select the page where you have placed the [restaurant_dashboard] shortcode. This lets the plugin know where the dashboard is located.', 'listings-jobs'),
             'type' => 'page'
         );
         $settings['listings_pages'][1][] = array(

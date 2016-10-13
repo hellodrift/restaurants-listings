@@ -1,12 +1,12 @@
-<?php if ( ! is_tax( 'restaurant_listing_type' ) && empty( $job_types ) ) : ?>
-	<ul class="job_types">
+<?php if ( ! is_tax( 'restaurant_listing_type' ) && empty( $restaurant_types ) ) : ?>
+	<ul class="restaurant_types">
 		<?php foreach ( listings_restaurants_get_types() as $type ) : ?>
-			<li><label for="job_type_<?php echo $type->slug; ?>" class="<?php echo sanitize_title( $type->name ); ?>"><input type="checkbox" name="filter_job_type[]" value="<?php echo $type->slug; ?>" <?php checked( in_array( $type->slug, $selected_job_types ), true ); ?> id="job_type_<?php echo $type->slug; ?>" /> <?php echo $type->name; ?></label></li>
+			<li><label for="restaurant_type_<?php echo $type->slug; ?>" class="<?php echo sanitize_title( $type->name ); ?>"><input type="checkbox" name="filter_restaurant_type[]" value="<?php echo $type->slug; ?>" <?php checked( in_array( $type->slug, $selected_restaurant_types ), true ); ?> id="restaurant_type_<?php echo $type->slug; ?>" /> <?php echo $type->name; ?></label></li>
 		<?php endforeach; ?>
 	</ul>
-	<input type="hidden" name="filter_job_type[]" value="" />
-<?php elseif ( $job_types ) : ?>
-	<?php foreach ( $job_types as $job_type ) : ?>
-		<input type="hidden" name="filter_job_type[]" value="<?php echo sanitize_title( $job_type ); ?>" />
+	<input type="hidden" name="filter_restaurant_type[]" value="" />
+<?php elseif ( $restaurant_types ) : ?>
+	<?php foreach ( $restaurant_types as $restaurant_type ) : ?>
+		<input type="hidden" name="filter_restaurant_type[]" value="<?php echo sanitize_title( $restaurant_type ); ?>" />
 	<?php endforeach; ?>
 <?php endif; ?>

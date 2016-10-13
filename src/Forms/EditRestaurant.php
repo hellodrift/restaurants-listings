@@ -23,10 +23,10 @@ class EditRestaurant extends SubmitRestaurant {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->job_id = ! empty( $_REQUEST['job_id'] ) ? absint( $_REQUEST[ 'job_id' ] ) : 0;
+		$this->restaurant_id = ! empty( $_REQUEST['restaurant_id'] ) ? absint( $_REQUEST[ 'restaurant_id' ] ) : 0;
 
-		if  ( ! listings_user_can_edit_listing( $this->job_id ) ) {
-			$this->job_id = 0;
+		if  ( ! listings_user_can_edit_listing( $this->restaurant_id ) ) {
+			$this->restaurant_id = 0;
 		}
 	}
 
@@ -34,8 +34,8 @@ class EditRestaurant extends SubmitRestaurant {
 	 * Get the submitted job ID
 	 * @return int
 	 */
-	public function get_job_id() {
-		return absint( $this->job_id );
+	public function get_restaurant_id() {
+		return absint( $this->restaurant_id );
 	}
 
 	/**
@@ -50,9 +50,9 @@ class EditRestaurant extends SubmitRestaurant {
 	 * Submit Step
 	 */
 	public function submit() {
-		$job = get_post( $this->job_id );
+		$job = get_post( $this->restaurant_id );
 
-		if ( empty( $this->job_id  ) || ( $job->post_status !== 'publish' && ! listings_user_can_edit_pending_submissions() ) ) {
+		if ( empty( $this->restaurant_id  ) || ( $job->post_status !== 'publish' && ! listings_user_can_edit_pending_submissions() ) ) {
 			echo wpautop( __( 'Invalid listing', 'listings-jobs' ) );
 			return;
 		}
@@ -62,10 +62,10 @@ class EditRestaurant extends SubmitRestaurant {
 		foreach ( $this->fields as $group_key => $group_fields ) {
 			foreach ( $group_fields as $key => $field ) {
 				if ( ! isset( $this->fields[ $group_key ][ $key ]['value'] ) ) {
-					if ( 'job_title' === $key ) {
+					if ( 'restaurant_title' === $key ) {
 						$this->fields[ $group_key ][ $key ]['value'] = $job->post_title;
 
-					} elseif ( 'job_description' === $key ) {
+					} elseif ( 'restaurant_description' === $key ) {
 						$this->fields[ $group_key ][ $key ]['value'] = $job->post_content;
 
 					} elseif ( 'company_logo' === $key ) {
@@ -81,15 +81,15 @@ class EditRestaurant extends SubmitRestaurant {
 			}
 		}
 
-		$this->fields = apply_filters( 'submit_job_form_fields_get_job_data', $this->fields, $job );
+		$this->fields = apply_filters( 'submit_restaurant_form_fields_get_restaurant_data', $this->fields, $job );
 
 		wp_enqueue_script( 'listings-jobs-job-submission' );
 
 		listings_get_template( 'restaurant-submit.php', array(
 			'form'               => $this->form_name,
-			'job_id'             => $this->get_job_id(),
+			'restaurant_id'             => $this->get_restaurant_id(),
 			'action'             => $this->get_action(),
-			'job_fields'         => $this->get_fields( 'job' ),
+			'restaurant_fields'         => $this->get_fields( 'job' ),
 			'company_fields'     => $this->get_fields( 'company' ),
 			'step'               => $this->get_step(),
 			'submit_button_text' => __( 'Save changes', 'listings-jobs' )
@@ -115,13 +115,13 @@ class EditRestaurant extends SubmitRestaurant {
 			}
 
 			// Update the job
-			$this->save_job( $values['job']['job_title'], $values['job']['job_description'], '', $values, false );
-			$this->update_job_data( $values );
+			$this->save_job( $values['job']['restaurant_title'], $values['job']['restaurant_description'], '', $values, false );
+			$this->update_restaurant_data( $values );
 
 			// Successful
-			switch ( get_post_status( $this->job_id ) ) {
+			switch ( get_post_status( $this->restaurant_id ) ) {
 				case 'publish' :
-					echo '<div class="listings-message">' . __( 'Your changes have been saved.', 'listings-jobs' ) . ' <a href="' . get_permalink( $this->job_id ) . '">' . __( 'View &rarr;', 'listings-jobs' ) . '</a>' . '</div>';
+					echo '<div class="listings-message">' . __( 'Your changes have been saved.', 'listings-jobs' ) . ' <a href="' . get_permalink( $this->restaurant_id ) . '">' . __( 'View &rarr;', 'listings-jobs' ) . '</a>' . '</div>';
 				break;
 				default :
 					echo '<div class="listings-message">' . __( 'Your changes have been saved.', 'listings-jobs' ) . '</div>';

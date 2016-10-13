@@ -23,13 +23,13 @@ class Install {
         }
 
         // Update legacy options
-        if ( false === get_option( 'listings_restaurants_submit_job_form_page_id', false ) && get_option( 'listings_restaurants_submit_page_slug' ) ) {
+        if ( false === get_option( 'listings_restaurants_submit_restaurant_form_page_id', false ) && get_option( 'listings_restaurants_submit_page_slug' ) ) {
             $page_id = get_page_by_path( get_option( 'listings_restaurants_submit_page_slug' ) )->ID;
-            update_option( 'listings_restaurants_submit_job_form_page_id', $page_id );
+            update_option( 'listings_restaurants_submit_restaurant_form_page_id', $page_id );
         }
-        if ( false === get_option( 'listings_restaurants_job_dashboard_page_id', false ) && get_option( 'listings_restaurants_job_dashboard_page_slug' ) ) {
-            $page_id = get_page_by_path( get_option( 'listings_restaurants_job_dashboard_page_slug' ) )->ID;
-            update_option( 'listings_restaurants_job_dashboard_page_id', $page_id );
+        if ( false === get_option( 'listings_restaurants_restaurant_dashboard_page_id', false ) && get_option( 'listings_restaurants_restaurant_dashboard_page_slug' ) ) {
+            $page_id = get_page_by_path( get_option( 'listings_restaurants_restaurant_dashboard_page_slug' ) )->ID;
+            update_option( 'listings_restaurants_restaurant_dashboard_page_id', $page_id );
         }
 
         delete_transient( 'listings_addons_html' );
