@@ -2,14 +2,14 @@
 
 namespace Listings\Restaurants\Admin;
 
-use Listings\Restaurants\Admin\Metaboxes\JobDetails;
+use Listings\Restaurants\Admin\Metaboxes\RestaurantDetails;
 
 class Admin
 {
     public function __construct()
     {
         $this->setup = new Setup();
-        $this->jobdetails = new JobDetails();
+        $this->restaurantdetails = new RestaurantDetails();
         $this->cpt = new Cpt();
         $this->settings = new Settings();
         $this->settings->hooks();

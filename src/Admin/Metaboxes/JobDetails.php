@@ -5,7 +5,7 @@ namespace Listings\Restaurants\Admin\Metaboxes;
 use Listings\Admin\Metabox;
 use Listings\Geocode;
 
-class JobDetails extends Metabox
+class RestaurantDetails extends Metabox
 {
 	/**
 	 * __construct function.
