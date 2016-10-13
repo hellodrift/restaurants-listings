@@ -81,5 +81,5 @@
 			<?php endif; ?>
 		</tbody>
 	</table>
-	<?php listings_get_template( 'pagination.php', array( 'max_num_pages' => $max_num_pages ) ); ?>
+	<?php listings_get_template( 'restaurant-pagination.php', array( 'max_num_pages' => $max_num_pages ) ); ?>
 </div>

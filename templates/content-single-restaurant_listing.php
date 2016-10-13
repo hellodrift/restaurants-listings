@@ -20,7 +20,7 @@
 		</div>
 
 		<?php if ( listings_restaurants_candidates_can_apply() ) : ?>
-			<?php listings_get_template( 'job-application.php' ); ?>
+			<?php listings_get_template( 'restaurant-application.php' ); ?>
 		<?php endif; ?>
 
 		<?php

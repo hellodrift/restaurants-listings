@@ -503,14 +503,14 @@ class PostTypes {
 	 * The application content when the application method is an email
 	 */
 	public function application_details_email( $apply ) {
-		listings_get_template( 'job-application-email.php', array( 'apply' => $apply ) );
+		listings_get_template( 'restaurant-application-email.php', array( 'apply' => $apply ) );
 	}
 
 	/**
 	 * The application content when the application method is a url
 	 */
 	public function application_details_url( $apply ) {
-		listings_get_template( 'job-application-url.php', array( 'apply' => $apply ) );
+		listings_get_template( 'restaurant-application-url.php', array( 'apply' => $apply ) );
 	}
 
 	/**

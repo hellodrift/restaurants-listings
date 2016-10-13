@@ -139,7 +139,7 @@ class Shortcodes {
 	public function job_dashboard( $atts ) {
 		if ( ! is_user_logged_in() ) {
 			ob_start();
-			listings_get_template( 'job-dashboard-login.php' );
+			listings_get_template( 'restaurant-dashboard-login.php' );
 			return ob_get_clean();
 		}
 
