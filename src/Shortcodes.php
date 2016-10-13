@@ -2,8 +2,8 @@
 
 namespace Listings\Restaurants;
 
-use Listings\Restaurants\Forms\EditJob;
-use Listings\Restaurants\Forms\SubmitJob;
+use Listings\Restaurants\Forms\EditRestaurant;
+use Listings\Restaurants\Forms\SubmitRestaurant;
 
 class Shortcodes {
 
@@ -41,7 +41,7 @@ class Shortcodes {
 	 * Show the job submission form
 	 */
 	public function submit_job_form( $atts = array() ) {
-		$form = SubmitJob::instance();
+		$form = SubmitRestaurant::instance();
 		ob_start();
 		$form->output($atts);
 		return ob_get_clean();
@@ -195,7 +195,7 @@ class Shortcodes {
 	 * Edit job form
 	 */
 	public function edit_job() {
-		$form = EditJob::instance();
+		$form = EditRestaurant::instance();
 		$form->output();
 	}
 

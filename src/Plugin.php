@@ -5,8 +5,8 @@ namespace Listings\Restaurants;
 use Listings\Ajax\Handler;
 use Listings\Restaurants\Admin\Admin;
 use Listings\Restaurants\Ajax\Actions\GetListings;
-use Listings\Restaurants\Forms\EditJob;
-use Listings\Restaurants\Forms\SubmitJob;
+use Listings\Restaurants\Forms\EditRestaurant;
+use Listings\Restaurants\Forms\SubmitRestaurant;
 
 class Plugin {
     public function __construct()
@@ -17,8 +17,8 @@ class Plugin {
 
         // Register template path for this plugin
         listings()->template->register_template_path(LISTINGS_RESTAURANTS_PLUGIN_DIR . '/templates/');
-        listings()->forms->register_form(new EditJob());
-        listings()->forms->register_form(new SubmitJob());
+        listings()->forms->register_form(new EditRestaurant());
+        listings()->forms->register_form(new SubmitRestaurant());
 
         // Register Ajax actions
         listings()->ajax->registerAction(new GetListings() );
