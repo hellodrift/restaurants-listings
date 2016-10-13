@@ -186,7 +186,7 @@ class Shortcodes {
 			'expires'   => __( 'Listing Expires', 'listings-jobs' )
 		) );
 
-		listings_get_template( 'job-dashboard.php', array( 'jobs' => $jobs->query( $args ), 'max_num_pages' => $jobs->max_num_pages, 'job_dashboard_columns' => $job_dashboard_columns ) );
+		listings_get_template( 'restaurant-dashboard.php', array( 'jobs' => $jobs->query( $args ), 'max_num_pages' => $jobs->max_num_pages, 'job_dashboard_columns' => $job_dashboard_columns ) );
 
 		return ob_get_clean();
 	}
@@ -271,10 +271,10 @@ class Shortcodes {
 
 		if ( $show_filters ) {
 
-			listings_get_template( 'job-filters.php', array( 'per_page' => $per_page, 'orderby' => $orderby, 'order' => $order, 'show_categories' => $show_categories, 'categories' => $categories, 'selected_category' => $selected_category, 'job_types' => $job_types, 'atts' => $atts, 'location' => $location, 'keywords' => $keywords, 'selected_job_types' => $selected_job_types, 'show_category_multiselect' => $show_category_multiselect ) );
+			listings_get_template( 'restaurant-filters.php', array( 'per_page' => $per_page, 'orderby' => $orderby, 'order' => $order, 'show_categories' => $show_categories, 'categories' => $categories, 'selected_category' => $selected_category, 'job_types' => $job_types, 'atts' => $atts, 'location' => $location, 'keywords' => $keywords, 'selected_job_types' => $selected_job_types, 'show_category_multiselect' => $show_category_multiselect ) );
 
-			listings_get_template( 'job-listings-start.php' );
-			listings_get_template( 'job-listings-end.php' );
+			listings_get_template( 'restaurant_listing-start.php' );
+			listings_get_template( 'restaurant_listing-end.php' );
 
 			if ( ! $show_pagination && $show_more ) {
 				echo '<a class="load_more_jobs" href="#" style="display:none;"><strong>' . __( 'Load more listings', 'listings-jobs' ) . '</strong></a>';
@@ -296,13 +296,13 @@ class Shortcodes {
 
 			if ( $jobs->have_posts() ) : ?>
 
-				<?php listings_get_template( 'job-listings-start.php' ); ?>
+				<?php listings_get_template( 'restaurant_listing-start.php' ); ?>
 
 				<?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
 					<?php listings_get_template_part( 'content', 'restaurant_listing' ); ?>
 				<?php endwhile; ?>
 
-				<?php listings_get_template( 'job-listings-end.php' ); ?>
+				<?php listings_get_template( 'restaurant_listing-end.php' ); ?>
 
 				<?php if ( $jobs->found_posts > $per_page && $show_more ) : ?>
 
@@ -366,7 +366,7 @@ class Shortcodes {
 	}
 
 	/**
-	 * Show job types
+	 * Show restaurant types
 	 * @param  array $atts
 	 */
 	public function job_filter_job_types( $atts ) {
@@ -375,7 +375,7 @@ class Shortcodes {
 		$job_types          = array_filter( array_map( 'trim', explode( ',', $job_types ) ) );
 		$selected_job_types = array_filter( array_map( 'trim', explode( ',', $selected_job_types ) ) );
 
-		listings_get_template( 'job-filter-job-types.php', array( 'job_types' => $job_types, 'atts' => $atts, 'selected_job_types' => $selected_job_types ) );
+		listings_get_template( 'restaurant-filter-restaurant-types.php', array( 'job_types' => $job_types, 'atts' => $atts, 'selected_job_types' => $selected_job_types ) );
 	}
 
 	/**
