@@ -43,5 +43,5 @@ register_activation_hook( basename( dirname( LISTINGS_RESTAURANTS_PLUGIN_FILE ) 
     \Listings\Restaurants\Install::install();
 });
 
-// create plugin object (test)
+// create plugin object
 add_action( 'listings_init', '__load_listings_restaurants', 10 );
