@@ -19,15 +19,15 @@ class PostTypes {
 		add_action( 'auto-draft_to_publish', array( $this, 'set_expiry' ) );
 		add_action( 'expired_to_publish', array( $this, 'set_expiry' ) );
 
-		add_filter( 'the_job_description', 'wptexturize'        );
-		add_filter( 'the_job_description', 'convert_smilies'    );
-		add_filter( 'the_job_description', 'convert_chars'      );
-		add_filter( 'the_job_description', 'wpautop'            );
-		add_filter( 'the_job_description', 'shortcode_unautop'  );
-		add_filter( 'the_job_description', 'prepend_attachment' );
+		add_filter( 'the_restaurant_description', 'wptexturize'        );
+		add_filter( 'the_restaurant_description', 'convert_smilies'    );
+		add_filter( 'the_restaurant_description', 'convert_chars'      );
+		add_filter( 'the_restaurant_description', 'wpautop'            );
+		add_filter( 'the_restaurant_description', 'shortcode_unautop'  );
+		add_filter( 'the_restaurant_description', 'prepend_attachment' );
 		if ( ! empty( $GLOBALS['wp_embed'] ) ) {
-			add_filter( 'the_job_description', array( $GLOBALS['wp_embed'], 'run_shortcode' ), 8 );
-			add_filter( 'the_job_description', array( $GLOBALS['wp_embed'], 'autoembed' ), 8 );
+			add_filter( 'the_restaurant_description', array( $GLOBALS['wp_embed'], 'run_shortcode' ), 8 );
+			add_filter( 'the_restaurant_description', array( $GLOBALS['wp_embed'], 'autoembed' ), 8 );
 		}
 
 		add_action( 'listings_restaurants_application_details_email', array( $this, 'application_details_email' ) );
@@ -378,8 +378,8 @@ class PostTypes {
 	 */
 	public function job_feed_item() {
 		$post_id  = get_the_ID();
-		$location = listings_restaurants_get_the_job_location( $post_id );
-		$job_type = listings_restaurants_get_the_job_type( $post_id );
+		$location = listings_restaurants_get_the_restaurant_location( $post_id );
+		$job_type = listings_restaurants_get_the_restaurant_type( $post_id );
 		$company  = listings_restaurants_get_the_company_name( $post_id );
 
 		if ( $location ) {

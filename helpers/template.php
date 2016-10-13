@@ -34,27 +34,27 @@ function listings_restaurants_candidates_can_apply( $post = null ) {
 }
 
 /**
- * listings_restaurants_the_job_permalink function.
+ * listings_restaurants_the_restaurant_permalink function.
  *
  * @access public
  * @return void
  */
-function listings_restaurants_the_job_permalink( $post = null ) {
-    echo listings_restaurants_get_the_job_permalink( $post );
+function listings_restaurants_the_restaurant_permalink( $post = null ) {
+    echo listings_restaurants_get_the_restaurant_permalink( $post );
 }
 
 /**
- * listings_restaurants_get_the_job_permalink function.
+ * listings_restaurants_get_the_restaurant_permalink function.
  *
  * @access public
  * @param mixed $post (default: null)
  * @return string
  */
-function listings_restaurants_get_the_job_permalink( $post = null ) {
+function listings_restaurants_get_the_restaurant_permalink( $post = null ) {
     $post = get_post( $post );
     $link = get_permalink( $post );
 
-    return apply_filters( 'listings_restaurants_the_job_permalink', $link, $post );
+    return apply_filters( 'listings_restaurants_the_restaurant_permalink', $link, $post );
 }
 
 /**
@@ -93,25 +93,25 @@ function listings_restaurants_get_application_method( $post = null ) {
 }
 
 /**
- * listings_restaurants_the_job_type function.
+ * listings_restaurants_the_restaurant_type function.
  *
  * @access public
  * @return void
  */
-function listings_restaurants_the_job_type($post = null) {
-    if ($job_type = listings_restaurants_get_the_job_type($post)) {
+function listings_restaurants_the_restaurant_type($post = null) {
+    if ($job_type = listings_restaurants_get_the_restaurant_type($post)) {
         echo $job_type->name;
     }
 }
 
 /**
- * listings_restaurants_get_the_job_type function.
+ * listings_restaurants_get_the_restaurant_type function.
  *
  * @access public
  * @param mixed $post (default: null)
  * @return void
  */
-function listings_restaurants_get_the_job_type($post = null) {
+function listings_restaurants_get_the_restaurant_type($post = null) {
     $post = get_post($post);
     if ($post->post_type !== 'restaurant_listing') {
         return;
@@ -125,43 +125,43 @@ function listings_restaurants_get_the_job_type($post = null) {
         $type = false;
     }
 
-    return apply_filters('listings_restaurants_the_job_type', $type, $post);
+    return apply_filters('listings_restaurants_the_restaurant_type', $type, $post);
 }
 
 /**
- * listings_restaurants_the_job_location function.
+ * listings_restaurants_the_restaurant_location function.
  * @param  boolean $map_link whether or not to link to google maps
  * @return [type]
  */
-function listings_restaurants_the_job_location( $map_link = true, $post = null ) {
-    $location = listings_restaurants_get_the_job_location( $post );
+function listings_restaurants_the_restaurant_location( $map_link = true, $post = null ) {
+    $location = listings_restaurants_get_the_restaurant_location( $post );
 
     if ( $location ) {
         if ( $map_link ) {
             // If linking to google maps, we don't want anything but text here
-            echo apply_filters( 'listings_restaurants_the_job_location_map_link', '<a class="google_map_link" href="' . esc_url( 'http://maps.google.com/maps?q=' . urlencode( strip_tags( $location ) ) . '&zoom=14&size=512x512&maptype=roadmap&sensor=false' ) . '" target="_blank">' . esc_html( strip_tags( $location ) ) . '</a>', $location, $post );
+            echo apply_filters( 'listings_restaurants_the_restaurant_location_map_link', '<a class="google_map_link" href="' . esc_url( 'http://maps.google.com/maps?q=' . urlencode( strip_tags( $location ) ) . '&zoom=14&size=512x512&maptype=roadmap&sensor=false' ) . '" target="_blank">' . esc_html( strip_tags( $location ) ) . '</a>', $location, $post );
         } else {
             echo wp_kses_post( $location );
         }
     } else {
-        echo wp_kses_post( apply_filters( 'listings_restaurants_the_job_location_anywhere_text', __( 'Anywhere', 'listings-jobs' ) ) );
+        echo wp_kses_post( apply_filters( 'listings_restaurants_the_restaurant_location_anywhere_text', __( 'Anywhere', 'listings-jobs' ) ) );
     }
 }
 
 /**
- * get_the_job_location function.
+ * get_the_restaurant_location function.
  *
  * @access public
  * @param mixed $post (default: null)
  * @return void
  */
-function listings_restaurants_get_the_job_location( $post = null ) {
+function listings_restaurants_get_the_restaurant_location( $post = null ) {
     $post = get_post( $post );
     if ( $post->post_type !== 'restaurant_listing' ) {
         return;
     }
 
-    return apply_filters( 'the_job_location', $post->_job_location, $post );
+    return apply_filters( 'the_restaurant_location', $post->_job_location, $post );
 }
 
 /**
@@ -415,7 +415,7 @@ function listings_restaurants_get_restaurant_listing_class( $class = '', $post_i
     }
 
     $classes[] = 'restaurant_listing';
-    if ( $job_type = listings_restaurants_get_the_job_type() ) {
+    if ( $job_type = listings_restaurants_get_the_restaurant_type() ) {
         $classes[] = 'job-type-' . sanitize_title( $job_type->name );
     }
 

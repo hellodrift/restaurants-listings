@@ -280,7 +280,7 @@ class Cpt {
 
 		switch ( $column ) {
 			case "restaurant_listing_type" :
-				$type = listings_restaurants_get_the_job_type( $post );
+				$type = listings_restaurants_get_the_restaurant_type( $post );
 				if ( $type )
 					echo '<span class="job-type ' . $type->slug . '">' . $type->name . '</span>';
 			break;
@@ -302,7 +302,7 @@ class Cpt {
 				echo '</div>';
 			break;
 			case "job_location" :
-				listings_restaurants_the_job_location( $post );
+				listings_restaurants_the_restaurant_location( $post );
 			break;
 			case "restaurant_listing_category" :
 				if ( ! $terms = get_the_term_list( $post->ID, $column, '', ', ', '' ) ) echo '<span class="na">&ndash;</span>'; else echo $terms;

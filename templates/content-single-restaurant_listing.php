@@ -16,7 +16,7 @@
 		?>
 
 		<div class="job_description" itemprop="description">
-			<?php echo apply_filters( 'the_job_description', get_the_content() ); ?>
+			<?php echo apply_filters( 'the_restaurant_description', get_the_content() ); ?>
 		</div>
 
 		<?php if ( listings_restaurants_candidates_can_apply() ) : ?>
