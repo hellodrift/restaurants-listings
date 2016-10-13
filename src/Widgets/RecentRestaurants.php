@@ -4,7 +4,7 @@ namespace Listings\Restaurants\Widgets;
 
 use Listings\Widgets\Widget;
 
-class RecentJobs extends Widget {
+class RecentRestaurants extends Widget {
 
     /**
      * Constructor

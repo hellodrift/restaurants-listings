@@ -59,8 +59,8 @@ class Plugin {
      * Widgets init
      */
     public function widgets_init() {
-        register_widget( 'Listings\Restaurants\Widgets\RecentJobs' );
-        register_widget( 'Listings\Restaurants\Widgets\FeaturedJobs' );
+        register_widget( 'Listings\Restaurants\Widgets\RecentRestaurants' );
+        register_widget( 'Listings\Restaurants\Widgets\FeaturedRestaurants' );
     }
 
     public function enqueue_scripts() {
