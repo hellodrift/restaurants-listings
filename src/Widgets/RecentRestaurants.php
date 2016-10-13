@@ -13,24 +13,24 @@ class RecentRestaurants extends Widget {
         global $wp_post_types;
 
         $this->widget_cssclass    = 'listings_restaurants widget_recent_jobs';
-        $this->widget_description = __( 'Display a list of recent listings on your site, optionally matching a keyword and location.', 'listings-jobs' );
+        $this->widget_description = __( 'Display a list of recent listings on your site, optionally matching a keyword and location.', 'restaurants-listings' );
         $this->widget_id          = 'widget_recent_jobs';
-        $this->widget_name        = sprintf( __( 'Recent %s', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->name );
+        $this->widget_name        = sprintf( __( 'Recent %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name );
         $this->settings           = array(
             'title' => array(
                 'type'  => 'text',
-                'std'   => sprintf( __( 'Recent %s', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->name ),
-                'label' => __( 'Title', 'listings-jobs' )
+                'std'   => sprintf( __( 'Recent %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name ),
+                'label' => __( 'Title', 'restaurants-listings' )
             ),
             'keyword' => array(
                 'type'  => 'text',
                 'std'   => '',
-                'label' => __( 'Keyword', 'listings-jobs' )
+                'label' => __( 'Keyword', 'restaurants-listings' )
             ),
             'location' => array(
                 'type'  => 'text',
                 'std'   => '',
-                'label' => __( 'Location', 'listings-jobs' )
+                'label' => __( 'Location', 'restaurants-listings' )
             ),
             'number' => array(
                 'type'  => 'number',
@@ -38,7 +38,7 @@ class RecentRestaurants extends Widget {
                 'min'   => 1,
                 'max'   => '',
                 'std'   => 10,
-                'label' => __( 'Number of listings to show', 'listings-jobs' )
+                'label' => __( 'Number of listings to show', 'restaurants-listings' )
             )
         );
         $this->register();

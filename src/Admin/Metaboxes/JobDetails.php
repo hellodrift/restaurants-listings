@@ -32,69 +32,69 @@ class RestaurantDetails extends Metabox
 
 		$fields = array(
 			'_restaurant_location' => array(
-				'label' => __( 'Location', 'listings-jobs' ),
-				'placeholder' => __( 'e.g. "London"', 'listings-jobs' ),
-				'description' => __( 'Leave this blank if the location is not important.', 'listings-jobs' ),
+				'label' => __( 'Location', 'restaurants-listings' ),
+				'placeholder' => __( 'e.g. "London"', 'restaurants-listings' ),
+				'description' => __( 'Leave this blank if the location is not important.', 'restaurants-listings' ),
 				'priority'    => 1
 			),
 			'_application' => array(
-				'label'       => __( 'Application Email or URL', 'listings-jobs' ),
-				'placeholder' => __( 'URL or email which applicants use to apply', 'listings-jobs' ),
-				'description' => __( 'This field is required for the "application" area to appear beneath the listing.', 'listings-jobs' ),
+				'label'       => __( 'Application Email or URL', 'restaurants-listings' ),
+				'placeholder' => __( 'URL or email which applicants use to apply', 'restaurants-listings' ),
+				'description' => __( 'This field is required for the "application" area to appear beneath the listing.', 'restaurants-listings' ),
 				'value'       => metadata_exists( 'post', $post->ID, '_application' ) ? get_post_meta( $post->ID, '_application', true ) : $current_user->user_email,
 				'priority'    => 2
 			),
 			'_company_name' => array(
-				'label'       => __( 'Company Name', 'listings-jobs' ),
+				'label'       => __( 'Company Name', 'restaurants-listings' ),
 				'placeholder' => '',
 				'priority'    => 3
 			),
 			'_company_website' => array(
-				'label'       => __( 'Company Website', 'listings-jobs' ),
+				'label'       => __( 'Company Website', 'restaurants-listings' ),
 				'placeholder' => '',
 				'priority'    => 4
 			),
 			'_company_tagline' => array(
-				'label'       => __( 'Company Tagline', 'listings-jobs' ),
-				'placeholder' => __( 'Brief description about the company', 'listings-jobs' ),
+				'label'       => __( 'Company Tagline', 'restaurants-listings' ),
+				'placeholder' => __( 'Brief description about the company', 'restaurants-listings' ),
 				'priority'    => 5
 			),
 			'_company_twitter' => array(
-				'label'       => __( 'Company Twitter', 'listings-jobs' ),
+				'label'       => __( 'Company Twitter', 'restaurants-listings' ),
 				'placeholder' => '@yourcompany',
 				'priority'    => 6
 			),
 			'_company_video' => array(
-				'label'       => __( 'Company Video', 'listings-jobs' ),
-				'placeholder' => __( 'URL to the company video', 'listings-jobs' ),
+				'label'       => __( 'Company Video', 'restaurants-listings' ),
+				'placeholder' => __( 'URL to the company video', 'restaurants-listings' ),
 				'type'        => 'file',
 				'priority'    => 8
 			),
 			'_filled' => array(
-				'label'       => __( 'Position Filled', 'listings-jobs' ),
+				'label'       => __( 'Position Filled', 'restaurants-listings' ),
 				'type'        => 'checkbox',
 				'priority'    => 9,
-				'description' => __( 'Filled listings will no longer accept applications.', 'listings-jobs' ),
+				'description' => __( 'Filled listings will no longer accept applications.', 'restaurants-listings' ),
 			)
 		);
 		if ( $current_user->has_cap( 'manage_restaurant_listings' ) ) {
 			$fields['_featured'] = array(
-				'label'       => __( 'Featured Listing', 'listings-jobs' ),
+				'label'       => __( 'Featured Listing', 'restaurants-listings' ),
 				'type'        => 'checkbox',
-				'description' => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'listings-jobs' ),
+				'description' => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'restaurants-listings' ),
 				'priority'    => 10
 			);
 			$fields['_restaurant_expires'] = array(
-				'label'       => __( 'Listing Expiry Date', 'listings-jobs' ),
+				'label'       => __( 'Listing Expiry Date', 'restaurants-listings' ),
 				'priority'    => 11,
 				'classes'     => array( 'listings-jobs-datepicker' ),
-				'placeholder' => _x( 'yyyy-mm-dd', 'Date format placeholder', 'listings-jobs' ),
+				'placeholder' => _x( 'yyyy-mm-dd', 'Date format placeholder', 'restaurants-listings' ),
 				'value'       => metadata_exists( 'post', $post->ID, '_restaurant_expires' ) ? get_post_meta( $post->ID, '_restaurant_expires', true ) : listings_restaurants_calculate_restaurant_expiry( $post->ID ),
 			);
 		}
 		if ( $current_user->has_cap( 'edit_others_restaurant_listings' ) ) {
 			$fields['_restaurant_author'] = array(
-				'label'    => __( 'Posted by', 'listings-jobs' ),
+				'label'    => __( 'Posted by', 'restaurants-listings' ),
 				'type'     => 'author',
 				'priority' => 12
 			);
@@ -126,7 +126,7 @@ class RestaurantDetails extends Metabox
 	public function add_meta_boxes() {
 		global $wp_post_types;
 
-		add_meta_box( 'restaurant_listing_data', sprintf( __( '%s Data', 'listings-jobs' ), $wp_post_types['restaurant_listing']->labels->singular_name ), array( $this, 'restaurant_listing_data' ), 'restaurant_listing', 'normal', 'high' );
+		add_meta_box( 'restaurant_listing_data', sprintf( __( '%s Data', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->singular_name ), array( $this, 'restaurant_listing_data' ), 'restaurant_listing', 'normal', 'high' );
 	}
 
 	/**

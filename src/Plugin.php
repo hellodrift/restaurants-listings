@@ -51,8 +51,8 @@ class Plugin {
     }
 
     public function load_plugin_textdomain() {
-        load_textdomain( 'listings-jobs', WP_LANG_DIR . "/listings-jobs/listings-jobs-" . apply_filters( 'plugin_locale', get_locale(), 'listings-jobs' ) . ".mo" );
-        load_plugin_textdomain( 'listings-jobs', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        load_textdomain( 'restaurants-listings', WP_LANG_DIR . "/listings-jobs/listings-jobs-" . apply_filters( 'plugin_locale', get_locale(), 'restaurants-listings' ) . ".mo" );
+        load_plugin_textdomain( 'restaurants-listings', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
     /**
@@ -72,7 +72,7 @@ class Plugin {
             'i18n_load_prev_listings' => __( 'Load previous listings', 'listings' ),
         );
 
-        wp_enqueue_style( 'listings-jobs', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/css/frontend.css' );
+        wp_enqueue_style( 'restaurants-listings', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/css/frontend.css' );
 
         wp_register_script( 'listings-ajax-filters', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/ajax-filters.min.js', $ajax_filter_deps, LISTINGS_RESTAURANTS_VERSION, true );
         wp_localize_script( 'listings-ajax-filters', 'listings_ajax_filters', $ajax_data );

@@ -4,7 +4,7 @@
 	<div class="restaurant_application application">
 		<?php do_action( 'listings_restaurants_application_start', $apply ); ?>
 		
-		<input type="button" class="application_button button" value="<?php _e( 'Apply for job', 'listings-jobs' ); ?>" />
+		<input type="button" class="application_button button" value="<?php _e( 'Apply for job', 'restaurants-listings' ); ?>" />
 		
 		<div class="application_details">
 			<?php

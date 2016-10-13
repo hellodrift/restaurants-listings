@@ -31,19 +31,19 @@ class SubmitRestaurant extends Form {
 
 		$this->steps  = (array) apply_filters( 'submit_restaurant_steps', array(
 			'submit' => array(
-				'name'     => __( 'Submit Details', 'listings-jobs' ),
+				'name'     => __( 'Submit Details', 'restaurants-listings' ),
 				'view'     => array( $this, 'submit' ),
 				'handler'  => array( $this, 'submit_handler' ),
 				'priority' => 10
 				),
 			'preview' => array(
-				'name'     => __( 'Preview', 'listings-jobs' ),
+				'name'     => __( 'Preview', 'restaurants-listings' ),
 				'view'     => array( $this, 'preview' ),
 				'handler'  => array( $this, 'preview_handler' ),
 				'priority' => 20
 			),
 			'done' => array(
-				'name'     => __( 'Done', 'listings-jobs' ),
+				'name'     => __( 'Done', 'restaurants-listings' ),
 				'view'     => array( $this, 'done' ),
 				'priority' => 30
 			)
@@ -104,38 +104,38 @@ class SubmitRestaurant extends Form {
 		$allowed_application_method = get_option( 'listings_restaurants_allowed_application_method', '' );
 		switch ( $allowed_application_method ) {
 			case 'email' :
-				$application_method_label       = __( 'Application email', 'listings-jobs' );
-				$application_method_placeholder = __( 'you@yourdomain.com', 'listings-jobs' );
+				$application_method_label       = __( 'Application email', 'restaurants-listings' );
+				$application_method_placeholder = __( 'you@yourdomain.com', 'restaurants-listings' );
 			break;
 			case 'url' :
-				$application_method_label       = __( 'Application URL', 'listings-jobs' );
-				$application_method_placeholder = __( 'http://', 'listings-jobs' );
+				$application_method_label       = __( 'Application URL', 'restaurants-listings' );
+				$application_method_placeholder = __( 'http://', 'restaurants-listings' );
 			break;
 			default :
-				$application_method_label       = __( 'Application email/URL', 'listings-jobs' );
-				$application_method_placeholder = __( 'Enter an email address or website URL', 'listings-jobs' );
+				$application_method_label       = __( 'Application email/URL', 'restaurants-listings' );
+				$application_method_placeholder = __( 'Enter an email address or website URL', 'restaurants-listings' );
 			break;
 		}
 
 		$this->fields = apply_filters( 'submit_restaurant_form_fields', array(
 			'job' => array(
 				'restaurant_title' => array(
-					'label'       => __( 'Job Title', 'listings-jobs' ),
+					'label'       => __( 'Job Title', 'restaurants-listings' ),
 					'type'        => 'text',
 					'required'    => true,
 					'placeholder' => '',
 					'priority'    => 1
 				),
 				'restaurant_location' => array(
-					'label'       => __( 'Location', 'listings-jobs' ),
-					'description' => __( 'Leave this blank if the location is not important', 'listings-jobs' ),
+					'label'       => __( 'Location', 'restaurants-listings' ),
+					'description' => __( 'Leave this blank if the location is not important', 'restaurants-listings' ),
 					'type'        => 'text',
 					'required'    => false,
-					'placeholder' => __( 'e.g. "London"', 'listings-jobs' ),
+					'placeholder' => __( 'e.g. "London"', 'restaurants-listings' ),
 					'priority'    => 2
 				),
 				'restaurant_type' => array(
-					'label'       => __( 'Job type', 'listings-jobs' ),
+					'label'       => __( 'Job type', 'restaurants-listings' ),
 					'type'        => 'term-select',
 					'required'    => true,
 					'placeholder' => '',
@@ -144,7 +144,7 @@ class SubmitRestaurant extends Form {
 					'taxonomy'    => 'restaurant_listing_type'
 				),
 				'restaurant_category' => array(
-					'label'       => __( 'Job category', 'listings-jobs' ),
+					'label'       => __( 'Job category', 'restaurants-listings' ),
 					'type'        => 'term-multiselect',
 					'required'    => true,
 					'placeholder' => '',
@@ -153,7 +153,7 @@ class SubmitRestaurant extends Form {
 					'taxonomy'    => 'restaurant_listing_category'
 				),
 				'restaurant_description' => array(
-					'label'       => __( 'Description', 'listings-jobs' ),
+					'label'       => __( 'Description', 'restaurants-listings' ),
 					'type'        => 'wp-editor',
 					'required'    => true,
 					'placeholder' => '',
@@ -169,43 +169,43 @@ class SubmitRestaurant extends Form {
 			),
 			'company' => array(
 				'company_name' => array(
-					'label'       => __( 'Company name', 'listings-jobs' ),
+					'label'       => __( 'Company name', 'restaurants-listings' ),
 					'type'        => 'text',
 					'required'    => true,
-					'placeholder' => __( 'Enter the name of the company', 'listings-jobs' ),
+					'placeholder' => __( 'Enter the name of the company', 'restaurants-listings' ),
 					'priority'    => 1
 				),
 				'company_website' => array(
-					'label'       => __( 'Website', 'listings-jobs' ),
+					'label'       => __( 'Website', 'restaurants-listings' ),
 					'type'        => 'text',
 					'required'    => false,
-					'placeholder' => __( 'http://', 'listings-jobs' ),
+					'placeholder' => __( 'http://', 'restaurants-listings' ),
 					'priority'    => 2
 				),
 				'company_tagline' => array(
-					'label'       => __( 'Tagline', 'listings-jobs' ),
+					'label'       => __( 'Tagline', 'restaurants-listings' ),
 					'type'        => 'text',
 					'required'    => false,
-					'placeholder' => __( 'Briefly describe your company', 'listings-jobs' ),
+					'placeholder' => __( 'Briefly describe your company', 'restaurants-listings' ),
 					'maxlength'   => 64,
 					'priority'    => 3
 				),
 				'company_video' => array(
-					'label'       => __( 'Video', 'listings-jobs' ),
+					'label'       => __( 'Video', 'restaurants-listings' ),
 					'type'        => 'text',
 					'required'    => false,
-					'placeholder' => __( 'A link to a video about your company', 'listings-jobs' ),
+					'placeholder' => __( 'A link to a video about your company', 'restaurants-listings' ),
 					'priority'    => 4
 				),
 				'company_twitter' => array(
-					'label'       => __( 'Twitter username', 'listings-jobs' ),
+					'label'       => __( 'Twitter username', 'restaurants-listings' ),
 					'type'        => 'text',
 					'required'    => false,
-					'placeholder' => __( '@yourcompany', 'listings-jobs' ),
+					'placeholder' => __( '@yourcompany', 'restaurants-listings' ),
 					'priority'    => 5
 				),
 				'company_logo' => array(
-					'label'       => __( 'Logo', 'listings-jobs' ),
+					'label'       => __( 'Logo', 'restaurants-listings' ),
 					'type'        => 'file',
 					'required'    => false,
 					'placeholder' => '',
@@ -236,7 +236,7 @@ class SubmitRestaurant extends Form {
 		foreach ( $this->fields as $group_key => $group_fields ) {
 			foreach ( $group_fields as $key => $field ) {
 				if ( $field['required'] && empty( $values[ $group_key ][ $key ] ) ) {
-					return new \WP_Error( 'validation-error', sprintf( __( '%s is a required field', 'listings-jobs' ), $field['label'] ) );
+					return new \WP_Error( 'validation-error', sprintf( __( '%s is a required field', 'restaurants-listings' ), $field['label'] ) );
 				}
 				if ( ! empty( $field['taxonomy'] ) && in_array( $field['type'], array( 'term-checklist', 'term-select', 'term-multiselect' ) ) ) {
 					if ( is_array( $values[ $group_key ][ $key ] ) ) {
@@ -246,7 +246,7 @@ class SubmitRestaurant extends Form {
 					}
 					foreach ( $check_value as $term ) {
 						if ( ! term_exists( $term, $field['taxonomy'] ) ) {
-							return new \WP_Error( 'validation-error', sprintf( __( '%s is invalid', 'listings-jobs' ), $field['label'] ) );
+							return new \WP_Error( 'validation-error', sprintf( __( '%s is invalid', 'restaurants-listings' ), $field['label'] ) );
 						}
 					}
 				}
@@ -262,7 +262,7 @@ class SubmitRestaurant extends Form {
 							$file_info = wp_check_filetype( $file_url );
 
 							if ( ! is_numeric( $file_url ) && $file_info && ! in_array( $file_info['type'], $field['allowed_mime_types'] ) ) {
-								throw new \Exception( sprintf( __( '"%s" (filetype %s) needs to be one of the following file types: %s', 'listings-jobs' ), $field['label'], $file_info['ext'], implode( ', ', array_keys( $field['allowed_mime_types'] ) ) ) );
+								throw new \Exception( sprintf( __( '"%s" (filetype %s) needs to be one of the following file types: %s', 'restaurants-listings' ), $field['label'], $file_info['ext'], implode( ', ', array_keys( $field['allowed_mime_types'] ) ) ) );
 							}
 						}
 					}
@@ -277,7 +277,7 @@ class SubmitRestaurant extends Form {
 			switch ( $allowed_application_method ) {
 				case 'email' :
 					if ( ! is_email( $values['job']['application'] ) ) {
-						throw new \Exception( __( 'Please enter a valid application email address', 'listings-jobs' ) );
+						throw new \Exception( __( 'Please enter a valid application email address', 'restaurants-listings' ) );
 					}
 				break;
 				case 'url' :
@@ -286,7 +286,7 @@ class SubmitRestaurant extends Form {
 						$values['job']['application'] = 'http://' . $values['job']['application'];
 					}
 					if ( ! filter_var( $values['job']['application'], FILTER_VALIDATE_URL ) ) {
-						throw new \Exception( __( 'Please enter a valid application URL', 'listings-jobs' ) );
+						throw new \Exception( __( 'Please enter a valid application URL', 'restaurants-listings' ) );
 					}
 				break;
 				default :
@@ -296,7 +296,7 @@ class SubmitRestaurant extends Form {
 							$values['job']['application'] = 'http://' . $values['job']['application'];
 						}
 						if ( ! filter_var( $values['job']['application'], FILTER_VALIDATE_URL ) ) {
-							throw new \Exception( __( 'Please enter a valid application email address or URL', 'listings-jobs' ) );
+							throw new \Exception( __( 'Please enter a valid application email address or URL', 'restaurants-listings' ) );
 						}
 					}
 				break;
@@ -380,7 +380,7 @@ class SubmitRestaurant extends Form {
 			'restaurant_fields'         => $this->get_fields( 'job' ),
 			'company_fields'     => $this->get_fields( 'company' ),
 			'step'               => $this->get_step(),
-			'submit_button_text' => apply_filters( 'submit_restaurant_form_submit_button_text', __( 'Preview', 'listings-jobs' ) )
+			'submit_button_text' => apply_filters( 'submit_restaurant_form_submit_button_text', __( 'Preview', 'restaurants-listings' ) )
 		) );
 	}
 
@@ -411,10 +411,10 @@ class SubmitRestaurant extends Form {
 				if ( listings_enable_registration() ) {
 					if ( listings_user_requires_account() ) {
 						if ( ! listings_generate_username_from_email() && empty( $_POST['create_account_username'] ) ) {
-							throw new \Exception( __( 'Please enter a username.', 'listings-jobs' ) );
+							throw new \Exception( __( 'Please enter a username.', 'restaurants-listings' ) );
 						}
 						if ( empty( $_POST['create_account_email'] ) ) {
-							throw new \Exception( __( 'Please enter your email address.', 'listings-jobs' ) );
+							throw new \Exception( __( 'Please enter your email address.', 'restaurants-listings' ) );
 						}
 					}
 					if ( ! empty( $_POST['create_account_email'] ) ) {

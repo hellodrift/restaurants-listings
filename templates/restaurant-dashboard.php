@@ -1,5 +1,5 @@
 <div id="listings-jobs-job-dashboard">
-	<p><?php _e( 'Your listings are shown in the table below.', 'listings-jobs' ); ?></p>
+	<p><?php _e( 'Your listings are shown in the table below.', 'restaurants-listings' ); ?></p>
 	<table class="listings-jobs-jobs">
 		<thead>
 			<tr>
@@ -11,7 +11,7 @@
 		<tbody>
 			<?php if ( ! $jobs ) : ?>
 				<tr>
-					<td colspan="6"><?php _e( 'You do not have any active listings.', 'listings-jobs' ); ?></td>
+					<td colspan="6"><?php _e( 'You do not have any active listings.', 'restaurants-listings' ); ?></td>
 				</tr>
 			<?php else : ?>
 				<?php foreach ( $jobs as $job ) : ?>
@@ -30,30 +30,30 @@
 
 											switch ( $job->post_status ) {
 												case 'publish' :
-													$actions['edit'] = array( 'label' => __( 'Edit', 'listings-jobs' ), 'nonce' => false );
+													$actions['edit'] = array( 'label' => __( 'Edit', 'restaurants-listings' ), 'nonce' => false );
 
 													if ( listings_restaurants_is_position_filled( $job ) ) {
-														$actions['mark_not_filled'] = array( 'label' => __( 'Mark not filled', 'listings-jobs' ), 'nonce' => true );
+														$actions['mark_not_filled'] = array( 'label' => __( 'Mark not filled', 'restaurants-listings' ), 'nonce' => true );
 													} else {
-														$actions['mark_filled'] = array( 'label' => __( 'Mark filled', 'listings-jobs' ), 'nonce' => true );
+														$actions['mark_filled'] = array( 'label' => __( 'Mark filled', 'restaurants-listings' ), 'nonce' => true );
 													}
 
-													$actions['duplicate'] = array( 'label' => __( 'Duplicate', 'listings-jobs' ), 'nonce' => true );
+													$actions['duplicate'] = array( 'label' => __( 'Duplicate', 'restaurants-listings' ), 'nonce' => true );
 													break;
 												case 'expired' :
 													if ( listings_get_permalink( 'submit_restaurant_form' ) ) {
-														$actions['relist'] = array( 'label' => __( 'Relist', 'listings-jobs' ), 'nonce' => true );
+														$actions['relist'] = array( 'label' => __( 'Relist', 'restaurants-listings' ), 'nonce' => true );
 													}
 													break;
 												case 'pending_payment' :
 												case 'pending' :
 													if ( listings_user_can_edit_pending_submissions() ) {
-														$actions['edit'] = array( 'label' => __( 'Edit', 'listings-jobs' ), 'nonce' => false );
+														$actions['edit'] = array( 'label' => __( 'Edit', 'restaurants-listings' ), 'nonce' => false );
 													}
 												break;
 											}
 
-											$actions['delete'] = array( 'label' => __( 'Delete', 'listings-jobs' ), 'nonce' => true );
+											$actions['delete'] = array( 'label' => __( 'Delete', 'restaurants-listings' ), 'nonce' => true );
 											$actions           = apply_filters( 'listings_restaurants_my_restaurant_actions', $actions, $job );
 
 											foreach ( $actions as $action => $value ) {

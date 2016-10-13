@@ -81,7 +81,7 @@ function listings_restaurants_get_application_method( $post = null ) {
         $method->type      = 'email';
         $method->raw_email = $apply;
         $method->email     = antispambot( $apply );
-        $method->subject   = apply_filters( 'listings_restaurants_application_email_subject', sprintf( __( 'Application via "%s" listing on %s', 'listings-jobs' ), $post->post_title, home_url() ), $post );
+        $method->subject   = apply_filters( 'listings_restaurants_application_email_subject', sprintf( __( 'Application via "%s" listing on %s', 'restaurants-listings' ), $post->post_title, home_url() ), $post );
     } else {
         if ( strpos( $apply, 'http' ) !== 0 )
             $apply = 'http://' . $apply;
@@ -144,7 +144,7 @@ function listings_restaurants_the_restaurant_location( $map_link = true, $post =
             echo wp_kses_post( $location );
         }
     } else {
-        echo wp_kses_post( apply_filters( 'listings_restaurants_the_restaurant_location_anywhere_text', __( 'Anywhere', 'listings-jobs' ) ) );
+        echo wp_kses_post( apply_filters( 'listings_restaurants_the_restaurant_location_anywhere_text', __( 'Anywhere', 'restaurants-listings' ) ) );
     }
 }
 

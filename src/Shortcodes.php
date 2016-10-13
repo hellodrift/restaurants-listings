@@ -62,44 +62,44 @@ class Shortcodes {
 
 				// Check ownership
 				if ( ! listings_user_can_edit_listing( $restaurant_id ) ) {
-					throw new \Exception( __( 'Invalid ID', 'listings-jobs' ) );
+					throw new \Exception( __( 'Invalid ID', 'restaurants-listings' ) );
 				}
 
 				switch ( $action ) {
 					case 'mark_filled' :
 						// Check status
 						if ( $job->_filled == 1 )
-							throw new \Exception( __( 'This position has already been filled', 'listings-jobs' ) );
+							throw new \Exception( __( 'This position has already been filled', 'restaurants-listings' ) );
 
 						// Update
 						update_post_meta( $restaurant_id, '_filled', 1 );
 
 						// Message
-						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been filled', 'listings-jobs' ), $job->post_title ) . '</div>';
+						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been filled', 'restaurants-listings' ), $job->post_title ) . '</div>';
 						break;
 					case 'mark_not_filled' :
 						// Check status
 						if ( $job->_filled != 1 ) {
-							throw new \Exception( __( 'This position is not filled', 'listings-jobs' ) );
+							throw new \Exception( __( 'This position is not filled', 'restaurants-listings' ) );
 						}
 
 						// Update
 						update_post_meta( $restaurant_id, '_filled', 0 );
 
 						// Message
-						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been marked as not filled', 'listings-jobs' ), $job->post_title ) . '</div>';
+						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been marked as not filled', 'restaurants-listings' ), $job->post_title ) . '</div>';
 						break;
 					case 'delete' :
 						// Trash it
 						wp_trash_post( $restaurant_id );
 
 						// Message
-						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been deleted', 'listings-jobs' ), $job->post_title ) . '</div>';
+						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been deleted', 'restaurants-listings' ), $job->post_title ) . '</div>';
 
 						break;
 					case 'duplicate' :
 						if ( ! listings_get_permalink( 'submit_restaurant_form' ) ) {
-							throw new \Exception( __( 'Missing submission page.', 'listings-jobs' ) );
+							throw new \Exception( __( 'Missing submission page.', 'restaurants-listings' ) );
 						}
 
 						$new_restaurant_id = listings_restaurants_duplicate_listing( $restaurant_id );
@@ -112,7 +112,7 @@ class Shortcodes {
 						break;
 					case 'relist' :
 						if ( ! listings_get_permalink( 'submit_restaurant_form' ) ) {
-							throw new \Exception( __( 'Missing submission page.', 'listings-jobs' ) );
+							throw new \Exception( __( 'Missing submission page.', 'restaurants-listings' ) );
 						}
 
 						// redirect to post page
@@ -180,10 +180,10 @@ class Shortcodes {
 		echo $this->restaurant_dashboard_message;
 
 		$restaurant_dashboard_columns = apply_filters( 'listings_restaurants_restaurant_dashboard_columns', array(
-			'restaurant_title' => __( 'Title', 'listings-jobs' ),
-			'filled'    => __( 'Filled?', 'listings-jobs' ),
-			'date'      => __( 'Date Posted', 'listings-jobs' ),
-			'expires'   => __( 'Listing Expires', 'listings-jobs' )
+			'restaurant_title' => __( 'Title', 'restaurants-listings' ),
+			'filled'    => __( 'Filled?', 'restaurants-listings' ),
+			'date'      => __( 'Date Posted', 'restaurants-listings' ),
+			'expires'   => __( 'Listing Expires', 'restaurants-listings' )
 		) );
 
 		listings_get_template( 'restaurant-dashboard.php', array( 'jobs' => $jobs->query( $args ), 'max_num_pages' => $jobs->max_num_pages, 'restaurant_dashboard_columns' => $restaurant_dashboard_columns ) );
@@ -277,7 +277,7 @@ class Shortcodes {
 			listings_get_template( 'restaurant_listing-end.php' );
 
 			if ( ! $show_pagination && $show_more ) {
-				echo '<a class="load_more_jobs" href="#" style="display:none;"><strong>' . __( 'Load more listings', 'listings-jobs' ) . '</strong></a>';
+				echo '<a class="load_more_jobs" href="#" style="display:none;"><strong>' . __( 'Load more listings', 'restaurants-listings' ) . '</strong></a>';
 			}
 
 		} else {
@@ -311,7 +311,7 @@ class Shortcodes {
 					<?php if ( $show_pagination ) : ?>
 						<?php echo listings_get_listing_pagination( $jobs->max_num_pages ); ?>
 					<?php else : ?>
-						<a class="load_more_jobs" href="#"><strong><?php _e( 'Load more listings', 'listings-jobs' ); ?></strong></a>
+						<a class="load_more_jobs" href="#"><strong><?php _e( 'Load more listings', 'restaurants-listings' ); ?></strong></a>
 					<?php endif; ?>
 
 				<?php endif; ?>

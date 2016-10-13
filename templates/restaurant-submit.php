@@ -23,7 +23,7 @@ global $listings;
 
 		<?php foreach ( $restaurant_fields as $key => $field ) : ?>
 			<fieldset class="fieldset-<?php esc_attr_e( $key ); ?>">
-				<label for="<?php esc_attr_e( $key ); ?>"><?php echo $field['label'] . apply_filters( 'submit_restaurant_form_required_label', $field['required'] ? '' : ' <small>' . __( '(optional)', 'listings-jobs' ) . '</small>', $field ); ?></label>
+				<label for="<?php esc_attr_e( $key ); ?>"><?php echo $field['label'] . apply_filters( 'submit_restaurant_form_required_label', $field['required'] ? '' : ' <small>' . __( '(optional)', 'restaurants-listings' ) . '</small>', $field ); ?></label>
 				<div class="field <?php echo $field['required'] ? 'required-field' : ''; ?>">
 					<?php listings_get_template( 'form-fields/' . $field['type'] . '-field.php', array( 'key' => $key, 'field' => $field ) ); ?>
 				</div>
@@ -34,13 +34,13 @@ global $listings;
 
 		<!-- Company Information Fields -->
 		<?php if ( $company_fields ) : ?>
-			<h2><?php _e( 'Company Details', 'listings-jobs' ); ?></h2>
+			<h2><?php _e( 'Company Details', 'restaurants-listings' ); ?></h2>
 
 			<?php do_action( 'submit_restaurant_form_company_fields_start' ); ?>
 
 			<?php foreach ( $company_fields as $key => $field ) : ?>
 				<fieldset class="fieldset-<?php esc_attr_e( $key ); ?>">
-					<label for="<?php esc_attr_e( $key ); ?>"><?php echo $field['label'] . apply_filters( 'submit_restaurant_form_required_label', $field['required'] ? '' : ' <small>' . __( '(optional)', 'listings-jobs' ) . '</small>', $field ); ?></label>
+					<label for="<?php esc_attr_e( $key ); ?>"><?php echo $field['label'] . apply_filters( 'submit_restaurant_form_required_label', $field['required'] ? '' : ' <small>' . __( '(optional)', 'restaurants-listings' ) . '</small>', $field ); ?></label>
 					<div class="field <?php echo $field['required'] ? 'required-field' : ''; ?>">
 						<?php listings_get_template( 'form-fields/' . $field['type'] . '-field.php', array( 'key' => $key, 'field' => $field ) ); ?>
 					</div>

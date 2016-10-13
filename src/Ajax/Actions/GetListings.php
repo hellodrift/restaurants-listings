@@ -113,14 +113,14 @@ class GetListings extends Action
         $result['showing'][] = $post_type_label;
 
         if ( $search_location ) {
-            $result['showing'][] = sprintf( __( 'located in &ldquo;%s&rdquo;', 'listings-jobs' ), $search_location );
+            $result['showing'][] = sprintf( __( 'located in &ldquo;%s&rdquo;', 'restaurants-listings' ), $search_location );
         }
 
         if ( 1 === sizeof( $result['showing'] ) ) {
             $result['showing_all'] = true;
         }
 
-        $result['showing'] = apply_filters( 'listings_restaurants_get_listings_custom_filter_text', sprintf( __( 'Showing all %s', 'listings-jobs' ), implode( ' ', $result['showing'] ) ) );
+        $result['showing'] = apply_filters( 'listings_restaurants_get_listings_custom_filter_text', sprintf( __( 'Showing all %s', 'restaurants-listings' ), implode( ' ', $result['showing'] ) ) );
 
         // Generate RSS link
         $result['showing_links'] = listings_restaurants_get_filtered_links( array(

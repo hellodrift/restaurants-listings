@@ -3,7 +3,7 @@
 	<meta itemprop="title" content="<?php echo esc_attr( $post->post_title ); ?>" />
 
 	<?php if ( get_option( 'listings_restaurants_hide_expired_content', 1 ) && 'expired' === $post->post_status ) : ?>
-		<div class="listings-info"><?php _e( 'This listing has expired.', 'listings-jobs' ); ?></div>
+		<div class="listings-info"><?php _e( 'This listing has expired.', 'restaurants-listings' ); ?></div>
 	<?php else : ?>
 		<?php
 			/**

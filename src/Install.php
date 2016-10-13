@@ -48,7 +48,7 @@ class Install {
         }
 
         if ( is_object( $wp_roles ) ) {
-            add_role( 'employer', __( 'Employer', 'listings-jobs' ), array(
+            add_role( 'employer', __( 'Employer', 'restaurants-listings' ), array(
                 'read'         => true,
                 'edit_posts'   => false,
                 'delete_posts' => false

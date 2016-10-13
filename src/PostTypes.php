@@ -66,12 +66,12 @@ class PostTypes {
 		 * Taxonomies
 		 */
 		if ( get_option( 'listings_restaurants_enable_categories' ) ) {
-			$singular  = __( 'Job category', 'listings-jobs' );
-			$plural    = __( 'Job categories', 'listings-jobs' );
+			$singular  = __( 'Job category', 'restaurants-listings' );
+			$plural    = __( 'Job categories', 'restaurants-listings' );
 
 			if ( current_theme_supports( 'listings-jobs-templates' ) ) {
 				$rewrite   = array(
-					'slug'         => _x( 'job-category', 'Job category slug - resave permalinks after changing this', 'listings-jobs' ),
+					'slug'         => _x( 'job-category', 'Job category slug - resave permalinks after changing this', 'restaurants-listings' ),
 					'with_front'   => false,
 					'hierarchical' => false
 				);
@@ -91,14 +91,14 @@ class PostTypes {
 						'name'              => $plural,
 						'singular_name'     => $singular,
 						'menu_name'         => ucwords( $plural ),
-						'search_items'      => sprintf( __( 'Search %s', 'listings-jobs' ), $plural ),
-						'all_items'         => sprintf( __( 'All %s', 'listings-jobs' ), $plural ),
-						'parent_item'       => sprintf( __( 'Parent %s', 'listings-jobs' ), $singular ),
-						'parent_item_colon' => sprintf( __( 'Parent %s:', 'listings-jobs' ), $singular ),
-						'edit_item'         => sprintf( __( 'Edit %s', 'listings-jobs' ), $singular ),
-						'update_item'       => sprintf( __( 'Update %s', 'listings-jobs' ), $singular ),
-						'add_new_item'      => sprintf( __( 'Add New %s', 'listings-jobs' ), $singular ),
-						'new_item_name'     => sprintf( __( 'New %s Name', 'listings-jobs' ),  $singular )
+						'search_items'      => sprintf( __( 'Search %s', 'restaurants-listings' ), $plural ),
+						'all_items'         => sprintf( __( 'All %s', 'restaurants-listings' ), $plural ),
+						'parent_item'       => sprintf( __( 'Parent %s', 'restaurants-listings' ), $singular ),
+						'parent_item_colon' => sprintf( __( 'Parent %s:', 'restaurants-listings' ), $singular ),
+						'edit_item'         => sprintf( __( 'Edit %s', 'restaurants-listings' ), $singular ),
+						'update_item'       => sprintf( __( 'Update %s', 'restaurants-listings' ), $singular ),
+						'add_new_item'      => sprintf( __( 'Add New %s', 'restaurants-listings' ), $singular ),
+						'new_item_name'     => sprintf( __( 'New %s Name', 'restaurants-listings' ),  $singular )
 	            	),
 		            'show_ui' 				=> true,
 		            'public' 	     		=> $public,
@@ -113,12 +113,12 @@ class PostTypes {
 		    );
 		}
 
-	    $singular  = __( 'Job type', 'listings-jobs' );
-		$plural    = __( 'Job types', 'listings-jobs' );
+	    $singular  = __( 'Job type', 'restaurants-listings' );
+		$plural    = __( 'Job types', 'restaurants-listings' );
 
 		if ( current_theme_supports( 'listings-jobs-templates' ) ) {
 			$rewrite   = array(
-				'slug'         => _x( 'job-type', 'Job type slug - resave permalinks after changing this', 'listings-jobs' ),
+				'slug'         => _x( 'job-type', 'Job type slug - resave permalinks after changing this', 'restaurants-listings' ),
 				'with_front'   => false,
 				'hierarchical' => false
 			);
@@ -137,14 +137,14 @@ class PostTypes {
                     'name' 				=> $plural,
                     'singular_name' 	=> $singular,
                     'menu_name'         => ucwords( $plural ),
-                    'search_items' 		=> sprintf( __( 'Search %s', 'listings-jobs' ), $plural ),
-                    'all_items' 		=> sprintf( __( 'All %s', 'listings-jobs' ), $plural ),
-                    'parent_item' 		=> sprintf( __( 'Parent %s', 'listings-jobs' ), $singular ),
-                    'parent_item_colon' => sprintf( __( 'Parent %s:', 'listings-jobs' ), $singular ),
-                    'edit_item' 		=> sprintf( __( 'Edit %s', 'listings-jobs' ), $singular ),
-                    'update_item' 		=> sprintf( __( 'Update %s', 'listings-jobs' ), $singular ),
-                    'add_new_item' 		=> sprintf( __( 'Add New %s', 'listings-jobs' ), $singular ),
-                    'new_item_name' 	=> sprintf( __( 'New %s Name', 'listings-jobs' ),  $singular )
+                    'search_items' 		=> sprintf( __( 'Search %s', 'restaurants-listings' ), $plural ),
+                    'all_items' 		=> sprintf( __( 'All %s', 'restaurants-listings' ), $plural ),
+                    'parent_item' 		=> sprintf( __( 'Parent %s', 'restaurants-listings' ), $singular ),
+                    'parent_item_colon' => sprintf( __( 'Parent %s:', 'restaurants-listings' ), $singular ),
+                    'edit_item' 		=> sprintf( __( 'Edit %s', 'restaurants-listings' ), $singular ),
+                    'update_item' 		=> sprintf( __( 'Update %s', 'restaurants-listings' ), $singular ),
+                    'add_new_item' 		=> sprintf( __( 'Add New %s', 'restaurants-listings' ), $singular ),
+                    'new_item_name' 	=> sprintf( __( 'New %s Name', 'restaurants-listings' ),  $singular )
             	),
 	            'show_ui' 				=> true,
 	            'public' 			    => $public,
@@ -161,17 +161,17 @@ class PostTypes {
 	    /**
 		 * Post types
 		 */
-		$singular  = __( 'Job', 'listings-jobs' );
-		$plural    = __( 'Jobs', 'listings-jobs' );
+		$singular  = __( 'Job', 'restaurants-listings' );
+		$plural    = __( 'Jobs', 'restaurants-listings' );
 
 		if ( current_theme_supports( 'listings-jobs-templates' ) ) {
-			$has_archive = _x( 'jobs', 'Post type archive slug - resave permalinks after changing this', 'listings-jobs' );
+			$has_archive = _x( 'jobs', 'Post type archive slug - resave permalinks after changing this', 'restaurants-listings' );
 		} else {
 			$has_archive = false;
 		}
 
 		$rewrite     = array(
-			'slug'       => _x( 'job', 'Job permalink - resave permalinks after changing this', 'listings-jobs' ),
+			'slug'       => _x( 'job', 'Job permalink - resave permalinks after changing this', 'restaurants-listings' ),
 			'with_front' => false,
 			'feeds'      => true,
 			'pages'      => false
@@ -182,25 +182,25 @@ class PostTypes {
 				'labels' => array(
 					'name' 					=> $plural,
 					'singular_name' 		=> $singular,
-					'menu_name'             => __( 'Job Listings', 'listings-jobs' ),
-					'all_items'             => sprintf( __( 'All %s', 'listings-jobs' ), $plural ),
-					'add_new' 				=> __( 'Add New', 'listings-jobs' ),
-					'add_new_item' 			=> sprintf( __( 'Add %s', 'listings-jobs' ), $singular ),
-					'edit' 					=> __( 'Edit', 'listings-jobs' ),
-					'edit_item' 			=> sprintf( __( 'Edit %s', 'listings-jobs' ), $singular ),
-					'new_item' 				=> sprintf( __( 'New %s', 'listings-jobs' ), $singular ),
-					'view' 					=> sprintf( __( 'View %s', 'listings-jobs' ), $singular ),
-					'view_item' 			=> sprintf( __( 'View %s', 'listings-jobs' ), $singular ),
-					'search_items' 			=> sprintf( __( 'Search %s', 'listings-jobs' ), $plural ),
-					'not_found' 			=> sprintf( __( 'No %s found', 'listings-jobs' ), $plural ),
-					'not_found_in_trash' 	=> sprintf( __( 'No %s found in trash', 'listings-jobs' ), $plural ),
-					'parent' 				=> sprintf( __( 'Parent %s', 'listings-jobs' ), $singular ),
-					'featured_image'        => __( 'Company Logo', 'listings-jobs' ),
-					'set_featured_image'    => __( 'Set company logo', 'listings-jobs' ),
-					'remove_featured_image' => __( 'Remove company logo', 'listings-jobs' ),
-					'use_featured_image'    => __( 'Use as company logo', 'listings-jobs' ),
+					'menu_name'             => __( 'Job Listings', 'restaurants-listings' ),
+					'all_items'             => sprintf( __( 'All %s', 'restaurants-listings' ), $plural ),
+					'add_new' 				=> __( 'Add New', 'restaurants-listings' ),
+					'add_new_item' 			=> sprintf( __( 'Add %s', 'restaurants-listings' ), $singular ),
+					'edit' 					=> __( 'Edit', 'restaurants-listings' ),
+					'edit_item' 			=> sprintf( __( 'Edit %s', 'restaurants-listings' ), $singular ),
+					'new_item' 				=> sprintf( __( 'New %s', 'restaurants-listings' ), $singular ),
+					'view' 					=> sprintf( __( 'View %s', 'restaurants-listings' ), $singular ),
+					'view_item' 			=> sprintf( __( 'View %s', 'restaurants-listings' ), $singular ),
+					'search_items' 			=> sprintf( __( 'Search %s', 'restaurants-listings' ), $plural ),
+					'not_found' 			=> sprintf( __( 'No %s found', 'restaurants-listings' ), $plural ),
+					'not_found_in_trash' 	=> sprintf( __( 'No %s found in trash', 'restaurants-listings' ), $plural ),
+					'parent' 				=> sprintf( __( 'Parent %s', 'restaurants-listings' ), $singular ),
+					'featured_image'        => __( 'Company Logo', 'restaurants-listings' ),
+					'set_featured_image'    => __( 'Set company logo', 'restaurants-listings' ),
+					'remove_featured_image' => __( 'Remove company logo', 'restaurants-listings' ),
+					'use_featured_image'    => __( 'Use as company logo', 'restaurants-listings' ),
 				),
-				'description' => sprintf( __( 'This is where you can create and manage %s.', 'listings-jobs' ), $plural ),
+				'description' => sprintf( __( 'This is where you can create and manage %s.', 'restaurants-listings' ), $plural ),
 				'public' 				=> true,
 				'show_ui' 				=> true,
 				'capability_type' 		=> 'restaurant_listing',
@@ -225,21 +225,21 @@ class PostTypes {
 		 * Post status
 		 */
 		register_post_status( 'expired', array(
-			'label'                     => _x( 'Expired', 'post status', 'listings-jobs' ),
+			'label'                     => _x( 'Expired', 'post status', 'restaurants-listings' ),
 			'public'                    => true,
 			'protected'                 => true,
 			'exclude_from_search'       => true,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
-			'label_count'               => _n_noop( 'Expired <span class="count">(%s)</span>', 'Expired <span class="count">(%s)</span>', 'listings-jobs' ),
+			'label_count'               => _n_noop( 'Expired <span class="count">(%s)</span>', 'Expired <span class="count">(%s)</span>', 'restaurants-listings' ),
 		) );
 		register_post_status( 'preview', array(
-			'label'                     => _x( 'Preview', 'post status', 'listings-jobs' ),
+			'label'                     => _x( 'Preview', 'post status', 'restaurants-listings' ),
 			'public'                    => false,
 			'exclude_from_search'       => true,
 			'show_in_admin_all_list'    => false,
 			'show_in_admin_status_list' => true,
-			'label_count'               => _n_noop( 'Preview <span class="count">(%s)</span>', 'Preview <span class="count">(%s)</span>', 'listings-jobs' ),
+			'label_count'               => _n_noop( 'Preview <span class="count">(%s)</span>', 'Preview <span class="count">(%s)</span>', 'restaurants-listings' ),
 		) );
 	}
 
@@ -249,7 +249,7 @@ class PostTypes {
 	public function admin_head() {
 		global $menu;
 
-		$plural     = __( 'Job Listings', 'listings-jobs' );
+		$plural     = __( 'Job Listings', 'restaurants-listings' );
 		$count_jobs = wp_count_posts( 'restaurant_listing', 'readable' );
 
 		if ( ! empty( $menu ) && is_array( $menu ) ) {

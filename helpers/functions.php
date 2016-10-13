@@ -190,11 +190,11 @@ if ( ! function_exists( 'listings_restaurants_get_filtered_links' ) ) :
 
         $links = apply_filters( 'listings_restaurants_filters_showing_links', array(
             'reset' => array(
-                'name' => __( 'Reset', 'listings-jobs' ),
+                'name' => __( 'Reset', 'restaurants-listings' ),
                 'url'  => '#'
             ),
             'rss_link' => array(
-                'name' => __( 'RSS', 'listings-jobs' ),
+                'name' => __( 'RSS', 'restaurants-listings' ),
                 'url'  => listings_restaurants_get_rss_link( apply_filters( 'listings_restaurants_get_listings_custom_filter_rss_args', array(
                     'restaurant_types'       => isset( $args['filter_restaurant_types'] ) ? implode( ',', $args['filter_restaurant_types'] ) : '',
                     'search_location' => $args['search_location'],
@@ -239,12 +239,12 @@ if ( ! function_exists( 'listings_restaurants_get_listing_post_statuses' ) ) :
      */
     function listings_restaurants_get_listing_post_statuses() {
         return apply_filters( 'restaurant_listing_post_statuses', array(
-            'draft'           => _x( 'Draft', 'post status', 'listings-jobs' ),
-            'expired'         => _x( 'Expired', 'post status', 'listings-jobs' ),
-            'preview'         => _x( 'Preview', 'post status', 'listings-jobs' ),
-            'pending'         => _x( 'Pending approval', 'post status', 'listings-jobs' ),
-            'pending_payment' => _x( 'Pending payment', 'post status', 'listings-jobs' ),
-            'publish'         => _x( 'Active', 'post status', 'listings-jobs' ),
+            'draft'           => _x( 'Draft', 'post status', 'restaurants-listings' ),
+            'expired'         => _x( 'Expired', 'post status', 'restaurants-listings' ),
+            'preview'         => _x( 'Preview', 'post status', 'restaurants-listings' ),
+            'pending'         => _x( 'Pending approval', 'post status', 'restaurants-listings' ),
+            'pending_payment' => _x( 'Pending payment', 'post status', 'restaurants-listings' ),
+            'publish'         => _x( 'Active', 'post status', 'restaurants-listings' ),
         ) );
     }
 endif;
@@ -271,7 +271,7 @@ function listings_restaurants_get_restaurant_status( $post = null ) {
     if ( isset( $statuses[ $status ] ) ) {
         $status = $statuses[ $status ];
     } else {
-        $status = __( 'Inactive', 'listings-jobs' );
+        $status = __( 'Inactive', 'restaurants-listings' );
     }
 
     return apply_filters( 'listings_restaurants_restaurant_status', $status, $post );

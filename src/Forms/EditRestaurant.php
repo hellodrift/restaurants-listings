@@ -53,7 +53,7 @@ class EditRestaurant extends SubmitRestaurant {
 		$job = get_post( $this->restaurant_id );
 
 		if ( empty( $this->restaurant_id  ) || ( $job->post_status !== 'publish' && ! listings_user_can_edit_pending_submissions() ) ) {
-			echo wpautop( __( 'Invalid listing', 'listings-jobs' ) );
+			echo wpautop( __( 'Invalid listing', 'restaurants-listings' ) );
 			return;
 		}
 
@@ -92,7 +92,7 @@ class EditRestaurant extends SubmitRestaurant {
 			'restaurant_fields'         => $this->get_fields( 'job' ),
 			'company_fields'     => $this->get_fields( 'company' ),
 			'step'               => $this->get_step(),
-			'submit_button_text' => __( 'Save changes', 'listings-jobs' )
+			'submit_button_text' => __( 'Save changes', 'restaurants-listings' )
 			) );
 	}
 
@@ -121,10 +121,10 @@ class EditRestaurant extends SubmitRestaurant {
 			// Successful
 			switch ( get_post_status( $this->restaurant_id ) ) {
 				case 'publish' :
-					echo '<div class="listings-message">' . __( 'Your changes have been saved.', 'listings-jobs' ) . ' <a href="' . get_permalink( $this->restaurant_id ) . '">' . __( 'View &rarr;', 'listings-jobs' ) . '</a>' . '</div>';
+					echo '<div class="listings-message">' . __( 'Your changes have been saved.', 'restaurants-listings' ) . ' <a href="' . get_permalink( $this->restaurant_id ) . '">' . __( 'View &rarr;', 'restaurants-listings' ) . '</a>' . '</div>';
 				break;
 				default :
-					echo '<div class="listings-message">' . __( 'Your changes have been saved.', 'listings-jobs' ) . '</div>';
+					echo '<div class="listings-message">' . __( 'Your changes have been saved.', 'restaurants-listings' ) . '</div>';
 				break;
 			}
 
