@@ -1,5 +1,5 @@
 <?php if ( $apply = listings_restaurants_get_application_method() ) :
-	wp_enqueue_script( 'listings-jobs-application' );
+	wp_enqueue_script( 'listings-restaurants-application' );
 	?>
 	<div class="restaurant_application application">
 		<?php do_action( 'listings_restaurants_application_start', $apply ); ?>

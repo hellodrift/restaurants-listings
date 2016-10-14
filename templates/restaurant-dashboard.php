@@ -1,6 +1,6 @@
-<div id="listings-jobs-job-dashboard">
+<div id="listings-restaurants-restaurant-dashboard">
 	<p><?php _e( 'Your listings are shown in the table below.', 'restaurants-listings' ); ?></p>
-	<table class="listings-jobs-jobs">
+	<table class="listings-restaurants-restaurants">
 		<thead>
 			<tr>
 				<?php foreach ( $restaurant_dashboard_columns as $key => $column ) : ?>

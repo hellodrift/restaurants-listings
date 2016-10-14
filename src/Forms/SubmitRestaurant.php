@@ -61,11 +61,11 @@ class SubmitRestaurant extends Form {
 		$this->restaurant_id = ! empty( $_REQUEST['restaurant_id'] ) ? absint( $_REQUEST[ 'restaurant_id' ] ) : 0;
 
 		// Allow resuming from cookie.
-		if ( ! $this->restaurant_id && ! empty( $_COOKIE['listings-jobs-submitting-job-id'] ) && ! empty( $_COOKIE['listings-jobs-submitting-job-key'] ) ) {
-			$restaurant_id     = absint( $_COOKIE['listings-jobs-submitting-job-id'] );
+		if ( ! $this->restaurant_id && ! empty( $_COOKIE['listings-restaurants-submitting-restaurant-id'] ) && ! empty( $_COOKIE['listings-restaurants-submitting-restaurant-key'] ) ) {
+			$restaurant_id     = absint( $_COOKIE['listings-restaurants-submitting-restaurant-id'] );
 			$restaurant_status = get_post_status( $restaurant_id );
 
-			if ( 'preview' === $restaurant_status && get_post_meta( $restaurant_id, '_submitting_key', true ) === $_COOKIE['listings-jobs-submitting-job-key'] ) {
+			if ( 'preview' === $restaurant_status && get_post_meta( $restaurant_id, '_submitting_key', true ) === $_COOKIE['listings-restaurants-submitting-restaurant-key'] ) {
 				$this->restaurant_id = $restaurant_id;
 			}
 		}
@@ -371,7 +371,7 @@ class SubmitRestaurant extends Form {
 			$this->fields = apply_filters( 'submit_restaurant_form_fields_get_user_data', $this->fields, get_current_user_id() );
 		}
 
-		wp_enqueue_script( 'listings-jobs-job-submission' );
+		wp_enqueue_script( 'listings-restaurants-restaurant-submission' );
 
 		listings_get_template( 'restaurant-submit.php', array(
 			'form'               => $this->form_name,
@@ -502,8 +502,8 @@ class SubmitRestaurant extends Form {
 			if ( ! headers_sent() ) {
 				$submitting_key = uniqid();
 
-				setcookie( 'listings-jobs-submitting-job-id', $this->restaurant_id, false, COOKIEPATH, COOKIE_DOMAIN, false );
-				setcookie( 'listings-jobssubmitting-job-key', $submitting_key, false, COOKIEPATH, COOKIE_DOMAIN, false );
+				setcookie( 'listings-restaurants-submitting-restaurant-id', $this->restaurant_id, false, COOKIEPATH, COOKIE_DOMAIN, false );
+				setcookie( 'listings-restaurantssubmitting-restaurant-key', $submitting_key, false, COOKIEPATH, COOKIE_DOMAIN, false );
 
 				update_post_meta( $this->restaurant_id, '_submitting_key', $submitting_key );
 			}

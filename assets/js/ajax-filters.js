@@ -118,9 +118,9 @@ jQuery( document ).ready( function ( $ ) {
 						}
 
 						if ( result.showing_all ) {
-							$( showing ).addClass( 'listings-jobs-showing-all' );
+							$( showing ).addClass( 'listings-restaurants-showing-all' );
 						} else {
-							$( showing ).removeClass( 'listings-jobs-showing-all' );
+							$( showing ).removeClass( 'listings-restaurants-showing-all' );
 						}
 
 						if ( result.html ) {
@@ -175,7 +175,7 @@ jQuery( document ).ready( function ( $ ) {
 		} );
 	} );
 
-	$( '#search_keywords, #search_location, .restaurant_types :input, #search_categories, .listings-jobs-filter' ).change( function() {
+	$( '#search_keywords, #search_location, .restaurant_types :input, #search_categories, .listings-restaurants-filter' ).change( function() {
 		var target   = $( this ).closest( 'div.restaurant_listings' );
 		target.triggerHandler( 'update_results', [ 1, false ] );
 		listings_store_state( target, 1 );
@@ -191,7 +191,7 @@ jQuery( document ).ready( function ( $ ) {
 		var target = $( this ).closest( 'div.restaurant_listings' );
 		var form = $( this ).closest( 'form' );
 
-		form.find( ':input[name="search_keywords"], :input[name="search_location"], .listings-jobs-filter' ).not(':input[type="hidden"]').val( '' ).trigger( 'chosen:updated' );
+		form.find( ':input[name="search_keywords"], :input[name="search_location"], .listings-restaurants-filter' ).not(':input[type="hidden"]').val( '' ).trigger( 'chosen:updated' );
 		form.find( ':input[name^="search_categories"]' ).not(':input[type="hidden"]').val( 0 ).trigger( 'chosen:updated' );
 		$( ':input[name="filter_restaurant_type[]"]', form ).not(':input[type="hidden"]').attr( 'checked', 'checked' );
 

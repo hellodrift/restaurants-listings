@@ -51,7 +51,7 @@ class Plugin {
     }
 
     public function load_plugin_textdomain() {
-        load_textdomain( 'restaurants-listings', WP_LANG_DIR . "/listings-jobs/listings-jobs-" . apply_filters( 'plugin_locale', get_locale(), 'restaurants-listings' ) . ".mo" );
+        load_textdomain( 'restaurants-listings', WP_LANG_DIR . "/listings-restaurants/listings-restaurants-" . apply_filters( 'plugin_locale', get_locale(), 'restaurants-listings' ) . ".mo" );
         load_plugin_textdomain( 'restaurants-listings', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
@@ -76,13 +76,13 @@ class Plugin {
 
         wp_register_script( 'listings-ajax-filters', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/ajax-filters.min.js', $ajax_filter_deps, LISTINGS_RESTAURANTS_VERSION, true );
         wp_localize_script( 'listings-ajax-filters', 'listings_ajax_filters', $ajax_data );
-        wp_enqueue_script( 'listings-job-application', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-application.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
-        wp_enqueue_script( 'listings-job-submission', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-submission.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
+        wp_enqueue_script( 'listings-restaurant-application', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-application.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
+        wp_enqueue_script( 'listings-restaurant-submission', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-submission.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
 
-        wp_register_script( 'listings-job-dashboard', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-dashboard.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
-        wp_localize_script( 'listings-job-dashboard', 'listings_restaurant_dashboard', array(
+        wp_register_script( 'listings-restaurant-dashboard', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-dashboard.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
+        wp_localize_script( 'listings-restaurant-dashboard', 'listings_restaurant_dashboard', array(
             'i18n_confirm_delete' => __( 'Are you sure you want to delete this listing?', 'listings' )
         ) );
-        wp_enqueue_script( 'listings-job-dashboard');
+        wp_enqueue_script( 'listings-restaurant-dashboard');
     }
 }

@@ -147,7 +147,7 @@ class Shortcodes {
 			'posts_per_page' => '25',
 		), $atts ) );
 
-		wp_enqueue_script( 'listings-jobs-job-dashboard' );
+		wp_enqueue_script( 'listings-restaurants-restaurant-dashboard' );
 
 		ob_start();
 
@@ -518,7 +518,7 @@ class Shortcodes {
 				<?php do_action( 'listings_restaurants_before_restaurant_apply_' . absint( $id ) ); ?>
 
 				<?php if ( apply_filters( 'listings_restaurants_show_restaurant_apply_' . absint( $id ), true ) ) : ?>
-					<div class="listings-jobs-application-wrapper">
+					<div class="listings-restaurants-application-wrapper">
 						<?php do_action( 'listings_restaurants_application_details_' . $apply->type, $apply ); ?>
 					</div>
 				<?php endif; ?>

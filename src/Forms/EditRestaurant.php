@@ -4,7 +4,7 @@ namespace Listings\Restaurants\Forms;
 
 class EditRestaurant extends SubmitRestaurant {
 
-	public $form_name           = 'edit-job';
+	public $form_name           = 'edit-restaurant';
 
 	/** @var EditRestaurant The single instance of the class */
 	protected static $_instance = null;
@@ -83,7 +83,7 @@ class EditRestaurant extends SubmitRestaurant {
 
 		$this->fields = apply_filters( 'submit_restaurant_form_fields_get_restaurant_data', $this->fields, $job );
 
-		wp_enqueue_script( 'listings-jobs-job-submission' );
+		wp_enqueue_script( 'listings-restaurants-restaurant-submission' );
 
 		listings_get_template( 'restaurant-submit.php', array(
 			'form'               => $this->form_name,

@@ -87,7 +87,7 @@ class RestaurantDetails extends Metabox
 			$fields['_restaurant_expires'] = array(
 				'label'       => __( 'Listing Expiry Date', 'restaurants-listings' ),
 				'priority'    => 11,
-				'classes'     => array( 'listings-jobs-datepicker' ),
+				'classes'     => array( 'listings-restaurants-datepicker' ),
 				'placeholder' => _x( 'yyyy-mm-dd', 'Date format placeholder', 'restaurants-listings' ),
 				'value'       => metadata_exists( 'post', $post->ID, '_restaurant_expires' ) ? get_post_meta( $post->ID, '_restaurant_expires', true ) : listings_restaurants_calculate_restaurant_expiry( $post->ID ),
 			);

@@ -23,7 +23,7 @@ class Setup {
 	 * @return void
 	 */
 	public function admin_menu() {
-		add_dashboard_page( __( 'Setup', 'restaurants-listings' ), __( 'Setup', 'restaurants-listings' ), 'manage_options', 'listings-jobs-setup', array( $this, 'output' ) );
+		add_dashboard_page( __( 'Setup', 'restaurants-listings' ), __( 'Setup', 'restaurants-listings' ), 'manage_options', 'listings-restaurants-setup', array( $this, 'output' ) );
 	}
 
 	/**
@@ -33,7 +33,7 @@ class Setup {
 	 * @return void
 	 */
 	public function admin_head() {
-		remove_submenu_page( 'index.php', 'listings-jobs-setup' );
+		remove_submenu_page( 'index.php', 'listings-restaurants-setup' );
 	}
 
 	/**
@@ -57,11 +57,11 @@ class Setup {
 			return;
 		}
 
-		if ( ( isset( $_GET['action'] ) && 'upgrade-plugin' == $_GET['action'] ) && ( isset( $_GET['plugin'] ) && strstr( $_GET['plugin'], 'listings-jobs.php' ) ) ) {
+		if ( ( isset( $_GET['action'] ) && 'upgrade-plugin' == $_GET['action'] ) && ( isset( $_GET['plugin'] ) && strstr( $_GET['plugin'], 'listings-restaurants.php' ) ) ) {
 			return;
 		}
 
-		wp_redirect( admin_url( 'index.php?page=listings-jobs-setup' ) );
+		wp_redirect( admin_url( 'index.php?page=listings-restaurants-setup' ) );
 		exit;
 	}
 
@@ -96,8 +96,8 @@ class Setup {
 		$step = ! empty( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
 
 		if ( 3 === $step && ! empty( $_POST ) ) {
-			$create_pages    = isset( $_POST['listings-jobs-create-page'] ) ? $_POST['listings-jobs-create-page'] : array();
-			$page_titles     = $_POST['listings-jobs-page-title'];
+			$create_pages    = isset( $_POST['listings-restaurants-create-page'] ) ? $_POST['listings-restaurants-create-page'] : array();
+			$page_titles     = $_POST['listings-restaurants-page-title'];
 			$pages_to_create = array(
 				'submit_restaurant_form' => '[submit_restaurant_form]',
 				'restaurant_dashboard'   => '[restaurant_dashboard]',
@@ -115,10 +115,10 @@ class Setup {
 		<div class="wrap listings_restaurants listings_restaurants_addons_wrap">
 			<h2><?php _e( 'Listings Jobs Setup', 'restaurants-listings' ); ?></h2>
 
-			<ul class="listings-jobs-setup-steps">
-				<li class="<?php if ( $step === 1 ) echo 'listings-jobs-setup-active-step'; ?>"><?php _e( '1. Introduction', 'restaurants-listings' ); ?></li>
-				<li class="<?php if ( $step === 2 ) echo 'listings-jobs-setup-active-step'; ?>"><?php _e( '2. Page Setup', 'restaurants-listings' ); ?></li>
-				<li class="<?php if ( $step === 3 ) echo 'listings-jobs-setup-active-step'; ?>"><?php _e( '3. Done', 'restaurants-listings' ); ?></li>
+			<ul class="listings-restaurants-setup-steps">
+				<li class="<?php if ( $step === 1 ) echo 'listings-restaurants-setup-active-step'; ?>"><?php _e( '1. Introduction', 'restaurants-listings' ); ?></li>
+				<li class="<?php if ( $step === 2 ) echo 'listings-restaurants-setup-active-step'; ?>"><?php _e( '2. Page Setup', 'restaurants-listings' ); ?></li>
+				<li class="<?php if ( $step === 3 ) echo 'listings-restaurants-setup-active-step'; ?>"><?php _e( '3. Done', 'restaurants-listings' ); ?></li>
 			</ul>
 
 			<?php if ( 1 === $step ) : ?>
@@ -131,7 +131,7 @@ class Setup {
 
 				<p class="submit">
 					<a href="<?php echo esc_url( add_query_arg( 'step', 2 ) ); ?>" class="button button-primary"><?php _e( 'Continue to page setup', 'restaurants-listings' ); ?></a>
-					<a href="<?php echo esc_url( add_query_arg( 'skip-listings-jobs-setup', 1, admin_url( 'index.php?page=listings-jobs-setup&step=3' ) ) ); ?>" class="button"><?php _e( 'Skip setup. I will setup the plugin manually', 'restaurants-listings' ); ?></a>
+					<a href="<?php echo esc_url( add_query_arg( 'skip-listings-restaurants-setup', 1, admin_url( 'index.php?page=listings-restaurants-setup&step=3' ) ) ); ?>" class="button"><?php _e( 'Skip setup. I will setup the plugin manually', 'restaurants-listings' ); ?></a>
 				</p>
 
 			<?php endif; ?>
@@ -142,7 +142,7 @@ class Setup {
 				<p><?php printf( __( '<em>Listings Jobs</em> includes %1$sshortcodes%2$s which can be used within your %3$spages%2$s to output content. These can be created for you below. For more information on the job shortcodes view the %4$sshortcode documentation%2$s.', 'restaurants-listings' ), '<a href="http://codex.wordpress.org/Shortcode" title="What is a shortcode?" target="_blank" class="help-page-link">', '</a>', '<a href="http://codex.wordpress.org/Pages" target="_blank" class="help-page-link">', '<a href="https://wpjobmanager.com/document/shortcode-reference/" target="_blank" class="help-page-link">' ); ?></p>
 
 				<form action="<?php echo esc_url( add_query_arg( 'step', 3 ) ); ?>" method="post">
-					<table class="listings-jobs-shortcodes widefat">
+					<table class="listings-restaurants-shortcodes widefat">
 						<thead>
 							<tr>
 								<th>&nbsp;</th>
@@ -153,8 +153,8 @@ class Setup {
 						</thead>
 						<tbody>
 							<tr>
-								<td><input type="checkbox" checked="checked" name="listings-jobs-create-page[submit_restaurant_form]" /></td>
-								<td><input type="text" value="<?php echo esc_attr( _x( 'Post a Job', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-jobs-page-title[submit_restaurant_form]" /></td>
+								<td><input type="checkbox" checked="checked" name="listings-restaurants-create-page[submit_restaurant_form]" /></td>
+								<td><input type="text" value="<?php echo esc_attr( _x( 'Post a Job', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-restaurants-page-title[submit_restaurant_form]" /></td>
 								<td>
 									<p><?php _e( 'This page allows employers to post jobs to your website from the front-end.', 'restaurants-listings' ); ?></p>
 
@@ -163,8 +163,8 @@ class Setup {
 								<td><code>[submit_restaurant_form]</code></td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" checked="checked" name="listings-jobs-create-page[restaurant_dashboard]" /></td>
-								<td><input type="text" value="<?php echo esc_attr( _x( 'Job Dashboard', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-jobs-page-title[restaurant_dashboard]" /></td>
+								<td><input type="checkbox" checked="checked" name="listings-restaurants-create-page[restaurant_dashboard]" /></td>
+								<td><input type="text" value="<?php echo esc_attr( _x( 'Job Dashboard', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-restaurants-page-title[restaurant_dashboard]" /></td>
 								<td>
 									<p><?php _e( 'This page allows employers to manage and edit their own jobs from the front-end.', 'restaurants-listings' ); ?></p>
 
@@ -173,8 +173,8 @@ class Setup {
 								<td><code>[restaurant_dashboard]</code></td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" checked="checked" name="listings-jobs-create-page[jobs]" /></td>
-								<td><input type="text" value="<?php echo esc_attr( _x( 'Jobs', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-jobs-page-title[jobs]" /></td>
+								<td><input type="checkbox" checked="checked" name="listings-restaurants-create-page[jobs]" /></td>
+								<td><input type="text" value="<?php echo esc_attr( _x( 'Jobs', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-restaurants-page-title[jobs]" /></td>
 								<td><?php _e( 'This page allows users to browse, search, and filter job listings on the front-end of your site.', 'restaurants-listings' ); ?></td>
 								<td><code>[jobs]</code></td>
 							</tr>
@@ -197,18 +197,18 @@ class Setup {
 
 				<p><?php _e( 'Looks like you\'re all set to start using the plugin. In case you\'re wondering where to go next:', 'restaurants-listings' ); ?></p>
 
-				<ul class="listings-jobs-next-steps">
+				<ul class="listings-restaurants-next-steps">
 					<li><a href="<?php echo admin_url( 'admin.php?page=listings-settings' ); ?>"><?php _e( 'Tweak the plugin settings', 'restaurants-listings' ); ?></a></li>
 					<li><a href="<?php echo admin_url( 'post-new.php?post_type=listing' ); ?>"><?php _e( 'Add a job via the back-end', 'restaurants-listings' ); ?></a></li>
 
 					<?php if ( $permalink = listings_get_permalink( 'submit_restaurant_form' ) ) : ?>
 						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'Add a job via the front-end', 'restaurants-listings' ); ?></a></li>
 					<?php else : ?>
-						<li><a href="https://wpjobmanager.com/document/the-job-submission-form/"><?php _e( 'Find out more about the front-end job submission form', 'restaurants-listings' ); ?></a></li>
+						<li><a href="https://wpjobmanager.com/document/the-restaurant-submission-form/"><?php _e( 'Find out more about the front-end job submission form', 'restaurants-listings' ); ?></a></li>
 					<?php endif; ?>
 
 					<?php if ( $permalink = listings_get_permalink( 'jobs' ) ) : ?>
-						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'View submitted job listings-jobs', 'restaurants-listings' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'View submitted job listings-restaurants', 'restaurants-listings' ); ?></a></li>
 					<?php else : ?>
 						<li><a href="https://wpjobmanager.com/document/shortcode-reference/#section-1"><?php _e( 'Add the [jobs] shortcode to a page to list jobs', 'restaurants-listings' ); ?></a></li>
 					<?php endif; ?>
@@ -216,20 +216,20 @@ class Setup {
 					<?php if ( $permalink = listings_get_permalink( 'restaurant_dashboard' ) ) : ?>
 						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'View the job dashboard', 'restaurants-listings' ); ?></a></li>
 					<?php else : ?>
-						<li><a href="https://wpjobmanager.com/document/the-job-dashboard/"><?php _e( 'Find out more about the front-end job dashboard', 'restaurants-listings' ); ?></a></li>
+						<li><a href="https://wpjobmanager.com/document/the-restaurant-dashboard/"><?php _e( 'Find out more about the front-end job dashboard', 'restaurants-listings' ); ?></a></li>
 					<?php endif; ?>
 				</ul>
 
-				<p><?php printf( __( 'And don\'t forget, if you need any more help using <em>Listings</em> you can consult the %1$sdocumentation%2$s or %3$spost on the forums%2$s!', 'restaurants-listings' ), '<a href="https://wpjobmanager.com/documentation/">', '</a>', '<a href="https://wordpress.org/support/plugin/wp-job-manager">' ); ?></p>
+				<p><?php printf( __( 'And don\'t forget, if you need any more help using <em>Listings</em> you can consult the %1$sdocumentation%2$s or %3$spost on the forums%2$s!', 'restaurants-listings' ), '<a href="https://wpjobmanager.com/documentation/">', '</a>', '<a href="https://wordpress.org/support/plugin/wp-restaurant-manager">' ); ?></p>
 
-				<div class="listings-jobs-support-the-plugin">
+				<div class="listings-restaurants-support-the-plugin">
 					<h3><?php _e( 'Support the Ongoing Development of this Plugin', 'restaurants-listings' ); ?></h3>
 					<p><?php _e( 'There are many ways to support open-source projects such as Listings, for example code contribution, translation, or even telling your friends how awesome the plugin (hopefully) is. Thanks in advance for your support - it is much appreciated!', 'restaurants-listings' ); ?></p>
 					<ul>
-						<li class="icon-review"><a href="https://wordpress.org/support/view/plugin-reviews/listings-jobs#postform"><?php _e( 'Leave a positive review', 'restaurants-listings' ); ?></a></li>
-						<li class="icon-localization"><a href="https://www.transifex.com/projects/p/listings-jobs/"><?php _e( 'Contribute a localization', 'restaurants-listings' ); ?></a></li>
-						<li class="icon-code"><a href="https://github.com/TheLookandFeel/listings-jobs"><?php _e( 'Contribute code or report a bug', 'restaurants-listings' ); ?></a></li>
-						<li class="icon-forum"><a href="https://wordpress.org/support/plugin/listings-jobs"><?php _e( 'Help other users on the forums', 'restaurants-listings' ); ?></a></li>
+						<li class="icon-review"><a href="https://wordpress.org/support/view/plugin-reviews/listings-restaurants#postform"><?php _e( 'Leave a positive review', 'restaurants-listings' ); ?></a></li>
+						<li class="icon-localization"><a href="https://www.transifex.com/projects/p/listings-restaurants/"><?php _e( 'Contribute a localization', 'restaurants-listings' ); ?></a></li>
+						<li class="icon-code"><a href="https://github.com/TheLookandFeel/listings-restaurants"><?php _e( 'Contribute code or report a bug', 'restaurants-listings' ); ?></a></li>
+						<li class="icon-forum"><a href="https://wordpress.org/support/plugin/listings-restaurants"><?php _e( 'Help other users on the forums', 'restaurants-listings' ); ?></a></li>
 					</ul>
 				</div>
 
