@@ -14,14 +14,14 @@ class Shortcodes {
 	 */
 	public function __construct() {
 		add_action( 'wp', array( $this, 'shortcode_action_handler' ) );
-		add_action( 'listings_restaurants_restaurant_dashboard_content_edit', array( $this, 'edit_job' ) );
+		add_action( 'listings_restaurants_restaurant_dashboard_content_edit', array( $this, 'edit_restaurant' ) );
 		add_action( 'listings_restaurants_restaurant_filters_end', array( $this, 'restaurant_filter_restaurant_types' ), 20 );
 		add_action( 'listings_restaurants_restaurant_filters_end', array( $this, 'restaurant_filter_results' ), 30 );
-		add_action( 'listings_restaurants_output_jobs_no_results', array( $this, 'output_no_results' ) );
+		add_action( 'listings_restaurants_output_restaurants_no_results', array( $this, 'output_no_results' ) );
 		add_shortcode( 'submit_restaurant_form', array( $this, 'submit_restaurant_form' ) );
 		add_shortcode( 'restaurant_dashboard', array( $this, 'restaurant_dashboard' ) );
-		add_shortcode( 'jobs', array( $this, 'output_jobs' ) );
-		add_shortcode( 'job', array( $this, 'output_job' ) );
+		add_shortcode( 'jobs', array( $this, 'output_restaurants' ) );
+		add_shortcode( 'job', array( $this, 'output_restaurant' ) );
 		add_shortcode( 'restaurant_summary', array( $this, 'output_restaurant_summary' ) );
 		add_shortcode( 'restaurant_apply', array( $this, 'output_restaurant_apply' ) );
 	}
@@ -164,7 +164,7 @@ class Shortcodes {
 		}
 
 		// ....If not show the job dashboard
-		$args     = apply_filters( 'listings_restaurants_get_dashboard_jobs_args', array(
+		$args     = apply_filters( 'listings_restaurants_get_dashboard_restaurants_args', array(
 			'post_type'           => 'restaurant_listing',
 			'post_status'         => array( 'publish', 'expired', 'pending' ),
 			'ignore_sticky_posts' => 1,
@@ -194,22 +194,22 @@ class Shortcodes {
 	/**
 	 * Edit job form
 	 */
-	public function edit_job() {
+	public function edit_restaurant() {
 		$form = EditRestaurant::instance();
 		$form->output();
 	}
 
 	/**
-	 * output_jobs function.
+	 * output_restaurants function.
 	 *
 	 * @access public
 	 * @param mixed $args
 	 * @return void
 	 */
-	public function output_jobs( $atts ) {
+	public function output_restaurants( $atts ) {
 		ob_start();
 
-		extract( $atts = shortcode_atts( apply_filters( 'listings_restaurants_output_jobs_defaults', array(
+		extract( $atts = shortcode_atts( apply_filters( 'listings_restaurants_output_restaurants_defaults', array(
 			'per_page'                  => get_option( 'listings_restaurants_per_page' ),
 			'orderby'                   => 'featured',
 			'order'                     => 'DESC',
@@ -277,12 +277,12 @@ class Shortcodes {
 			listings_get_template( 'restaurant_listing-end.php' );
 
 			if ( ! $show_pagination && $show_more ) {
-				echo '<a class="load_more_jobs" href="#" style="display:none;"><strong>' . __( 'Load more listings', 'restaurants-listings' ) . '</strong></a>';
+				echo '<a class="load_more_restaurants" href="#" style="display:none;"><strong>' . __( 'Load more listings', 'restaurants-listings' ) . '</strong></a>';
 			}
 
 		} else {
 
-			$jobs = listings_restaurants_get_listings( apply_filters( 'listings_restaurants_output_jobs_args', array(
+			$jobs = listings_restaurants_get_listings( apply_filters( 'listings_restaurants_output_restaurants_args', array(
 				'search_location'   => $location,
 				'search_keywords'   => $keywords,
 				'search_categories' => $categories,
@@ -311,13 +311,13 @@ class Shortcodes {
 					<?php if ( $show_pagination ) : ?>
 						<?php echo listings_get_listing_pagination( $jobs->max_num_pages ); ?>
 					<?php else : ?>
-						<a class="load_more_jobs" href="#"><strong><?php _e( 'Load more listings', 'restaurants-listings' ); ?></strong></a>
+						<a class="load_more_restaurants" href="#"><strong><?php _e( 'Load more listings', 'restaurants-listings' ); ?></strong></a>
 					<?php endif; ?>
 
 				<?php endif; ?>
 
 			<?php else :
-				do_action( 'listings_restaurants_output_jobs_no_results' );
+				do_action( 'listings_restaurants_output_restaurants_no_results' );
 			endif;
 
 			wp_reset_postdata();
@@ -382,17 +382,17 @@ class Shortcodes {
 	 * Show results div
 	 */
 	public function restaurant_filter_results() {
-		echo '<div class="showing_jobs"></div>';
+		echo '<div class="showing_restaurants"></div>';
 	}
 
 	/**
-	 * output_job function.
+	 * output_restaurant function.
 	 *
 	 * @access public
 	 * @param array $args
 	 * @return string
 	 */
-	public function output_job( $atts ) {
+	public function output_restaurant( $atts ) {
 		extract( shortcode_atts( array(
 			'id' => '',
 		), $atts ) );

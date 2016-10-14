@@ -6,7 +6,7 @@ jQuery( document ).ready( function ( $ ) {
 		var data         = '';
 		var target       = $( this );
 		var form         = target.find( '.restaurant_filters' );
-		var showing      = target.find( '.showing_jobs' );
+		var showing      = target.find( '.showing_restaurants' );
 		var results      = target.find( '.restaurant_listings' );
 		var per_page     = target.data( 'per_page' );
 		var orderby      = target.data( 'orderby' );
@@ -29,12 +29,12 @@ jQuery( document ).ready( function ( $ ) {
 
 			// Not appending. If page > 1, we should show a load previous button so the user can get to earlier-page listings if needed
 			if ( page > 1 && true != target.data( 'show_pagination' ) ) {
-				$( results ).before( '<a class="load_more_jobs load_previous" href="#"><strong>' + listings_ajax_filters.i18n_load_prev_listings + '</strong></a>' );
+				$( results ).before( '<a class="load_more_restaurants load_previous" href="#"><strong>' + listings_ajax_filters.i18n_load_prev_listings + '</strong></a>' );
 			} else {
 				target.find( '.load_previous' ).remove();
 			}
 
-			target.find( '.load_more_jobs' ).data( 'page', page );
+			target.find( '.load_more_restaurants' ).data( 'page', page );
 		}
 
 		if ( true == target.data( 'show_filters' ) ) {
@@ -140,12 +140,12 @@ jQuery( document ).ready( function ( $ ) {
 								target.append( result.pagination );
 							}
 						} else {
-							if ( ! result.found_jobs || result.max_num_pages <= page ) {
-								$( '.load_more_jobs:not(.load_previous)', target ).hide();
+							if ( ! result.found_restaurants || result.max_num_pages <= page ) {
+								$( '.load_more_restaurants:not(.load_previous)', target ).hide();
 							} else if ( ! loading_previous ) {
-								$( '.load_more_jobs', target ).show();
+								$( '.load_more_restaurants', target ).show();
 							}
-							$( '.load_more_jobs', target ).removeClass( 'loading' );
+							$( '.load_more_restaurants', target ).removeClass( 'loading' );
 							$( 'li.restaurant_listing', results ).css( 'visibility', 'visible' );
 						}
 
@@ -202,7 +202,7 @@ jQuery( document ).ready( function ( $ ) {
 		return false;
 	} );
 
-	$( document.body ).on( 'click', '.load_more_jobs', function() {
+	$( document.body ).on( 'click', '.load_more_restaurants', function() {
 		var target           = $( this ).closest( 'div.restaurant_listings' );
 		var page             = parseInt( $( this ).data( 'page' ) || 1 );
 		var loading_previous = false;

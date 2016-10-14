@@ -12,9 +12,9 @@ class FeaturedRestaurants extends Widget {
     public function __construct() {
         global $wp_post_types;
 
-        $this->widget_cssclass    = 'listings_restaurants widget_featured_jobs';
+        $this->widget_cssclass    = 'listings_restaurants widget_featured_restaurants';
         $this->widget_description = __( 'Display a list of featured listings on your site.', 'restaurants-listings' );
-        $this->widget_id          = 'widget_featured_jobs';
+        $this->widget_id          = 'widget_featured_restaurants';
         $this->widget_name        = sprintf( __( 'Featured %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name );
         $this->settings           = array(
             'title' => array(

@@ -54,9 +54,9 @@ class GetListings extends Action
 
         $jobs = listings_restaurants_get_listings( apply_filters( 'listings_restaurants_get_listings_args', $args ) );
 
-        $result['found_jobs'] = false;
+        $result['found_restaurants'] = false;
 
-        if ( $jobs->have_posts() ) : $result['found_jobs'] = true; ?>
+        if ( $jobs->have_posts() ) : $result['found_restaurants'] = true; ?>
 
             <?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
 

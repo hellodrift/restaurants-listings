@@ -12,9 +12,9 @@ class RecentRestaurants extends Widget {
     public function __construct() {
         global $wp_post_types;
 
-        $this->widget_cssclass    = 'listings_restaurants widget_recent_jobs';
+        $this->widget_cssclass    = 'listings_restaurants widget_recent_restaurants';
         $this->widget_description = __( 'Display a list of recent listings on your site, optionally matching a keyword and location.', 'restaurants-listings' );
-        $this->widget_id          = 'widget_recent_jobs';
+        $this->widget_id          = 'widget_recent_restaurants';
         $this->widget_name        = sprintf( __( 'Recent %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name );
         $this->settings           = array(
             'title' => array(

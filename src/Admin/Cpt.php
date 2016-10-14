@@ -23,7 +23,7 @@ class Cpt {
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 		add_action( 'admin_footer-edit.php', array( $this, 'add_bulk_actions' ) );
 		add_action( 'load-edit.php', array( $this, 'do_bulk_actions' ) );
-		add_action( 'admin_init', array( $this, 'approve_job' ) );
+		add_action( 'admin_init', array( $this, 'approve_restaurant' ) );
 		add_action( 'admin_notices', array( $this, 'approved_notice' ) );
 		add_action( 'admin_notices', array( $this, 'expired_notice' ) );
 
@@ -46,11 +46,11 @@ class Cpt {
 			?>
 			<script type="text/javascript">
 		      jQuery(document).ready(function() {
-		        jQuery('<option>').val('approve_jobs').text('<?php printf( __( 'Approve %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action']");
-		        jQuery('<option>').val('approve_jobs').text('<?php printf( __( 'Approve %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action2']");
+		        jQuery('<option>').val('approve_restaurants').text('<?php printf( __( 'Approve %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action']");
+		        jQuery('<option>').val('approve_restaurants').text('<?php printf( __( 'Approve %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action2']");
 
-		        jQuery('<option>').val('expire_jobs').text('<?php printf( __( 'Expire %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action']");
-		        jQuery('<option>').val('expire_jobs').text('<?php printf( __( 'Expire %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action2']");
+		        jQuery('<option>').val('expire_restaurants').text('<?php printf( __( 'Expire %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action']");
+		        jQuery('<option>').val('expire_restaurants').text('<?php printf( __( 'Expire %s', 'restaurants-listings' ), $wp_post_types['restaurant_listing']->labels->name ); ?>').appendTo("select[name='action2']");
 		      });
 		    </script>
 		    <?php
@@ -65,11 +65,11 @@ class Cpt {
 		$action        = $wp_list_table->current_action();
 
 		switch( $action ) {
-			case 'approve_jobs' :
+			case 'approve_restaurants' :
 				check_admin_referer( 'bulk-posts' );
 
 				$post_ids      = array_map( 'absint', array_filter( (array) $_GET['post'] ) );
-				$approved_jobs = array();
+				$approved_restaurants = array();
 
 				if ( ! empty( $post_ids ) )
 					foreach( $post_ids as $post_id ) {
@@ -78,18 +78,18 @@ class Cpt {
 							'post_status' => 'publish'
 						);
 						if ( in_array( get_post_status( $post_id ), array( 'pending', 'pending_payment' ) ) && current_user_can( 'publish_post', $post_id ) && wp_update_post( $restaurant_data ) ) {
-							$approved_jobs[] = $post_id;
+							$approved_restaurants[] = $post_id;
 						}
 					}
 
-				wp_redirect( add_query_arg( 'approved_jobs', $approved_jobs, remove_query_arg( array( 'approved_jobs', 'expired_jobs' ), admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
+				wp_redirect( add_query_arg( 'approved_restaurants', $approved_restaurants, remove_query_arg( array( 'approved_restaurants', 'expired_restaurants' ), admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
 				exit;
 			break;
-			case 'expire_jobs' :
+			case 'expire_restaurants' :
 				check_admin_referer( 'bulk-posts' );
 
 				$post_ids     = array_map( 'absint', array_filter( (array) $_GET['post'] ) );
-				$expired_jobs = array();
+				$expired_restaurants = array();
 
 				if ( ! empty( $post_ids ) )
 					foreach( $post_ids as $post_id ) {
@@ -98,10 +98,10 @@ class Cpt {
 							'post_status' => 'expired'
 						);
 						if ( current_user_can( 'manage_restaurant_listings' ) && wp_update_post( $restaurant_data ) )
-							$expired_jobs[] = $post_id;
+							$expired_restaurants[] = $post_id;
 					}
 
-				wp_redirect( add_query_arg( 'expired_jobs', $expired_jobs, remove_query_arg( array( 'approved_jobs', 'expired_jobs' ), admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
+				wp_redirect( add_query_arg( 'expired_restaurants', $expired_restaurants, remove_query_arg( array( 'approved_restaurants', 'expired_restaurants' ), admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
 				exit;
 			break;
 		}
@@ -112,15 +112,15 @@ class Cpt {
 	/**
 	 * Approve a single job
 	 */
-	public function approve_job() {
-		if ( ! empty( $_GET['approve_job'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'approve_job' ) && current_user_can( 'publish_post', $_GET['approve_job'] ) ) {
-			$post_id = absint( $_GET['approve_job'] );
+	public function approve_restaurant() {
+		if ( ! empty( $_GET['approve_restaurant'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'approve_restaurant' ) && current_user_can( 'publish_post', $_GET['approve_restaurant'] ) ) {
+			$post_id = absint( $_GET['approve_restaurant'] );
 			$restaurant_data = array(
 				'ID'          => $post_id,
 				'post_status' => 'publish'
 			);
 			wp_update_post( $restaurant_data );
-			wp_redirect( remove_query_arg( 'approve_job', add_query_arg( 'approved_jobs', $post_id, admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
+			wp_redirect( remove_query_arg( 'approve_restaurant', add_query_arg( 'approved_restaurants', $post_id, admin_url( 'edit.php?post_type=restaurant_listing' ) ) ) );
 			exit;
 		}
 	}
@@ -131,16 +131,16 @@ class Cpt {
 	public function approved_notice() {
 		 global $post_type, $pagenow;
 
-		if ( $pagenow == 'edit.php' && $post_type == 'restaurant_listing' && ! empty( $_REQUEST['approved_jobs'] ) ) {
-			$approved_jobs = $_REQUEST['approved_jobs'];
-			if ( is_array( $approved_jobs ) ) {
-				$approved_jobs = array_map( 'absint', $approved_jobs );
+		if ( $pagenow == 'edit.php' && $post_type == 'restaurant_listing' && ! empty( $_REQUEST['approved_restaurants'] ) ) {
+			$approved_restaurants = $_REQUEST['approved_restaurants'];
+			if ( is_array( $approved_restaurants ) ) {
+				$approved_restaurants = array_map( 'absint', $approved_restaurants );
 				$titles        = array();
-				foreach ( $approved_jobs as $restaurant_id )
+				foreach ( $approved_restaurants as $restaurant_id )
 					$titles[] = get_the_title( $restaurant_id );
 				echo '<div class="updated"><p>' . sprintf( __( '%s approved', 'restaurants-listings' ), '&quot;' . implode( '&quot;, &quot;', $titles ) . '&quot;' ) . '</p></div>';
 			} else {
-				echo '<div class="updated"><p>' . sprintf( __( '%s approved', 'restaurants-listings' ), '&quot;' . get_the_title( $approved_jobs ) . '&quot;' ) . '</p></div>';
+				echo '<div class="updated"><p>' . sprintf( __( '%s approved', 'restaurants-listings' ), '&quot;' . get_the_title( $approved_restaurants ) . '&quot;' ) . '</p></div>';
 			}
 		}
 	}
@@ -151,16 +151,16 @@ class Cpt {
 	public function expired_notice() {
 		 global $post_type, $pagenow;
 
-		if ( $pagenow == 'edit.php' && $post_type == 'restaurant_listing' && ! empty( $_REQUEST['expired_jobs'] ) ) {
-			$expired_jobs = $_REQUEST['expired_jobs'];
-			if ( is_array( $expired_jobs ) ) {
-				$expired_jobs = array_map( 'absint', $expired_jobs );
+		if ( $pagenow == 'edit.php' && $post_type == 'restaurant_listing' && ! empty( $_REQUEST['expired_restaurants'] ) ) {
+			$expired_restaurants = $_REQUEST['expired_restaurants'];
+			if ( is_array( $expired_restaurants ) ) {
+				$expired_restaurants = array_map( 'absint', $expired_restaurants );
 				$titles        = array();
-				foreach ( $expired_jobs as $restaurant_id )
+				foreach ( $expired_restaurants as $restaurant_id )
 					$titles[] = get_the_title( $restaurant_id );
 				echo '<div class="updated"><p>' . sprintf( __( '%s expired', 'restaurants-listings' ), '&quot;' . implode( '&quot;, &quot;', $titles ) . '&quot;' ) . '</p></div>';
 			} else {
-				echo '<div class="updated"><p>' . sprintf( __( '%s expired', 'restaurants-listings' ), '&quot;' . get_the_title( $expired_jobs ) . '&quot;' ) . '</p></div>';
+				echo '<div class="updated"><p>' . sprintf( __( '%s expired', 'restaurants-listings' ), '&quot;' . get_the_title( $expired_restaurants ) . '&quot;' ) . '</p></div>';
 			}
 		}
 	}
@@ -257,7 +257,7 @@ class Cpt {
 		$columns["restaurant_posted"]           = __( "Posted", 'restaurants-listings' );
 		$columns["restaurant_expires"]          = __( "Expires", 'restaurants-listings' );
 		$columns["restaurant_listing_category"] = __( "Categories", 'restaurants-listings' );
-		$columns['featured_job']         = '<span class="tips" data-tip="' . __( "Featured?", 'restaurants-listings' ) . '">' . __( "Featured?", 'restaurants-listings' ) . '</span>';
+		$columns['featured_restaurant']         = '<span class="tips" data-tip="' . __( "Featured?", 'restaurants-listings' ) . '">' . __( "Featured?", 'restaurants-listings' ) . '</span>';
 		$columns['filled']               = '<span class="tips" data-tip="' . __( "Filled?", 'restaurants-listings' ) . '">' . __( "Filled?", 'restaurants-listings' ) . '</span>';
 		$columns['restaurant_actions']          = __( "Actions", 'restaurants-listings' );
 
@@ -310,7 +310,7 @@ class Cpt {
 			case "filled" :
 				if ( listings_restaurants_is_position_filled( $post ) ) echo '&#10004;'; else echo '&ndash;';
 			break;
-			case "featured_job" :
+			case "featured_restaurant" :
 				if ( listings_restaurants_is_position_featured( $post ) ) echo '&#10004;'; else echo '&ndash;';
 			break;
 			case "restaurant_posted" :
@@ -334,7 +334,7 @@ class Cpt {
 					$admin_actions['approve']   = array(
 						'action'  => 'approve',
 						'name'    => __( 'Approve', 'restaurants-listings' ),
-						'url'     =>  wp_nonce_url( add_query_arg( 'approve_job', $post->ID ), 'approve_job' )
+						'url'     =>  wp_nonce_url( add_query_arg( 'approve_restaurant', $post->ID ), 'approve_restaurant' )
 					);
 				}
 				if ( $post->post_status !== 'trash' ) {

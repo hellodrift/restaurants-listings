@@ -177,7 +177,7 @@ class Settings {
             'type' => 'page'
         );
         $settings['listings_pages'][1][] = array(
-            'name' => 'listings_restaurants_jobs_page_id',
+            'name' => 'listings_restaurants_restaurants_page_id',
             'std' => '',
             'label' => __('Job Listings Page', 'restaurants-listings'),
             'desc' => __('Select the page where you have placed the [jobs] shortcode. This lets the plugin know where the job listings page is located.', 'restaurants-listings'),

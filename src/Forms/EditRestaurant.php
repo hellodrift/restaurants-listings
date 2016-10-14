@@ -100,7 +100,7 @@ class EditRestaurant extends SubmitRestaurant {
 	 * Submit Step is posted
 	 */
 	public function submit_handler() {
-		if ( empty( $_POST['submit_job'] ) ) {
+		if ( empty( $_POST['submit_restaurant'] ) ) {
 			return;
 		}
 
@@ -115,7 +115,7 @@ class EditRestaurant extends SubmitRestaurant {
 			}
 
 			// Update the job
-			$this->save_job( $values['job']['restaurant_title'], $values['job']['restaurant_description'], '', $values, false );
+			$this->save_restaurant( $values['job']['restaurant_title'], $values['job']['restaurant_description'], '', $values, false );
 			$this->update_restaurant_data( $values );
 
 			// Successful

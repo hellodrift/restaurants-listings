@@ -8,7 +8,7 @@ class SubmitRestaurant extends Form {
 
 	public    $form_name = 'submit-restaurant';
 	protected $restaurant_id;
-	protected $preview_job;
+	protected $preview_restaurant;
 
 	/** @var SubmitRestaurant The single instance of the class */
 	protected static $_instance = null;
@@ -355,7 +355,7 @@ class SubmitRestaurant extends Form {
 			$this->fields = apply_filters( 'submit_restaurant_form_fields_get_restaurant_data', $this->fields, $job );
 
 		// Get user meta
-		} elseif ( is_user_logged_in() && empty( $_POST['submit_job'] ) ) {
+		} elseif ( is_user_logged_in() && empty( $_POST['submit_restaurant'] ) ) {
 			if ( ! empty( $this->fields['company'] ) ) {
 				foreach ( $this->fields['company'] as $key => $field ) {
 					$this->fields['company'][ $key ]['value'] = get_user_meta( get_current_user_id(), '_' . $key, true );
@@ -395,7 +395,7 @@ class SubmitRestaurant extends Form {
 			// Get posted values
 			$values = $this->get_posted_fields();
 
-			if ( empty( $_POST['submit_job'] ) ) {
+			if ( empty( $_POST['submit_restaurant'] ) ) {
 				return;
 			}
 
@@ -436,7 +436,7 @@ class SubmitRestaurant extends Form {
 			}
 
 			// Update the job
-			$this->save_job( $values['job']['restaurant_title'], $values['job']['restaurant_description'], $this->restaurant_id ? '' : 'preview', $values );
+			$this->save_restaurant( $values['job']['restaurant_title'], $values['job']['restaurant_description'], $this->restaurant_id ? '' : 'preview', $values );
 			$this->update_restaurant_data( $values );
 
 			// Successful, show next step
@@ -457,7 +457,7 @@ class SubmitRestaurant extends Form {
 	 * @param  array $values
 	 * @param  bool $update_slug
 	 */
-	protected function save_job( $post_title, $post_content, $status = 'preview', $values = array(), $update_slug = true ) {
+	protected function save_restaurant( $post_title, $post_content, $status = 'preview', $values = array(), $update_slug = true ) {
 		$restaurant_data = array(
 			'post_title'     => $post_title,
 			'post_content'   => $post_content,
@@ -657,7 +657,7 @@ class SubmitRestaurant extends Form {
 		}
 
 		// Edit = show submit form again
-		if ( ! empty( $_POST['edit_job'] ) ) {
+		if ( ! empty( $_POST['edit_restaurant'] ) ) {
 			$this->step --;
 		}
 
@@ -670,14 +670,14 @@ class SubmitRestaurant extends Form {
 				delete_post_meta( $job->ID, '_restaurant_expires' );
 
 				// Update job listing
-				$update_job                  = array();
-				$update_job['ID']            = $job->ID;
-				$update_job['post_status']   = apply_filters( 'submit_restaurant_post_status', get_option( 'listings_restaurants_submission_requires_approval' ) ? 'pending' : 'publish', $job );
-				$update_job['post_date']     = current_time( 'mysql' );
-				$update_job['post_date_gmt'] = current_time( 'mysql', 1 );
-				$update_job['post_author']   = get_current_user_id();
+				$update_restaurant                  = array();
+				$update_restaurant['ID']            = $job->ID;
+				$update_restaurant['post_status']   = apply_filters( 'submit_restaurant_post_status', get_option( 'listings_restaurants_submission_requires_approval' ) ? 'pending' : 'publish', $job );
+				$update_restaurant['post_date']     = current_time( 'mysql' );
+				$update_restaurant['post_date_gmt'] = current_time( 'mysql', 1 );
+				$update_restaurant['post_author']   = get_current_user_id();
 
-				wp_update_post( $update_job );
+				wp_update_post( $update_restaurant );
 			}
 
 			$this->step ++;

@@ -128,10 +128,10 @@ class Install {
      * Setup cron jobs
      */
     private static function schedule_cron() {
-        wp_clear_scheduled_hook( 'listings_restaurants_check_for_expired_jobs' );
+        wp_clear_scheduled_hook( 'listings_restaurants_check_for_expired_restaurants' );
         wp_clear_scheduled_hook( 'listings_restaurants_delete_old_previews' );
         wp_clear_scheduled_hook( 'listings_restaurants_clear_expired_transients' );
-        wp_schedule_event( time(), 'hourly', 'listings_restaurants_check_for_expired_jobs' );
+        wp_schedule_event( time(), 'hourly', 'listings_restaurants_check_for_expired_restaurants' );
         wp_schedule_event( time(), 'daily', 'listings_restaurants_delete_old_previews' );
         wp_schedule_event( time(), 'twicedaily', 'listings_restaurants_clear_expired_transients' );
     }

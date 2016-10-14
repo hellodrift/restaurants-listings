@@ -5,8 +5,8 @@
 <form class="restaurant_filters">
 	<?php do_action( 'listings_restaurants_restaurant_filters_start', $atts ); ?>
 
-	<div class="search_jobs">
-		<?php do_action( 'listings_restaurants_restaurant_filters_search_jobs_start', $atts ); ?>
+	<div class="search_restaurants">
+		<?php do_action( 'listings_restaurants_restaurant_filters_search_restaurants_start', $atts ); ?>
 
 		<div class="search_keywords">
 			<label for="search_keywords"><?php _e( 'Keywords', 'restaurants-listings' ); ?></label>
@@ -33,7 +33,7 @@
 			</div>
 		<?php endif; ?>
 
-		<?php do_action( 'listings_restaurants_restaurant_filters_search_jobs_end', $atts ); ?>
+		<?php do_action( 'listings_restaurants_restaurant_filters_search_restaurants_end', $atts ); ?>
 	</div>
 
 	<?php do_action( 'listings_restaurants_restaurant_filters_end', $atts ); ?>

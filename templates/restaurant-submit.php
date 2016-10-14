@@ -56,7 +56,7 @@ global $listings;
 			<input type="hidden" name="listings_form" value="<?php echo $form; ?>" />
 			<input type="hidden" name="restaurant_id" value="<?php echo esc_attr( $restaurant_id ); ?>" />
 			<input type="hidden" name="step" value="<?php echo esc_attr( $step ); ?>" />
-			<input type="submit" name="submit_job" class="button" value="<?php esc_attr_e( $submit_button_text ); ?>" />
+			<input type="submit" name="submit_restaurant" class="button" value="<?php esc_attr_e( $submit_button_text ); ?>" />
 		</p>
 
 	<?php else : ?>

@@ -10,7 +10,7 @@ class PostTypes {
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_post_types' ), 0 );
 		add_filter( 'admin_head', array( $this, 'admin_head' ) );
-		add_action( 'listings_restaurants_check_for_expired_jobs', array( $this, 'check_for_expired_jobs' ) );
+		add_action( 'listings_restaurants_check_for_expired_restaurants', array( $this, 'check_for_expired_restaurants' ) );
 		add_action( 'listings_restaurants_delete_old_previews', array( $this, 'delete_old_previews' ) );
 
 		add_action( 'pending_to_publish', array( $this, 'set_expiry' ) );
@@ -250,13 +250,13 @@ class PostTypes {
 		global $menu;
 
 		$plural     = __( 'Job Listings', 'restaurants-listings' );
-		$count_jobs = wp_count_posts( 'restaurant_listing', 'readable' );
+		$count_restaurants = wp_count_posts( 'restaurant_listing', 'readable' );
 
 		if ( ! empty( $menu ) && is_array( $menu ) ) {
 			foreach ( $menu as $key => $menu_item ) {
 				if ( strpos( $menu_item[0], $plural ) === 0 ) {
-					if ( $order_count = $count_jobs->pending ) {
-						$menu[ $key ][0] .= " <span class='awaiting-mod update-plugins count-$order_count'><span class='pending-count'>" . number_format_i18n( $count_jobs->pending ) . "</span></span>" ;
+					if ( $order_count = $count_restaurants->pending ) {
+						$menu[ $key ][0] .= " <span class='awaiting-mod update-plugins count-$order_count'><span class='pending-count'>" . number_format_i18n( $count_restaurants->pending ) . "</span></span>" ;
 					}
 					break;
 				}
@@ -396,7 +396,7 @@ class PostTypes {
 	/**
 	 * Expire jobs
 	 */
-	public function check_for_expired_jobs() {
+	public function check_for_expired_restaurants() {
 		global $wpdb;
 
 		// Change status to expired
@@ -420,13 +420,13 @@ class PostTypes {
 		}
 
 		// Delete old expired jobs
-		if ( apply_filters( 'listings_restaurants_delete_expired_jobs', false ) ) {
+		if ( apply_filters( 'listings_restaurants_delete_expired_restaurants', false ) ) {
 			$restaurant_ids = $wpdb->get_col( $wpdb->prepare( "
 				SELECT posts.ID FROM {$wpdb->posts} as posts
 				WHERE posts.post_type = 'restaurant_listing'
 				AND posts.post_modified < %s
 				AND posts.post_status = 'expired'
-			", date( 'Y-m-d', strtotime( '-' . apply_filters( 'listings_restaurants_delete_expired_jobs_days', 30 ) . ' days', current_time( 'timestamp' ) ) ) ) );
+			", date( 'Y-m-d', strtotime( '-' . apply_filters( 'listings_restaurants_delete_expired_restaurants_days', 30 ) . ' days', current_time( 'timestamp' ) ) ) ) );
 
 			if ( $restaurant_ids ) {
 				foreach ( $restaurant_ids as $restaurant_id ) {
