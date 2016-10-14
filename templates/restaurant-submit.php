@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 global $listings;
 ?>
-<form action="<?php echo esc_url( $action ); ?>" method="post" id="submit-job-form" class="listings-form" enctype="multipart/form-data">
+<form action="<?php echo esc_url( $action ); ?>" method="post" id="submit-restaurant-form" class="listings-form" enctype="multipart/form-data">
 
 	<?php do_action( 'submit_restaurant_form_start' ); ?>
 

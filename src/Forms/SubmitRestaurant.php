@@ -6,7 +6,7 @@ use Listings\Forms\Form;
 
 class SubmitRestaurant extends Form {
 
-	public    $form_name = 'submit-job';
+	public    $form_name = 'submit-restaurant';
 	protected $restaurant_id;
 	protected $preview_job;
 
