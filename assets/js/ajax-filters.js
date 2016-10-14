@@ -266,7 +266,7 @@ jQuery( document ).ready( function ( $ ) {
 		}
 	}
 
-	// Inital job and form population
+	// Inital restaurant and form population
 	$(window).on( "load", function( event ) {
 		$( '.restaurant_filters' ).each( function() {
 			var target      = $( this ).closest( 'div.restaurant_listings' );

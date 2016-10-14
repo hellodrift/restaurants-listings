@@ -24,7 +24,7 @@ class Settings {
 
         $settings = array_merge( $settings, array(
             'restaurant_listings' => array(
-                __( 'Job Listings', 'listings_restaurants' ),
+                __( 'Restaurant Listings', 'listings_restaurants' ),
                 array(
                     array(
                         'name'        => 'listings_restaurants_per_page',
@@ -66,7 +66,7 @@ class Settings {
                         'std'        => '0',
                         'label'      => __( 'Multi-select Categories', 'restaurants-listings' ),
                         'cb_label'   => __( 'Enable category multiselect by default', 'restaurants-listings' ),
-                        'desc'       => __( 'If enabled, the category select box will default to a multiselect on the [jobs] shortcode.', 'restaurants-listings' ),
+                        'desc'       => __( 'If enabled, the category select box will default to a multiselect on the [restaurants] shortcode.', 'restaurants-listings' ),
                         'type'       => 'checkbox',
                         'attributes' => array()
                     ),
@@ -74,17 +74,17 @@ class Settings {
                         'name'       => 'listings_restaurants_category_filter_type',
                         'std'        => 'any',
                         'label'      => __( 'Category Filter Type', 'restaurants-listings' ),
-                        'desc'       => __( 'If enabled, the category select box will default to a multiselect on the [jobs] shortcode.', 'restaurants-listings' ),
+                        'desc'       => __( 'If enabled, the category select box will default to a multiselect on the [restaurants] shortcode.', 'restaurants-listings' ),
                         'type'       => 'select',
                         'options' => array(
-                            'any'  => __( 'Jobs will be shown if within ANY selected category', 'restaurants-listings' ),
-                            'all' => __( 'Jobs will be shown if within ALL selected categories', 'restaurants-listings' ),
+                            'any'  => __( 'Restaurants will be shown if within ANY selected category', 'restaurants-listings' ),
+                            'all' => __( 'Restaurants will be shown if within ALL selected categories', 'restaurants-listings' ),
                         )
                     ),
                 ),
             ),
             'restaurant_submission' => array(
-                __( 'Job Submission', 'restaurants-listings' ),
+                __( 'Restaurant Submission', 'restaurants-listings' ),
                 array(
                     array(
                         'name'       => 'listings_restaurants_user_requires_account',
@@ -165,22 +165,22 @@ class Settings {
         $settings['listings_pages'][1][] = array(
             'name' => 'listings_restaurants_submit_restaurant_form_page_id',
             'std' => '',
-            'label' => __('Submit Job Form Page', 'restaurants-listings'),
+            'label' => __('Submit Restaurant Form Page', 'restaurants-listings'),
             'desc' => __('Select the page where you have placed the [submit_restaurant_form] shortcode. This lets the plugin know where the form is located.', 'restaurants-listings'),
             'type' => 'page'
         );
         $settings['listings_pages'][1][] = array(
             'name' => 'listings_restaurants_restaurant_dashboard_page_id',
             'std' => '',
-            'label' => __('Job Dashboard Page', 'restaurants-listings'),
+            'label' => __('Restaurant Dashboard Page', 'restaurants-listings'),
             'desc' => __('Select the page where you have placed the [restaurant_dashboard] shortcode. This lets the plugin know where the dashboard is located.', 'restaurants-listings'),
             'type' => 'page'
         );
         $settings['listings_pages'][1][] = array(
             'name' => 'listings_restaurants_restaurants_page_id',
             'std' => '',
-            'label' => __('Job Listings Page', 'restaurants-listings'),
-            'desc' => __('Select the page where you have placed the [jobs] shortcode. This lets the plugin know where the job listings page is located.', 'restaurants-listings'),
+            'label' => __('Restaurant Listings Page', 'restaurants-listings'),
+            'desc' => __('Select the page where you have placed the [restaurants] shortcode. This lets the plugin know where the restaurant listings page is located.', 'restaurants-listings'),
             'type' => 'page'
         );
 

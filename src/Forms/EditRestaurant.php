@@ -31,7 +31,7 @@ class EditRestaurant extends SubmitRestaurant {
 	}
 
 	/**
-	 * Get the submitted job ID
+	 * Get the submitted restaurant ID
 	 * @return int
 	 */
 	public function get_restaurant_id() {
@@ -50,9 +50,9 @@ class EditRestaurant extends SubmitRestaurant {
 	 * Submit Step
 	 */
 	public function submit() {
-		$job = get_post( $this->restaurant_id );
+		$restaurant = get_post( $this->restaurant_id );
 
-		if ( empty( $this->restaurant_id  ) || ( $job->post_status !== 'publish' && ! listings_user_can_edit_pending_submissions() ) ) {
+		if ( empty( $this->restaurant_id  ) || ( $restaurant->post_status !== 'publish' && ! listings_user_can_edit_pending_submissions() ) ) {
 			echo wpautop( __( 'Invalid listing', 'restaurants-listings' ) );
 			return;
 		}
@@ -63,25 +63,25 @@ class EditRestaurant extends SubmitRestaurant {
 			foreach ( $group_fields as $key => $field ) {
 				if ( ! isset( $this->fields[ $group_key ][ $key ]['value'] ) ) {
 					if ( 'restaurant_title' === $key ) {
-						$this->fields[ $group_key ][ $key ]['value'] = $job->post_title;
+						$this->fields[ $group_key ][ $key ]['value'] = $restaurant->post_title;
 
 					} elseif ( 'restaurant_description' === $key ) {
-						$this->fields[ $group_key ][ $key ]['value'] = $job->post_content;
+						$this->fields[ $group_key ][ $key ]['value'] = $restaurant->post_content;
 
 					} elseif ( 'company_logo' === $key ) {
-						$this->fields[ $group_key ][ $key ]['value'] = has_post_thumbnail( $job->ID ) ? get_post_thumbnail_id( $job->ID ) : get_post_meta( $job->ID, '_' . $key, true );
+						$this->fields[ $group_key ][ $key ]['value'] = has_post_thumbnail( $restaurant->ID ) ? get_post_thumbnail_id( $restaurant->ID ) : get_post_meta( $restaurant->ID, '_' . $key, true );
 
 					} elseif ( ! empty( $field['taxonomy'] ) ) {
-						$this->fields[ $group_key ][ $key ]['value'] = wp_get_object_terms( $job->ID, $field['taxonomy'], array( 'fields' => 'ids' ) );
+						$this->fields[ $group_key ][ $key ]['value'] = wp_get_object_terms( $restaurant->ID, $field['taxonomy'], array( 'fields' => 'ids' ) );
 
 					} else {
-						$this->fields[ $group_key ][ $key ]['value'] = get_post_meta( $job->ID, '_' . $key, true );
+						$this->fields[ $group_key ][ $key ]['value'] = get_post_meta( $restaurant->ID, '_' . $key, true );
 					}
 				}
 			}
 		}
 
-		$this->fields = apply_filters( 'submit_restaurant_form_fields_get_restaurant_data', $this->fields, $job );
+		$this->fields = apply_filters( 'submit_restaurant_form_fields_get_restaurant_data', $this->fields, $restaurant );
 
 		wp_enqueue_script( 'listings-restaurants-restaurant-submission' );
 
@@ -89,7 +89,7 @@ class EditRestaurant extends SubmitRestaurant {
 			'form'               => $this->form_name,
 			'restaurant_id'             => $this->get_restaurant_id(),
 			'action'             => $this->get_action(),
-			'restaurant_fields'         => $this->get_fields( 'job' ),
+			'restaurant_fields'         => $this->get_fields( 'restaurant' ),
 			'company_fields'     => $this->get_fields( 'company' ),
 			'step'               => $this->get_step(),
 			'submit_button_text' => __( 'Save changes', 'restaurants-listings' )
@@ -114,8 +114,8 @@ class EditRestaurant extends SubmitRestaurant {
 				throw new \Exception( $return->get_error_message() );
 			}
 
-			// Update the job
-			$this->save_restaurant( $values['job']['restaurant_title'], $values['job']['restaurant_description'], '', $values, false );
+			// Update the restaurant
+			$this->save_restaurant( $values['restaurant']['restaurant_title'], $values['restaurant']['restaurant_description'], '', $values, false );
 			$this->update_restaurant_data( $values );
 
 			// Successful

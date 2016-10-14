@@ -1,6 +1,6 @@
 <?php
 /**
- * Job Submission Form
+ * Restaurant Submission Form
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -18,7 +18,7 @@ global $listings;
 
 	<?php if ( listings_user_can_post_listing() || listings_user_can_edit_listing( $restaurant_id ) ) : ?>
 
-		<!-- Job Information Fields -->
+		<!-- Restaurant Information Fields -->
 		<?php do_action( 'submit_restaurant_form_restaurant_fields_start' ); ?>
 
 		<?php foreach ( $restaurant_fields as $key => $field ) : ?>

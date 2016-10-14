@@ -1,7 +1,7 @@
 <?php global $listings; ?>
 
 <a href="<?php the_permalink(); ?>">
-	<div class="job-type <?php echo listings_restaurants_the_restaurant_type() ? sanitize_title( listings_restaurants_the_restaurant_type()->slug ) : ''; ?>"><?php listings_restaurants_the_restaurant_type(); ?></div>
+	<div class="restaurant-type <?php echo listings_restaurants_the_restaurant_type() ? sanitize_title( listings_restaurants_the_restaurant_type()->slug ) : ''; ?>"><?php listings_restaurants_the_restaurant_type(); ?></div>
 
 	<?php if ( $logo = listings_restaurants_get_the_company_logo() ) : ?>
 		<img src="<?php echo esc_attr( $logo ); ?>" alt="<?php listings_restaurants_the_company_name(); ?>" title="<?php listings_restaurants_the_company_name(); ?> - <?php listings_restaurants_the_company_tagline(); ?>" />

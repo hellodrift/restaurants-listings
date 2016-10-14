@@ -416,7 +416,7 @@ function listings_restaurants_get_restaurant_listing_class( $class = '', $post_i
 
     $classes[] = 'restaurant_listing';
     if ( $restaurant_type = listings_restaurants_get_the_restaurant_type() ) {
-        $classes[] = 'job-type-' . sanitize_title( $restaurant_type->name );
+        $classes[] = 'restaurant-type-' . sanitize_title( $restaurant_type->name );
     }
 
     if ( listings_restaurants_is_position_filled( $post ) ) {
@@ -438,7 +438,7 @@ function listings_restaurants_get_restaurant_listing_class( $class = '', $post_i
 }
 
 /**
- * Displays job meta data on the single job page
+ * Displays restaurant meta data on the single restaurant page
  */
 function listings_restaurants_restaurant_listing_meta_display() {
     listings_get_template( 'content-single-restaurant_listing-meta.php', array() );
@@ -446,7 +446,7 @@ function listings_restaurants_restaurant_listing_meta_display() {
 add_action( 'single_restaurant_listing_start', 'listings_restaurants_restaurant_listing_meta_display', 20 );
 
 /**
- * Displays job company data on the single job page
+ * Displays restaurant company data on the single restaurant page
  */
 function listings_restaurants_restaurant_listing_company_display() {
     listings_get_template( 'content-single-restaurant_listing-company.php', array() );

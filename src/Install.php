@@ -125,7 +125,7 @@ class Install {
     }
 
     /**
-     * Setup cron jobs
+     * Setup cron restaurants
      */
     private static function schedule_cron() {
         wp_clear_scheduled_hook( 'listings_restaurants_check_for_expired_restaurants' );

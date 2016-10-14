@@ -1,5 +1,5 @@
 <?php global $post; ?>
-<div class="single_restaurant_listing" itemscope itemtype="http://schema.org/JobPosting">
+<div class="single_restaurant_listing" itemscope itemtype="http://schema.org/RestaurantPosting">
 	<meta itemprop="title" content="<?php echo esc_attr( $post->post_title ); ?>" />
 
 	<?php if ( get_option( 'listings_restaurants_hide_expired_content', 1 ) && 'expired' === $post->post_status ) : ?>

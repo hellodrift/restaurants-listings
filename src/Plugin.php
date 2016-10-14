@@ -76,10 +76,10 @@ class Plugin {
 
         wp_register_script( 'listings-ajax-filters', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/ajax-filters.min.js', $ajax_filter_deps, LISTINGS_RESTAURANTS_VERSION, true );
         wp_localize_script( 'listings-ajax-filters', 'listings_ajax_filters', $ajax_data );
-        wp_enqueue_script( 'listings-restaurant-application', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-application.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
-        wp_enqueue_script( 'listings-restaurant-submission', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-submission.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
+        wp_enqueue_script( 'listings-restaurant-application', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/restaurant-application.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
+        wp_enqueue_script( 'listings-restaurant-submission', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/restaurant-submission.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
 
-        wp_register_script( 'listings-restaurant-dashboard', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/job-dashboard.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
+        wp_register_script( 'listings-restaurant-dashboard', LISTINGS_RESTAURANTS_PLUGIN_URL . '/assets/js/restaurant-dashboard.min.js', array( 'jquery' ), LISTINGS_RESTAURANTS_VERSION, true );
         wp_localize_script( 'listings-restaurant-dashboard', 'listings_restaurant_dashboard', array(
             'i18n_confirm_delete' => __( 'Are you sure you want to delete this listing?', 'listings' )
         ) );

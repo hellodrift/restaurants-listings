@@ -54,14 +54,14 @@ class FeaturedRestaurants extends Widget {
 
         $title  = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
         $number = absint( $instance['number'] );
-        $jobs   = listings_restaurants_get_listings( array(
+        $restaurants   = listings_restaurants_get_listings( array(
             'posts_per_page' => $number,
             'orderby'        => 'date',
             'order'          => 'DESC',
             'featured'       => true
         ) );
 
-        if ( $jobs->have_posts() ) : ?>
+        if ( $restaurants->have_posts() ) : ?>
 
             <?php echo $before_widget; ?>
 
@@ -69,7 +69,7 @@ class FeaturedRestaurants extends Widget {
 
             <ul class="restaurant_listings">
 
-                <?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
+                <?php while ( $restaurants->have_posts() ) : $restaurants->the_post(); ?>
 
                     <?php listings_get_template_part( 'content-widget', 'restaurant_listing' ); ?>
 

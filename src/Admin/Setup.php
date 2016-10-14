@@ -101,7 +101,7 @@ class Setup {
 			$pages_to_create = array(
 				'submit_restaurant_form' => '[submit_restaurant_form]',
 				'restaurant_dashboard'   => '[restaurant_dashboard]',
-				'jobs'            => '[jobs]'
+				'restaurants'            => '[restaurants]'
 			);
 
 			foreach ( $pages_to_create as $page => $content ) {
@@ -113,7 +113,7 @@ class Setup {
 		}
 		?>
 		<div class="wrap listings_restaurants listings_restaurants_addons_wrap">
-			<h2><?php _e( 'Listings Jobs Setup', 'restaurants-listings' ); ?></h2>
+			<h2><?php _e( 'Listings Restaurants Setup', 'restaurants-listings' ); ?></h2>
 
 			<ul class="listings-restaurants-setup-steps">
 				<li class="<?php if ( $step === 1 ) echo 'listings-restaurants-setup-active-step'; ?>"><?php _e( '1. Introduction', 'restaurants-listings' ); ?></li>
@@ -125,9 +125,9 @@ class Setup {
 
 				<h3><?php _e( 'Setup Wizard Introduction', 'restaurants-listings' ); ?></h3>
 
-				<p><?php _e( 'Welcome and thanks for installing <em>Listings Jobs</em>!', 'restaurants-listings' ); ?></p>
-				<p><?php _e( 'This setup wizard will help you get started by creating the pages for job submission, job management, and listing your jobs.', 'restaurants-listings' ); ?></p>
-				<p><?php printf( __( 'You can also skip the wizard and setup the pages and shortcodes yourself manually, the process is still relatively simple as Listings is easy to use. Refer to the %sdocumentation%s for help.', 'restaurants-listings' ), '<a href="https://wpjobmanager.com/documentation/">', '</a>' ); ?></p>
+				<p><?php _e( 'Welcome and thanks for installing <em>Listings Restaurants</em>!', 'restaurants-listings' ); ?></p>
+				<p><?php _e( 'This setup wizard will help you get started by creating the pages for restaurant submission, restaurant management, and listing your restaurants.', 'restaurants-listings' ); ?></p>
+				<p><?php printf( __( 'You can also skip the wizard and setup the pages and shortcodes yourself manually, the process is still relatively simple as Listings is easy to use. Refer to the %sdocumentation%s for help.', 'restaurants-listings' ), '<a href="https://wprestaurantmanager.com/documentation/">', '</a>' ); ?></p>
 
 				<p class="submit">
 					<a href="<?php echo esc_url( add_query_arg( 'step', 2 ) ); ?>" class="button button-primary"><?php _e( 'Continue to page setup', 'restaurants-listings' ); ?></a>
@@ -139,7 +139,7 @@ class Setup {
 
 				<h3><?php _e( 'Page Setup', 'restaurants-listings' ); ?></h3>
 
-				<p><?php printf( __( '<em>Listings Jobs</em> includes %1$sshortcodes%2$s which can be used within your %3$spages%2$s to output content. These can be created for you below. For more information on the job shortcodes view the %4$sshortcode documentation%2$s.', 'restaurants-listings' ), '<a href="http://codex.wordpress.org/Shortcode" title="What is a shortcode?" target="_blank" class="help-page-link">', '</a>', '<a href="http://codex.wordpress.org/Pages" target="_blank" class="help-page-link">', '<a href="https://wpjobmanager.com/document/shortcode-reference/" target="_blank" class="help-page-link">' ); ?></p>
+				<p><?php printf( __( '<em>Listings Restaurants</em> includes %1$sshortcodes%2$s which can be used within your %3$spages%2$s to output content. These can be created for you below. For more information on the restaurant shortcodes view the %4$sshortcode documentation%2$s.', 'restaurants-listings' ), '<a href="http://codex.wordpress.org/Shortcode" title="What is a shortcode?" target="_blank" class="help-page-link">', '</a>', '<a href="http://codex.wordpress.org/Pages" target="_blank" class="help-page-link">', '<a href="https://wprestaurantmanager.com/document/shortcode-reference/" target="_blank" class="help-page-link">' ); ?></p>
 
 				<form action="<?php echo esc_url( add_query_arg( 'step', 3 ) ); ?>" method="post">
 					<table class="listings-restaurants-shortcodes widefat">
@@ -154,29 +154,29 @@ class Setup {
 						<tbody>
 							<tr>
 								<td><input type="checkbox" checked="checked" name="listings-restaurants-create-page[submit_restaurant_form]" /></td>
-								<td><input type="text" value="<?php echo esc_attr( _x( 'Post a Job', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-restaurants-page-title[submit_restaurant_form]" /></td>
+								<td><input type="text" value="<?php echo esc_attr( _x( 'Post a Restaurant', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-restaurants-page-title[submit_restaurant_form]" /></td>
 								<td>
-									<p><?php _e( 'This page allows employers to post jobs to your website from the front-end.', 'restaurants-listings' ); ?></p>
+									<p><?php _e( 'This page allows employers to post restaurants to your website from the front-end.', 'restaurants-listings' ); ?></p>
 
-									<p><?php _e( 'If you do not want to accept submissions from users in this way (for example you just want to post jobs from the admin dashboard) you can skip creating this page.', 'restaurants-listings' ); ?></p>
+									<p><?php _e( 'If you do not want to accept submissions from users in this way (for example you just want to post restaurants from the admin dashboard) you can skip creating this page.', 'restaurants-listings' ); ?></p>
 								</td>
 								<td><code>[submit_restaurant_form]</code></td>
 							</tr>
 							<tr>
 								<td><input type="checkbox" checked="checked" name="listings-restaurants-create-page[restaurant_dashboard]" /></td>
-								<td><input type="text" value="<?php echo esc_attr( _x( 'Job Dashboard', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-restaurants-page-title[restaurant_dashboard]" /></td>
+								<td><input type="text" value="<?php echo esc_attr( _x( 'Restaurant Dashboard', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-restaurants-page-title[restaurant_dashboard]" /></td>
 								<td>
-									<p><?php _e( 'This page allows employers to manage and edit their own jobs from the front-end.', 'restaurants-listings' ); ?></p>
+									<p><?php _e( 'This page allows employers to manage and edit their own restaurants from the front-end.', 'restaurants-listings' ); ?></p>
 
 									<p><?php _e( 'If you plan on managing all listings from the admin dashboard you can skip creating this page.', 'restaurants-listings' ); ?></p>
 								</td>
 								<td><code>[restaurant_dashboard]</code></td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" checked="checked" name="listings-restaurants-create-page[jobs]" /></td>
-								<td><input type="text" value="<?php echo esc_attr( _x( 'Jobs', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-restaurants-page-title[jobs]" /></td>
-								<td><?php _e( 'This page allows users to browse, search, and filter job listings on the front-end of your site.', 'restaurants-listings' ); ?></td>
-								<td><code>[jobs]</code></td>
+								<td><input type="checkbox" checked="checked" name="listings-restaurants-create-page[restaurants]" /></td>
+								<td><input type="text" value="<?php echo esc_attr( _x( 'Restaurants', 'Default page title (wizard)', 'restaurants-listings' ) ); ?>" name="listings-restaurants-page-title[restaurants]" /></td>
+								<td><?php _e( 'This page allows users to browse, search, and filter restaurant listings on the front-end of your site.', 'restaurants-listings' ); ?></td>
+								<td><code>[restaurants]</code></td>
 							</tr>
 						</tbody>
 						<tfoot>
@@ -199,28 +199,28 @@ class Setup {
 
 				<ul class="listings-restaurants-next-steps">
 					<li><a href="<?php echo admin_url( 'admin.php?page=listings-settings' ); ?>"><?php _e( 'Tweak the plugin settings', 'restaurants-listings' ); ?></a></li>
-					<li><a href="<?php echo admin_url( 'post-new.php?post_type=listing' ); ?>"><?php _e( 'Add a job via the back-end', 'restaurants-listings' ); ?></a></li>
+					<li><a href="<?php echo admin_url( 'post-new.php?post_type=listing' ); ?>"><?php _e( 'Add a restaurant via the back-end', 'restaurants-listings' ); ?></a></li>
 
 					<?php if ( $permalink = listings_get_permalink( 'submit_restaurant_form' ) ) : ?>
-						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'Add a job via the front-end', 'restaurants-listings' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'Add a restaurant via the front-end', 'restaurants-listings' ); ?></a></li>
 					<?php else : ?>
-						<li><a href="https://wpjobmanager.com/document/the-restaurant-submission-form/"><?php _e( 'Find out more about the front-end job submission form', 'restaurants-listings' ); ?></a></li>
+						<li><a href="https://wprestaurantmanager.com/document/the-restaurant-submission-form/"><?php _e( 'Find out more about the front-end restaurant submission form', 'restaurants-listings' ); ?></a></li>
 					<?php endif; ?>
 
-					<?php if ( $permalink = listings_get_permalink( 'jobs' ) ) : ?>
-						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'View submitted job listings-restaurants', 'restaurants-listings' ); ?></a></li>
+					<?php if ( $permalink = listings_get_permalink( 'restaurants' ) ) : ?>
+						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'View submitted restaurant listings-restaurants', 'restaurants-listings' ); ?></a></li>
 					<?php else : ?>
-						<li><a href="https://wpjobmanager.com/document/shortcode-reference/#section-1"><?php _e( 'Add the [jobs] shortcode to a page to list jobs', 'restaurants-listings' ); ?></a></li>
+						<li><a href="https://wprestaurantmanager.com/document/shortcode-reference/#section-1"><?php _e( 'Add the [restaurants] shortcode to a page to list restaurants', 'restaurants-listings' ); ?></a></li>
 					<?php endif; ?>
 
 					<?php if ( $permalink = listings_get_permalink( 'restaurant_dashboard' ) ) : ?>
-						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'View the job dashboard', 'restaurants-listings' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $permalink ); ?>"><?php _e( 'View the restaurant dashboard', 'restaurants-listings' ); ?></a></li>
 					<?php else : ?>
-						<li><a href="https://wpjobmanager.com/document/the-restaurant-dashboard/"><?php _e( 'Find out more about the front-end job dashboard', 'restaurants-listings' ); ?></a></li>
+						<li><a href="https://wprestaurantmanager.com/document/the-restaurant-dashboard/"><?php _e( 'Find out more about the front-end restaurant dashboard', 'restaurants-listings' ); ?></a></li>
 					<?php endif; ?>
 				</ul>
 
-				<p><?php printf( __( 'And don\'t forget, if you need any more help using <em>Listings</em> you can consult the %1$sdocumentation%2$s or %3$spost on the forums%2$s!', 'restaurants-listings' ), '<a href="https://wpjobmanager.com/documentation/">', '</a>', '<a href="https://wordpress.org/support/plugin/wp-restaurant-manager">' ); ?></p>
+				<p><?php printf( __( 'And don\'t forget, if you need any more help using <em>Listings</em> you can consult the %1$sdocumentation%2$s or %3$spost on the forums%2$s!', 'restaurants-listings' ), '<a href="https://wprestaurantmanager.com/documentation/">', '</a>', '<a href="https://wordpress.org/support/plugin/wp-restaurant-manager">' ); ?></p>
 
 				<div class="listings-restaurants-support-the-plugin">
 					<h3><?php _e( 'Support the Ongoing Development of this Plugin', 'restaurants-listings' ); ?></h3>

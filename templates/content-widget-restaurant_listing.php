@@ -6,7 +6,7 @@
 		<ul class="meta">
 			<li class="location"><?php listings_restaurants_the_restaurant_location( false ); ?></li>
 			<li class="company"><?php listings_restaurants_the_company_name(); ?></li>
-			<li class="job-type <?php echo listings_restaurants_the_restaurant_type() ? sanitize_title( listings_restaurants_the_restaurant_type()->slug ) : ''; ?>"><?php listings_restaurants_the_restaurant_type(); ?></li>
+			<li class="restaurant-type <?php echo listings_restaurants_the_restaurant_type() ? sanitize_title( listings_restaurants_the_restaurant_type()->slug ) : ''; ?>"><?php listings_restaurants_the_restaurant_type(); ?></li>
 		</ul>
 	</a>
 </li>

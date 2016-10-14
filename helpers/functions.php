@@ -2,7 +2,7 @@
 
 if ( ! function_exists( 'listings_restaurants_get_listings' ) ) :
     /**
-     * Queries job listings with certain criteria and returns them
+     * Queries restaurant listings with certain criteria and returns them
      *
      * @access public
      * @return void
@@ -151,7 +151,7 @@ endif;
 
 if ( ! function_exists( 'listings_restaurants_get_types' ) ) :
     /**
-     * Get job listing types
+     * Get restaurant listing types
      *
      * @access public
      * @return array
@@ -168,7 +168,7 @@ endif;
 
 if ( ! function_exists( 'listings_restaurants_get_filtered_links' ) ) :
     /**
-     * Shows links after filtering jobs
+     * Shows links after filtering restaurants
      */
     function listings_restaurants_get_filtered_links( $args = array() ) {
         $restaurant_categories = array();
@@ -220,7 +220,7 @@ endif;
 
 if ( ! function_exists( 'listings_restaurants_get_rss_link' ) ) :
     /**
-     * Get the Job Listing RSS link
+     * Get the Restaurant Listing RSS link
      *
      * @return string
      */
@@ -232,7 +232,7 @@ endif;
 
 if ( ! function_exists( 'listings_restaurants_get_listing_post_statuses' ) ) :
     /**
-     * Get post statuses used for jobs
+     * Get post statuses used for restaurants
      *
      * @access public
      * @return array
@@ -250,7 +250,7 @@ if ( ! function_exists( 'listings_restaurants_get_listing_post_statuses' ) ) :
 endif;
 
 /**
- * Outputs the jobs status
+ * Outputs the restaurants status
  *
  * @return void
  */
@@ -259,7 +259,7 @@ function listings_restaurants_restaurant_status( $post = null ) {
 }
 
 /**
- * Gets the jobs status
+ * Gets the restaurants status
  *
  * @return string
  */
@@ -279,7 +279,7 @@ function listings_restaurants_get_restaurant_status( $post = null ) {
 
 if ( ! function_exists( 'listings_restaurants_get_featured_restaurant_ids' ) ) :
     /**
-     * Gets the ids of featured jobs.
+     * Gets the ids of featured restaurants.
      *
      * @access public
      * @return array
@@ -360,7 +360,7 @@ function listings_restaurants_duplicate_listing( $post_id ) {
 }
 
 /**
- * Calculate and return the job expiry date
+ * Calculate and return the restaurant expiry date
  * @param  int $restaurant_id
  * @return string
  */
@@ -382,7 +382,7 @@ function listings_restaurants_calculate_restaurant_expiry( $restaurant_id ) {
 
 if ( ! function_exists( 'listings_restaurants_get_listing_categories' ) ) :
     /**
-     * Get job categories
+     * Get restaurant categories
      *
      * @access public
      * @return array

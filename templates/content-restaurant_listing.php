@@ -15,7 +15,7 @@
 		<ul class="meta">
 			<?php do_action( 'restaurant_listing_meta_start' ); ?>
 
-			<li class="job-type <?php echo listings_restaurants_the_restaurant_type() ? sanitize_title( listings_restaurants_the_restaurant_type()->slug ) : ''; ?>"><?php listings_restaurants_the_restaurant_type(); ?></li>
+			<li class="restaurant-type <?php echo listings_restaurants_the_restaurant_type() ? sanitize_title( listings_restaurants_the_restaurant_type()->slug ) : ''; ?>"><?php listings_restaurants_the_restaurant_type(); ?></li>
 			<li class="date"><date><?php printf( __( '%s ago', 'restaurants-listings' ), human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) ); ?></date></li>
 
 			<?php do_action( 'restaurant_listing_meta_end' ); ?>

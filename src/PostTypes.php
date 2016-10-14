@@ -46,7 +46,7 @@ class PostTypes {
 		add_filter( 'rp4wp_related_meta_fields', array( $this, 'rp4wp_related_meta_fields' ), 10, 3 );
 		add_filter( 'rp4wp_related_meta_fields_weight', array( $this, 'rp4wp_related_meta_fields_weight' ), 10, 3 );
 
-		// Single job content
+		// Single restaurant content
 		$this->restaurant_content_filter( true );
 	}
 
@@ -66,12 +66,12 @@ class PostTypes {
 		 * Taxonomies
 		 */
 		if ( get_option( 'listings_restaurants_enable_categories' ) ) {
-			$singular  = __( 'Job category', 'restaurants-listings' );
-			$plural    = __( 'Job categories', 'restaurants-listings' );
+			$singular  = __( 'Restaurant category', 'restaurants-listings' );
+			$plural    = __( 'Restaurant categories', 'restaurants-listings' );
 
 			if ( current_theme_supports( 'listings-restaurants-templates' ) ) {
 				$rewrite   = array(
-					'slug'         => _x( 'job-category', 'Job category slug - resave permalinks after changing this', 'restaurants-listings' ),
+					'slug'         => _x( 'restaurant-category', 'Restaurant category slug - resave permalinks after changing this', 'restaurants-listings' ),
 					'with_front'   => false,
 					'hierarchical' => false
 				);
@@ -113,12 +113,12 @@ class PostTypes {
 		    );
 		}
 
-	    $singular  = __( 'Job type', 'restaurants-listings' );
-		$plural    = __( 'Job types', 'restaurants-listings' );
+	    $singular  = __( 'Restaurant type', 'restaurants-listings' );
+		$plural    = __( 'Restaurant types', 'restaurants-listings' );
 
 		if ( current_theme_supports( 'listings-restaurants-templates' ) ) {
 			$rewrite   = array(
-				'slug'         => _x( 'job-type', 'Job type slug - resave permalinks after changing this', 'restaurants-listings' ),
+				'slug'         => _x( 'restaurant-type', 'Restaurant type slug - resave permalinks after changing this', 'restaurants-listings' ),
 				'with_front'   => false,
 				'hierarchical' => false
 			);
@@ -161,17 +161,17 @@ class PostTypes {
 	    /**
 		 * Post types
 		 */
-		$singular  = __( 'Job', 'restaurants-listings' );
-		$plural    = __( 'Jobs', 'restaurants-listings' );
+		$singular  = __( 'Restaurant', 'restaurants-listings' );
+		$plural    = __( 'Restaurants', 'restaurants-listings' );
 
 		if ( current_theme_supports( 'listings-restaurants-templates' ) ) {
-			$has_archive = _x( 'jobs', 'Post type archive slug - resave permalinks after changing this', 'restaurants-listings' );
+			$has_archive = _x( 'restaurants', 'Post type archive slug - resave permalinks after changing this', 'restaurants-listings' );
 		} else {
 			$has_archive = false;
 		}
 
 		$rewrite     = array(
-			'slug'       => _x( 'job', 'Job permalink - resave permalinks after changing this', 'restaurants-listings' ),
+			'slug'       => _x( 'restaurant', 'Restaurant permalink - resave permalinks after changing this', 'restaurants-listings' ),
 			'with_front' => false,
 			'feeds'      => true,
 			'pages'      => false
@@ -182,7 +182,7 @@ class PostTypes {
 				'labels' => array(
 					'name' 					=> $plural,
 					'singular_name' 		=> $singular,
-					'menu_name'             => __( 'Job Listings', 'restaurants-listings' ),
+					'menu_name'             => __( 'Restaurant Listings', 'restaurants-listings' ),
 					'all_items'             => sprintf( __( 'All %s', 'restaurants-listings' ), $plural ),
 					'add_new' 				=> __( 'Add New', 'restaurants-listings' ),
 					'add_new_item' 			=> sprintf( __( 'Add %s', 'restaurants-listings' ), $singular ),
@@ -249,7 +249,7 @@ class PostTypes {
 	public function admin_head() {
 		global $menu;
 
-		$plural     = __( 'Job Listings', 'restaurants-listings' );
+		$plural     = __( 'Restaurant Listings', 'restaurants-listings' );
 		$count_restaurants = wp_count_posts( 'restaurant_listing', 'readable' );
 
 		if ( ! empty( $menu ) && is_array( $menu ) ) {
@@ -276,7 +276,7 @@ class PostTypes {
 	}
 
 	/**
-	 * Add extra content before/after the post for single job listings.
+	 * Add extra content before/after the post for single restaurant listings.
 	 */
 	public function restaurant_content( $content ) {
 		global $post;
@@ -301,7 +301,7 @@ class PostTypes {
 	}
 
 	/**
-	 * Job listing feeds
+	 * Restaurant listing feeds
 	 */
 	public function restaurant_feed() {
 		$query_args = array(
@@ -367,14 +367,14 @@ class PostTypes {
 	}
 
 	/**
-	 * Add a custom namespace to the job feed
+	 * Add a custom namespace to the restaurant feed
 	 */
 	public function restaurant_feed_namespace() {
 		echo 'xmlns:restaurant_listing="' .  site_url() . '"' . "\n";
 	}
 
 	/**
-	 * Add custom data to the job feed
+	 * Add custom data to the restaurant feed
 	 */
 	public function restaurant_feed_item() {
 		$post_id  = get_the_ID();
@@ -394,7 +394,7 @@ class PostTypes {
 	}
 
 	/**
-	 * Expire jobs
+	 * Expire restaurants
 	 */
 	public function check_for_expired_restaurants() {
 		global $wpdb;
@@ -419,7 +419,7 @@ class PostTypes {
 			}
 		}
 
-		// Delete old expired jobs
+		// Delete old expired restaurants
 		if ( apply_filters( 'listings_restaurants_delete_expired_restaurants', false ) ) {
 			$restaurant_ids = $wpdb->get_col( $wpdb->prepare( "
 				SELECT posts.ID FROM {$wpdb->posts} as posts
@@ -437,12 +437,12 @@ class PostTypes {
 	}
 
 	/**
-	 * Delete old previewed jobs after 30 days to keep the DB clean
+	 * Delete old previewed restaurants after 30 days to keep the DB clean
 	 */
 	public function delete_old_previews() {
 		global $wpdb;
 
-		// Delete old expired jobs
+		// Delete old expired restaurants
 		$restaurant_ids = $wpdb->get_col( $wpdb->prepare( "
 			SELECT posts.ID FROM {$wpdb->posts} as posts
 			WHERE posts.post_type = 'restaurant_listing'
@@ -465,7 +465,7 @@ class PostTypes {
 	}
 
 	/**
-	 * Set expirey date when job status changes
+	 * Set expirey date when restaurant status changes
 	 */
 	public function set_expiry( $post ) {
 		if ( $post->post_type !== 'restaurant_listing' ) {
@@ -538,7 +538,7 @@ class PostTypes {
 	}
 
 	/**
-	 * Triggered when updating meta on a job listing
+	 * Triggered when updating meta on a restaurant listing
 	 */
 	public function update_post_meta( $meta_id, $object_id, $meta_key, $meta_value ) {
 		if ( 'restaurant_listing' === get_post_type( $object_id ) ) {
@@ -561,7 +561,7 @@ class PostTypes {
 	}
 
 	/**
-	 * Maybe set menu_order if the featured status of a job is changed
+	 * Maybe set menu_order if the featured status of a restaurant is changed
 	 */
 	public function maybe_update_menu_order( $meta_id, $object_id, $meta_key, $meta_value ) {
 		global $wpdb;
@@ -584,7 +584,7 @@ class PostTypes {
 	}
 
 	/**
-	 * Maybe set default meta data for job listings
+	 * Maybe set default meta data for restaurant listings
 	 * @param  int $post_id
 	 * @param  \WP_Post $post
 	 */
@@ -623,7 +623,7 @@ class PostTypes {
 	}
 
 	/**
-	 * Add meta fields for RP4WP to relate jobs by
+	 * Add meta fields for RP4WP to relate restaurants by
 	 * @param  array $meta_fields
 	 * @param  int $post_id
 	 * @param  \WP_Post $post
@@ -638,7 +638,7 @@ class PostTypes {
 	}
 
 	/**
-	 * Add meta fields for RP4WP to relate jobs by
+	 * Add meta fields for RP4WP to relate restaurants by
 	 * @param  int $weight
 	 * @param  \WP_Post $post
 	 * @param  string $meta_field

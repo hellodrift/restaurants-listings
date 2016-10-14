@@ -52,13 +52,13 @@ class GetListings extends Action
 
         ob_start();
 
-        $jobs = listings_restaurants_get_listings( apply_filters( 'listings_restaurants_get_listings_args', $args ) );
+        $restaurants = listings_restaurants_get_listings( apply_filters( 'listings_restaurants_get_listings_args', $args ) );
 
         $result['found_restaurants'] = false;
 
-        if ( $jobs->have_posts() ) : $result['found_restaurants'] = true; ?>
+        if ( $restaurants->have_posts() ) : $result['found_restaurants'] = true; ?>
 
-            <?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
+            <?php while ( $restaurants->have_posts() ) : $restaurants->the_post(); ?>
 
                 <?php listings_get_template_part( 'content', 'restaurant_listing' ); ?>
 
@@ -132,11 +132,11 @@ class GetListings extends Action
 
         // Generate pagination
         if ( isset( $_REQUEST['show_pagination'] ) && $_REQUEST['show_pagination'] === 'true' ) {
-            $result['pagination'] = listings_get_listing_pagination( $jobs->max_num_pages, absint( $_REQUEST['page'] ) );
+            $result['pagination'] = listings_get_listing_pagination( $restaurants->max_num_pages, absint( $_REQUEST['page'] ) );
         }
 
-        $result['max_num_pages'] = $jobs->max_num_pages;
+        $result['max_num_pages'] = $restaurants->max_num_pages;
 
-        wp_send_json( apply_filters( 'listings_restaurants_get_listings_result', $result, $jobs ) );
+        wp_send_json( apply_filters( 'listings_restaurants_get_listings_result', $result, $restaurants ) );
     }
 }

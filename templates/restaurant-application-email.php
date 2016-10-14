@@ -1,4 +1,4 @@
-<p><?php printf( __( 'To apply for this job <strong>email your details to</strong> <a class="restaurant_application_email" href="mailto:%1$s%2$s">%1$s</a>', 'restaurants-listings' ), $apply->email, '?subject=' . rawurlencode( $apply->subject ) ); ?></p>
+<p><?php printf( __( 'To apply for this restaurant <strong>email your details to</strong> <a class="restaurant_application_email" href="mailto:%1$s%2$s">%1$s</a>', 'restaurants-listings' ), $apply->email, '?subject=' . rawurlencode( $apply->subject ) ); ?></p>
 
 <p>
 	<?php _e( 'Apply using webmail: ', 'restaurants-listings' ); ?>

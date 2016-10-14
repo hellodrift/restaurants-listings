@@ -28,7 +28,7 @@ class Cpt {
 		add_action( 'admin_notices', array( $this, 'expired_notice' ) );
 
 		if ( get_option( 'listings_restaurants_enable_categories' ) ) {
-			add_action( "restrict_manage_posts", array( $this, "jobs_by_category" ) );
+			add_action( "restrict_manage_posts", array( $this, "restaurants_by_category" ) );
 		}
 
 		foreach ( array( 'post', 'post-new' ) as $hook ) {
@@ -110,7 +110,7 @@ class Cpt {
 	}
 
 	/**
-	 * Approve a single job
+	 * Approve a single restaurant
 	 */
 	public function approve_restaurant() {
 		if ( ! empty( $_GET['approve_restaurant'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'approve_restaurant' ) && current_user_can( 'publish_post', $_GET['approve_restaurant'] ) ) {
@@ -168,7 +168,7 @@ class Cpt {
 	/**
 	 * Show category dropdown
 	 */
-	public function jobs_by_category() {
+	public function restaurants_by_category() {
 		global $typenow, $wp_query;
 
 	    if ( $typenow != 'restaurant_listing' || ! taxonomy_exists( 'restaurant_listing_category' ) ) {
@@ -282,7 +282,7 @@ class Cpt {
 			case "restaurant_listing_type" :
 				$type = listings_restaurants_get_the_restaurant_type( $post );
 				if ( $type )
-					echo '<span class="job-type ' . $type->slug . '">' . $type->name . '</span>';
+					echo '<span class="restaurant-type ' . $type->slug . '">' . $type->name . '</span>';
 			break;
 			case "restaurant_position" :
 				echo '<div class="restaurant_position">';

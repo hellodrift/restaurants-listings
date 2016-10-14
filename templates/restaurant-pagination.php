@@ -1,6 +1,6 @@
 <?php
 /**
- * Pagination - Show numbered pagination for the [jobs] shortcode
+ * Pagination - Show numbered pagination for the [restaurants] shortcode
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

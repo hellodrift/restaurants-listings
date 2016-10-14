@@ -20,8 +20,8 @@ class Shortcodes {
 		add_action( 'listings_restaurants_output_restaurants_no_results', array( $this, 'output_no_results' ) );
 		add_shortcode( 'submit_restaurant_form', array( $this, 'submit_restaurant_form' ) );
 		add_shortcode( 'restaurant_dashboard', array( $this, 'restaurant_dashboard' ) );
-		add_shortcode( 'jobs', array( $this, 'output_restaurants' ) );
-		add_shortcode( 'job', array( $this, 'output_restaurant' ) );
+		add_shortcode( 'restaurants', array( $this, 'output_restaurants' ) );
+		add_shortcode( 'restaurant', array( $this, 'output_restaurant' ) );
 		add_shortcode( 'restaurant_summary', array( $this, 'output_restaurant_summary' ) );
 		add_shortcode( 'restaurant_apply', array( $this, 'output_restaurant_apply' ) );
 	}
@@ -38,7 +38,7 @@ class Shortcodes {
 	}
 
 	/**
-	 * Show the job submission form
+	 * Show the restaurant submission form
 	 */
 	public function submit_restaurant_form( $atts = array() ) {
 		$form = SubmitRestaurant::instance();
@@ -48,7 +48,7 @@ class Shortcodes {
 	}
 
 	/**
-	 * Handles actions on job dashboard
+	 * Handles actions on restaurant dashboard
 	 */
 	public function restaurant_dashboard_handler() {
 		if ( ! empty( $_REQUEST['action'] ) && ! empty( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'listings_restaurants_my_restaurant_actions' ) ) {
@@ -57,8 +57,8 @@ class Shortcodes {
 			$restaurant_id = absint( $_REQUEST['restaurant_id'] );
 
 			try {
-				// Get Job
-				$job    = get_post( $restaurant_id );
+				// Get Restaurant
+				$restaurant    = get_post( $restaurant_id );
 
 				// Check ownership
 				if ( ! listings_user_can_edit_listing( $restaurant_id ) ) {
@@ -68,18 +68,18 @@ class Shortcodes {
 				switch ( $action ) {
 					case 'mark_filled' :
 						// Check status
-						if ( $job->_filled == 1 )
+						if ( $restaurant->_filled == 1 )
 							throw new \Exception( __( 'This position has already been filled', 'restaurants-listings' ) );
 
 						// Update
 						update_post_meta( $restaurant_id, '_filled', 1 );
 
 						// Message
-						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been filled', 'restaurants-listings' ), $job->post_title ) . '</div>';
+						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been filled', 'restaurants-listings' ), $restaurant->post_title ) . '</div>';
 						break;
 					case 'mark_not_filled' :
 						// Check status
-						if ( $job->_filled != 1 ) {
+						if ( $restaurant->_filled != 1 ) {
 							throw new \Exception( __( 'This position is not filled', 'restaurants-listings' ) );
 						}
 
@@ -87,14 +87,14 @@ class Shortcodes {
 						update_post_meta( $restaurant_id, '_filled', 0 );
 
 						// Message
-						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been marked as not filled', 'restaurants-listings' ), $job->post_title ) . '</div>';
+						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been marked as not filled', 'restaurants-listings' ), $restaurant->post_title ) . '</div>';
 						break;
 					case 'delete' :
 						// Trash it
 						wp_trash_post( $restaurant_id );
 
 						// Message
-						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been deleted', 'restaurants-listings' ), $job->post_title ) . '</div>';
+						$this->restaurant_dashboard_message = '<div class="listings-message">' . sprintf( __( '%s has been deleted', 'restaurants-listings' ), $restaurant->post_title ) . '</div>';
 
 						break;
 					case 'duplicate' :
@@ -134,7 +134,7 @@ class Shortcodes {
 	}
 
 	/**
-	 * Shortcode which lists the logged in user's jobs
+	 * Shortcode which lists the logged in user's restaurants
 	 */
 	public function restaurant_dashboard( $atts ) {
 		if ( ! is_user_logged_in() ) {
@@ -163,7 +163,7 @@ class Shortcodes {
 			}
 		}
 
-		// ....If not show the job dashboard
+		// ....If not show the restaurant dashboard
 		$args     = apply_filters( 'listings_restaurants_get_dashboard_restaurants_args', array(
 			'post_type'           => 'restaurant_listing',
 			'post_status'         => array( 'publish', 'expired', 'pending' ),
@@ -175,7 +175,7 @@ class Shortcodes {
 			'author'              => get_current_user_id()
 		) );
 
-		$jobs = new \WP_Query;
+		$restaurants = new \WP_Query;
 
 		echo $this->restaurant_dashboard_message;
 
@@ -186,13 +186,13 @@ class Shortcodes {
 			'expires'   => __( 'Listing Expires', 'restaurants-listings' )
 		) );
 
-		listings_get_template( 'restaurant-dashboard.php', array( 'jobs' => $jobs->query( $args ), 'max_num_pages' => $jobs->max_num_pages, 'restaurant_dashboard_columns' => $restaurant_dashboard_columns ) );
+		listings_get_template( 'restaurant-dashboard.php', array( 'restaurants' => $restaurants->query( $args ), 'max_num_pages' => $restaurants->max_num_pages, 'restaurant_dashboard_columns' => $restaurant_dashboard_columns ) );
 
 		return ob_get_clean();
 	}
 
 	/**
-	 * Edit job form
+	 * Edit restaurant form
 	 */
 	public function edit_restaurant() {
 		$form = EditRestaurant::instance();
@@ -221,7 +221,7 @@ class Shortcodes {
 			'show_pagination'           => false,
 			'show_more'                 => true,
 
-			// Limit what jobs are shown based on category and type
+			// Limit what restaurants are shown based on category and type
 			'categories'                => '',
 			'restaurant_types'                 => '',
 			'featured'                  => null, // True to show only featured, false to hide featured, leave null to show both.
@@ -282,7 +282,7 @@ class Shortcodes {
 
 		} else {
 
-			$jobs = listings_restaurants_get_listings( apply_filters( 'listings_restaurants_output_restaurants_args', array(
+			$restaurants = listings_restaurants_get_listings( apply_filters( 'listings_restaurants_output_restaurants_args', array(
 				'search_location'   => $location,
 				'search_keywords'   => $keywords,
 				'search_categories' => $categories,
@@ -294,22 +294,22 @@ class Shortcodes {
 				'filled'            => $filled
 			) ) );
 
-			if ( $jobs->have_posts() ) : ?>
+			if ( $restaurants->have_posts() ) : ?>
 
 				<?php listings_get_template( 'restaurant_listing-start.php' ); ?>
 
-				<?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
+				<?php while ( $restaurants->have_posts() ) : $restaurants->the_post(); ?>
 					<?php listings_get_template_part( 'content', 'restaurant_listing' ); ?>
 				<?php endwhile; ?>
 
 				<?php listings_get_template( 'restaurant_listing-end.php' ); ?>
 
-				<?php if ( $jobs->found_posts > $per_page && $show_more ) : ?>
+				<?php if ( $restaurants->found_posts > $per_page && $show_more ) : ?>
 
 					<?php wp_enqueue_script( 'listings-ajax-filters' ); ?>
 
 					<?php if ( $show_pagination ) : ?>
-						<?php echo listings_get_listing_pagination( $jobs->max_num_pages ); ?>
+						<?php echo listings_get_listing_pagination( $restaurants->max_num_pages ); ?>
 					<?php else : ?>
 						<a class="load_more_restaurants" href="#"><strong><?php _e( 'Load more listings', 'restaurants-listings' ); ?></strong></a>
 					<?php endif; ?>
@@ -408,11 +408,11 @@ class Shortcodes {
 			'p'           => $id
 		);
 
-		$jobs = new \WP_Query( $args );
+		$restaurants = new \WP_Query( $args );
 
-		if ( $jobs->have_posts() ) : ?>
+		if ( $restaurants->have_posts() ) : ?>
 
-			<?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
+			<?php while ( $restaurants->have_posts() ) : $restaurants->the_post(); ?>
 
 				<h1><?php the_title(); ?></h1>
 
@@ -428,7 +428,7 @@ class Shortcodes {
 	}
 
 	/**
-	 * Job Summary shortcode
+	 * Restaurant Summary shortcode
 	 *
 	 * @access public
 	 * @param array $args
@@ -464,11 +464,11 @@ class Shortcodes {
 			$args['p'] = absint( $id );
 		}
 
-		$jobs = new \WP_Query( $args );
+		$restaurants = new \WP_Query( $args );
 
-		if ( $jobs->have_posts() ) : ?>
+		if ( $restaurants->have_posts() ) : ?>
 
-			<?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
+			<?php while ( $restaurants->have_posts() ) : $restaurants->the_post(); ?>
 
 				<div class="restaurant_summary_shortcode align<?php echo $align ?>" style="width: <?php echo $width ? $width : 'auto'; ?>">
 
@@ -506,12 +506,12 @@ class Shortcodes {
 			$args['p'] = absint( $id );
 		}
 
-		$jobs = new \WP_Query( $args );
+		$restaurants = new \WP_Query( $args );
 
-		if ( $jobs->have_posts() ) : ?>
+		if ( $restaurants->have_posts() ) : ?>
 
-			<?php while ( $jobs->have_posts() ) :
-				$jobs->the_post();
+			<?php while ( $restaurants->have_posts() ) :
+				$restaurants->the_post();
 				$apply = listings_restaurants_get_application_method();
 				?>
 

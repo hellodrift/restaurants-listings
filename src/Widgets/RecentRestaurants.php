@@ -64,7 +64,7 @@ class RecentRestaurants extends Widget {
 
         $title  = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
         $number = absint( $instance['number'] );
-        $jobs   = listings_restaurants_get_listings( array(
+        $restaurants   = listings_restaurants_get_listings( array(
             'search_location'   => isset( $instance['location'] ) ? $instance['location'] : '',
             'search_keywords'   => isset( $instance['keyword'] ) ? $instance['keyword'] : '',
             'posts_per_page'    => $number,
@@ -72,7 +72,7 @@ class RecentRestaurants extends Widget {
             'order'             => 'DESC',
         ) );
 
-        if ( $jobs->have_posts() ) : ?>
+        if ( $restaurants->have_posts() ) : ?>
 
             <?php echo $before_widget; ?>
 
@@ -80,7 +80,7 @@ class RecentRestaurants extends Widget {
 
             <ul class="restaurant_listings">
 
-                <?php while ( $jobs->have_posts() ) : $jobs->the_post(); ?>
+                <?php while ( $restaurants->have_posts() ) : $restaurants->the_post(); ?>
 
                     <?php listings_get_template_part( 'content-widget', 'restaurant_listing' ); ?>
 
