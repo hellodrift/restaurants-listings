@@ -13,7 +13,7 @@ Manage your own restaurant board from the WordPress admin panel to display on yo
 
 Listings Restaurants is an extension to the **lightweight** listing plugin, Listings, for managing restaurants from the WordPress admin panel to display on your website.
 
-While this plugin is in open beta, we continually improve the functionality, fix bugs and introduce new features. Please stay in the loop via the [GitHub repository](https://github.com/TheLookandFeel/listings-restaurants) to make sure you have the latest version and are up-to-date about upcoming changes.
+While this plugin is in open beta, we continually improve the functionality, fix bugs and introduce new features. Please stay in the loop via the [GitHub repository](https://github.com/opentuteplus/restaurants-listings) to make sure you have the latest version and are up-to-date about upcoming changes.
 
 == Installation ==
 
