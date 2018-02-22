@@ -1,5 +1,5 @@
-# Restaurants Listings
+# WP Restaurant Listings
 
-Extension for the [Listings plugin](https://github.com/TheLookandFeel/listings) that adds Restaurants Listings like functionality.
+New repo (https://github.com/wpdrift/WP-Restaurant-Listings) that adds Restaurants Listings like functionality.
 
-Please contact me here. https://shop.opentuteplus.com/contact-me/
+Please check details here. https://wpdrift.com/restaurants/
